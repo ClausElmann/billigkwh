@@ -1,0 +1,171 @@
+<form *ngIf="mainForm" [formGroup]="mainForm">
+  <div class="grid">
+    <div class="col-12">
+      <div class="card">
+        <div class="p-fluid p-formgrid grid">
+          <div class="field col-12 md:col-6">
+            <label for="name" class="block">Kundenavn</label>
+            <input formControlName="name" type="text" maxlength="200" pInputText id="name" aria-describedby="name-help" />
+            <div *ngIf="name.errors && (name.dirty || name.touched)" class="p-error block">
+              <div *ngIf="name.errors?.required">Påkrævet</div>
+            </div>
+          </div>
+
+          <div class="field col-12 md:col-2">
+            <label for="companyRegistrationId" class="block">CVR</label>
+            <input formControlName="companyRegistrationId" type="text" maxlength="200" pInputText id="companyRegistrationId" aria-describedby="companyRegistrationId-help" />
+            <div *ngIf="companyRegistrationId.errors && (companyRegistrationId.dirty || companyRegistrationId.touched)" class="p-error block">
+              <div *ngIf="companyRegistrationId.errors?.required">Påkrævet</div>
+              <div *ngIf="companyRegistrationId.errors?.range">CVR skal værre imellem 10000000 og 99999999</div>
+            </div>
+          </div>
+
+          <div class="field col-12">
+            <label for="address" class="block">Adresse</label>
+            <textarea id="address" formControlName="address" type="text" aria-describedby="address-help" placeholder="Angiv adresse" [rows]="3" pInputTextarea autoResize="autoResize"></textarea>
+            <div *ngIf="address.errors && (address.dirty || address.touched)" class="p-error block">
+              <div *ngIf="address.errors?.required">Påkrævet</div>
+            </div>
+
+            <!-- <small id="address-help" class="p-error block">{{ displayMessage.address }}</small> -->
+          </div>
+
+          <div class="field col-12 md:col-6">
+            <label for="zipcode" class="block">PostNr</label>
+            <input formControlName="zipcode" type="text" maxlength="200" pInputText id="zipcode" aria-describedby="zipcode-help" />
+            <div *ngIf="zipcode.errors && (zipcode.dirty || zipcode.touched)" class="p-error block">
+              <div *ngIf="zipcode.errors?.required">Påkrævet</div>
+            </div>
+          </div>
+
+          <div class="field col-12 md:col-6">
+            <label for="city" class="block">By</label>
+            <input formControlName="city" type="text" maxlength="200" pInputText id="city" aria-describedby="city-help" />
+            <div *ngIf="city.errors && (city.dirty || city.touched)" class="p-error block">
+              <div *ngIf="city.errors?.required">Påkrævet</div>
+            </div>
+          </div>
+
+          <div class="field col-12 md:col-3">
+            <label for="languageId" class="block">Sprog</label>
+            <p-dropdown id="languageId" formControlName="languageId" [options]="languages" [autoDisplayFirst]="false" aria-describedby="languageId-help"></p-dropdown>
+            <div *ngIf="languageId.errors && (languageId.dirty || languageId.touched)" class="p-error block">
+              <div *ngIf="languageId.errors?.required">Påkrævet</div>
+            </div>
+          </div>
+
+          <div class="field col-12 md:col-3">
+            <label for="countryId" class="block">Land</label>
+            <p-dropdown id="countryId" formControlName="countryId" [options]="countries" [autoDisplayFirst]="false" aria-describedby="countryId-help"></p-dropdown>
+            <div *ngIf="countryId.errors && (countryId.dirty || countryId.touched)" class="p-error block">
+              <div *ngIf="countryId.errors?.required">Påkrævet</div>
+            </div>
+          </div>
+
+          <div class="field col-12 md:col-6">
+            <label for="coveragePercentage" class="block">Dækningsbidrag (1.0 - 2.0)</label>
+            <input formControlName="coveragePercentage" type="text" maxlength="200" pInputText id="coveragePercentage" aria-describedby="coveragePercentage-help" />
+            <div *ngIf="coveragePercentage.errors && (coveragePercentage.dirty || coveragePercentage.touched)" class="p-error block">
+              <div *ngIf="coveragePercentage.errors?.required">Påkrævet</div>
+              <div *ngIf="coveragePercentage.errors?.range">Dækningsbidrag skal værre imellem 1,0(0%) og 2,0(100%)</div>
+            </div>
+          </div>
+
+          <div class="field col-12 md:col-6">
+            <label for="hourWage" class="block">Timeløn</label>
+            <input formControlName="hourWage" type="text" maxlength="200" pInputText id="hourWage" aria-describedby="hourWage-help" />
+            <div *ngIf="hourWage.errors && (hourWage.dirty || hourWage.touched)" class="p-error block">
+              <div *ngIf="hourWage.errors?.required">Påkrævet</div>
+              <div *ngIf="hourWage.errors?.range">Timeløn skal værre imellem 0 og 2000 kr</div>
+            </div>
+          </div>
+
+          <div class="field col-12 md:col-6">
+            <label for="invoiceMail" class="block">Faktura E-mail</label>
+            <input formControlName="invoiceMail" type="email" maxlength="255" pInputText id="invoiceMail" aria-describedby="invoiceMail-help" />
+            <div *ngIf="invoiceMail.errors && (invoiceMail.dirty || invoiceMail.touched)" class="p-error block">
+              <div *ngIf="invoiceMail.errors?.required">Påkrævet</div>
+            </div>
+          </div>
+
+          <div class="field col-12 md:col-6">
+            <label for="invoiceContactPerson" class="block">Faktura kontaktperson</label>
+            <input formControlName="invoiceContactPerson" type="text" maxlength="100" pInputText id="invoiceContactPerson" aria-describedby="invoiceContactPerson-help" />
+            <div *ngIf="invoiceContactPerson.errors && (invoiceContactPerson.dirty || invoiceContactPerson.touched)" class="p-error block">
+              <div *ngIf="invoiceContactPerson.errors?.required">Påkrævet</div>
+            </div>
+          </div>
+
+          <div class="field col-12 md:col-6">
+            <label for="invoicePhoneFax" class="block">Faktura telefon/fax</label>
+            <input formControlName="invoicePhoneFax" type="text" maxlength="255" pInputText id="invoicePhoneFax" aria-describedby="invoicePhoneFax-help" />
+            <div *ngIf="invoicePhoneFax.errors && (invoicePhoneFax.dirty || invoicePhoneFax.touched)" class="p-error block">
+              <div *ngIf="invoicePhoneFax.errors?.required">Påkrævet</div>
+            </div>
+          </div>
+
+          <div class="field col-12 md:col-6">
+            <label for="invoiceMobile" class="block">Faktura mobil tlf</label>
+            <input formControlName="invoiceMobile" type="text" maxlength="50" pInputText id="invoiceMobile" aria-describedby="invoiceMobile-help" />
+            <div *ngIf="invoiceMobile.errors && (invoiceMobile.dirty || invoiceMobile.touched)" class="p-error block">
+              <div *ngIf="invoiceMobile.errors?.required">Påkrævet</div>
+            </div>
+          </div>
+
+          <div class="field col-12">
+            <div class="formgroup-inline">
+              <div class="field">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  [label]="createOrSave"
+                  class="p-button-raised"
+                  [title]="mainForm.valid ? 'Gem dine indtastede data' : 'Deaktiveret, indtil formulardataene er gyldige'"
+                  [disabled]="mainForm.pristine"
+                  (click)="onSaveClicked()"
+                ></button>
+              </div>
+              <div class="field">
+                <button pButton pRipple type="button" class="p-button-outlined p-button-secondary" label="Tilbage" title="Tilbage" [routerLink]="['/superadmin/customers/']"></button>
+              </div>
+              <div *ngIf="customer.id !== 0" class="field">
+                <button
+                  pButton
+                  pRipple
+                  class="p-button-outlined p-button-warning"
+                  type="button"
+                  [label]="deleteOrRecreate"
+                  [title]="deleteOrRecreate + ' this customer'"
+                  (click)="deleteRecreate()"
+                ></button>
+              </div>
+              <!-- <div *ngIf="customer.id !== 0" class="field">
+                <button
+                  [disabled]="customer.invoiceMail === '' || customer.invoiceContactPerson === ''"
+                  pButton
+                  pRipple
+                  class="p-button-outlined p-button-warning"
+                  type="button"
+                  [label]="updateEconomic"
+                  [title]="updateEconomic"
+                  (click)="createEconomic()"
+                ></button>
+              </div> -->
+            </div>
+          </div>
+          <div class="field col-12">
+            <div class="field">
+              <button pButton pRipple class="p-button-outlined p-button-secondary" type="button" label="Test form for validation in console" (click)="getFormValidationErrors()"></button>
+            </div>
+            <br />Dirty: {{ mainForm.dirty }} <br />Touched: {{ mainForm.touched }} <br />Valid: {{ mainForm.valid }} <br />Values:
+            {{ mainForm.value | json }}
+            <p class="field-error" [@fadeIn] *ngIf="showFormErrorMessage" translate>errorMessages.OneOrMoreFieldsMissing</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{ width: '50vw' }" [baseZIndex]="10000"></p-confirmDialog>
+  <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+</form>

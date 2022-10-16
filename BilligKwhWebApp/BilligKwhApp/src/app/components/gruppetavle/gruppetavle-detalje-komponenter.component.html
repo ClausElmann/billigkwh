@@ -1,0 +1,166 @@
+<!-- <div class="flex align-items-left">
+  <p-checkbox
+    [binary]="true"
+    class="cb-large ml-3"
+    inputId="mapped"
+    label="Vis slettede"
+    [ngModel]="showDeleted"
+    (ngModelChange)="onShowActiveChange($event)"
+  ></p-checkbox>
+</div> -->
+
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <p-toast></p-toast>
+      <p-table
+        #table
+        [value]="komponenter$ | async"
+        [columns]="cols"
+        [globalFilterFields]="cols"
+        [loading]="loading"
+        selectionMode="single"
+        [(selection)]="selectedItem"
+        dataKey="id"
+        (onRowSelect)="onRowSelect($event)"
+        csvSeparator=";"
+        [exportFilename]="'export'"
+        [paginator]="true"
+        [rows]="25"
+        [showCurrentPageReport]="true"
+        responsiveLayout="scroll"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[10, 25, 50]"
+      >
+        <ng-template pTemplate="caption">
+          <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+            <h5 class="m-0">Komponenter pr sektion</h5>
+
+            <button pButton pRipple label="Tilbage" icon="pi pi-backward" (click)="back()" class="p-button-success mr-2"></button>
+
+            <button pButton pRipple label="Rediger placeringer" icon="pi pi-bars" class="p-button-success mr-2" (click)="onRowSelect()"></button>
+
+            <button pButton [disabled]="invoicingDone" pRipple label="Genberegn kabinet" icon="pi pi-refresh" (click)="genberegn()" class="p-button-success mr-2"></button>
+
+            <button pButton [disabled]="invoicingDone" pRipple label="Tilføj" icon="pi pi-plus" (click)="addItem()" class="p-button-success mr-2"></button>
+
+            <button pButton pRipple beck label="Export" icon="pi pi-upload" class="p-button-help" (click)="exportCSV(table, { bom: true, fieldBoundary: false })"></button>
+
+            <span class="block mt-2 md:mt-0 p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="table.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+            </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{ col.header }}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns">
+              {{ rowData[col.field] }}
+            </td>
+
+            <td>
+              <div class="flex">
+                <div *ngIf="!rowData.slettet">
+                  <button pButton [disabled]="invoicingDone" pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editItem(rowData)"></button>
+                  <button pButton [disabled]="invoicingDone" pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteItem(rowData)"></button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+
+<p-dialog *ngIf="editDialog" [(visible)]="editDialog" [style]="{ width: '450px' }" header="Komponent Details" [modal]="true" class="p-fluid">
+  <form [formGroup]="mainForm">
+    <div class="field">
+      <label for="komponentID" class="block">Komponent</label>
+      <p-dropdown
+        id="komponentID"
+        formControlName="komponentID"
+        [options]="elKomponenter$ | async"
+        [filter]="true"
+        filterBy="label"
+        [showClear]="true"
+        placeholder="Vælg komponent"
+        [autoDisplayFirst]="false"
+        aria-describedby="komponentID-help"
+      ></p-dropdown>
+      <div *ngIf="komponentID.errors && (komponentID.dirty || komponentID.touched)" class="p-error block">
+        <div *ngIf="komponentID.errors?.required">Påkrævet</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="elTavleSektionID" class="block">Sektion</label>
+      <p-dropdown id="elTavleSektionID" formControlName="elTavleSektionID" [options]="sektioner$ | async" [autoDisplayFirst]="true" aria-describedby="elTavleSektionID-help"></p-dropdown>
+      <div *ngIf="elTavleSektionID.errors && (elTavleSektionID.dirty || elTavleSektionID.touched)" class="p-error block">
+        <div *ngIf="elTavleSektionID.errors?.required">Påkrævet</div>
+      </div>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <label for="angivetNavn" class="block">Slå autonavn fra</label>
+      <p-checkbox formControlName="angivetNavn" [binary]="true" id="angivetNavn" aria-describedby="angivetNavn-help" (onChange)="onAngivetNavnChanged($event)"></p-checkbox>
+      <div *ngIf="angivetNavn.errors && (angivetNavn.dirty || angivetNavn.touched)" class="p-error block">
+        <div *ngIf="angivetNavn.errors?.required">Påkrævet</div>
+        <div *ngIf="angivetNavn.errors?.digitsOnly">Kun hel tal</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="navn" class="block">Navn</label>
+      <input formControlName="navn" type="text" maxlength="50" pInputText id="navn" aria-describedby="navn-help" />
+      <div *ngIf="navn.errors && (navn.dirty || navn.touched)" class="p-error block">
+        <div *ngIf="navn.errors?.required">Påkrævet</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="formgroup-inline">
+        <div class="field">
+          <button
+            pButton
+            pRipple
+            [disabled]="mainForm.pristine || !mainForm.valid || antal < 1 || komponentID === null"
+            [label]="selectedItem.id === 0 ? 'Opret' : 'Gem'"
+            icon="pi pi-check"
+            class="p-button-raised"
+            (click)="saveItem()"
+          ></button>
+        </div>
+        <div class="field">
+          <button pButton pRipple label="Annuller" icon="pi pi-times" class="p-button-outlined p-button-warning" (click)="hideDialog()"></button>
+        </div>
+        <br />Dirty: {{ mainForm.dirty }} <br />Touched: {{ mainForm.touched }} <br />Valid: {{ mainForm.valid }} <br />Values:
+        {{ mainForm.value | json }}
+        <p class="field-error" [@fadeIn] *ngIf="showFormErrorMessage" translate>errorMessages.OneOrMoreFieldsMissing</p>
+      </div>
+    </div>
+  </form>
+</p-dialog>
+
+<p-dialog *ngIf="deleteDialog" [(visible)]="deleteDialog" header="Confirm" [modal]="true" [style]="{ width: '450px' }">
+  <div class="flex align-items-center justify-content-center">
+    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+    <span *ngIf="selectedItem"
+      >Er du sikker på du ønsker at slette alle <b>{{ selectedItem?.antal }} stk.</b> af komponenten: <b>{{ selectedItem?.komponentNavn }}</b
+      >?</span
+    >
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple icon="pi pi-check" class="p-button-raised" label="Bekræft" (click)="confirmDelete()"></button>
+    <button pButton pRipple icon="pi pi-times" class="p-button-outlined p-button-warning" label="Annuller" (click)="deleteDialog = false"></button
+  ></ng-template>
+</p-dialog>

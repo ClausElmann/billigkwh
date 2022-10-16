@@ -1,0 +1,21 @@
+<div class="wrapper">
+  <button pButton class="p-button-rounded p-button-text close-icon-button" icon="pi pi-times"
+    (click)="ref.close(false)"></button>
+
+  <div class="text-center">
+    <h1 class="h1-lg">{{headerText}}</h1>
+    <p *ngIf="confirmLine1Text" class="mt-5 mb-3">{{confirmLine1Text}}</p>
+    <p *ngIf="confirmLine2Text" class="mb-3 font-bold">{{confirmLine2Text}}</p>
+    <p *ngIf="confirmLine3Text">{{confirmLine3Text}}</p>
+
+    <div class="two-buttons-container">
+      <button pButton
+        [label]="buttonCancelText"
+        (click)="ref.close(false)"></button>
+      <div class="spacer"></div>
+      <button pButton class="p-button-warning"
+        [label]="buttonOkText"
+        (click)="ref.close(true)"></button>
+    </div>
+  </div>
+</div>

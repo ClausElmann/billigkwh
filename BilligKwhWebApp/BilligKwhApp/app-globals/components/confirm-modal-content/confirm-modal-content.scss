@@ -1,0 +1,16 @@
+@import "/src/shared/styles/helpers/media-query";
+@import "/src/shared/styles/helpers/functions";
+
+:host {
+  display       : flex;
+  flex-direction: column;
+  align-items   : center;
+  width         : 100%;
+  padding       : 1rem .5rem 0;
+}
+
+.wrapper {
+  @include bi-mq($bp-screen-sm) {
+    max-width: rem(415);
+  }
+}

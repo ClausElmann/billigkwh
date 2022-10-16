@@ -1,0 +1,37 @@
+﻿// Style for removing toolbar from Prime Editor
+::ng-deep .no-toolbar {
+  border-top: 1px solid #c8c8c8;
+
+  ql-editor {
+    min-height: 320px;
+  }
+
+  .p-editor-toolbar {
+    display: none;
+  }
+}
+
+::ng-deep .myEmailClass {
+  table,
+  td,
+  div,
+  h1,
+  p {
+    font-family: Arial, sans-serif;
+  }
+  .tdleft {
+    text-align: left;
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+  .tdcenter {
+    text-align: center;
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+  .tdright {
+    text-align: right;
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+}

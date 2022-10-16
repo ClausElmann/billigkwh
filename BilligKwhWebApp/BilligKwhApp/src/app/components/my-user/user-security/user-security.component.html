@@ -1,0 +1,47 @@
+
+<div class="col-6">
+  <div class="card">
+    <h5>Sikkerhed</h5>
+    <form class="p-fluid p-formgrid grid" [formGroup]="passwordForm" *ngIf="passwordForm">
+
+      <div class="field col-12 md:col-12">
+        <label htmlFor="currentPass">currentPass</label>
+        <p-password formControlName="currentPass" pInputText id="currentPass" placeholder="Password" [toggleMask]="true"></p-password>
+        <ng-container *ngIf="currentPass.invalid">
+          <p class="field-error" *ngIf="currentPass.errors.required &&
+            currentPass.touched" translate>
+            settings.myUser.CurrentPassMustBeFilled</p>
+          <p class="field-error" *ngIf="currentPass.errors.minlength &&
+            currentPass.touched" translate>
+            errorMessages.PassMustBe8CharsLong</p>
+          <p class="field-error" *ngIf="currentPass.errors.noMatch &&
+            currentPass.touched" translate>
+            settings.myUser.CurrentPassNoMatch</p>
+        </ng-container>
+      </div>
+
+      <div class="field col-12 md:col-12">
+        <label htmlFor="newPass">newPass</label>
+        <p-password formControlName="newPass" pInputText id="newPass" placeholder="Password" [toggleMask]="true"></p-password>
+      </div>
+
+      <div class="field col-12 md:col-12">
+        <label htmlFor="newPassConfirm">newPassConfirm</label>
+        <p-password formControlName="newPassConfirm" pInputText id="newPassConfirm" placeholder="Password" [toggleMask]="true"></p-password>
+        <p class="field-error" *ngIf="newPassConfirm.errors?.required &&
+          newPassConfirm.touched" translate>
+          errorMessages.MustBeFilled</p>
+        <p class="field-error" *ngIf="newPassConfirm.errors?.equalToOther &&
+          newPassConfirm.touched" translate>
+          settings.myUser.NewPassNotEqual</p>
+      </div>
+
+      <button pButton type="button" class="p-button-primary bi-submit-button"
+        style="margin-left: .5em; margin-top: 2em" [label]="'shared.Save' |
+        translate"
+        [disabled]="passwordForm.pristine || passwordForm.invalid"
+        (click)="updatePassword()"></button>
+
+    </form>
+  </div>
+</div>

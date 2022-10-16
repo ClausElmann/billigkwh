@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[Hold] (
+    [ID]                    INT            IDENTITY (1, 1) NOT NULL,
+    [KundeID]               INT            NOT NULL,
+    [HoldNr]                INT            NOT NULL,
+    [Navn]                  NVARCHAR (50)  NOT NULL,
+    [Beskrivelse]           NVARCHAR (MAX) CONSTRAINT [DF_Hold_Beskrivelse] DEFAULT ('') NOT NULL,
+    [StartDato]             DATETIME       NOT NULL,
+    [SlutDato]              DATETIME       NULL,
+    [SidstRettet]           DATETIME       CONSTRAINT [DF_Hold_SidstRettet] DEFAULT (getdate()) NOT NULL,
+    [SidstRettetAfBrugerID] INT            CONSTRAINT [DF_Hold_SidstRettetAfBrugerID] DEFAULT ((0)) NOT NULL,
+    [Slettet]               BIT            CONSTRAINT [DF_Hold_Slettet] DEFAULT ((0)) NOT NULL,
+    [StartAntalGalte]       SMALLINT       CONSTRAINT [DF_Hold_StartAntalGalte] DEFAULT ((0)) NOT NULL,
+    [StartAntalSogrise]     SMALLINT       CONSTRAINT [DF_Hold_StartAntalSogrise] DEFAULT ((0)) NOT NULL,
+    [StartVaegtGrise]       SMALLINT       CONSTRAINT [DF_Hold_StartVaegtGrise] DEFAULT ((0)) NOT NULL,
+    [StartAlderGrise]       SMALLINT       CONSTRAINT [DF_Hold_StartAlderGrise] DEFAULT ((0)) NOT NULL,
+    [SlutLbNr]              SMALLINT       CONSTRAINT [DF_Hold_SlutLbNr] DEFAULT ((8759)) NOT NULL,
+    [AfregningsPris]        INT            NULL,
+    [AfregningsAntal]       INT            NULL,
+    [AfregningsVaegt]       INT            NULL,
+    [KoedProcent]           DECIMAL (4, 2) NULL,
+    CONSTRAINT [PK_Hold] PRIMARY KEY CLUSTERED ([ID] ASC),
+    CONSTRAINT [FK_Hold_Bruger] FOREIGN KEY ([SidstRettetAfBrugerID]) REFERENCES [dbo].[Bruger] ([ID]),
+    CONSTRAINT [FK_Hold_Kunde] FOREIGN KEY ([KundeID]) REFERENCES [dbo].[Kunde] ([ID])
+);
+

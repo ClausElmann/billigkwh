@@ -1,0 +1,20 @@
+﻿CREATE TYPE [dbo].[MinkVaegtholdTvp] AS TABLE (
+    [ID]                    INT      NULL,
+    [VejeholdID]            INT      NULL,
+    [CelleNr]               SMALLINT NULL,
+    [BurNr]                 INT      NULL,
+    [SidsteHanVaegt]        SMALLINT NULL,
+    [SidsteHunVaegt]        SMALLINT NULL,
+    [SidsteHanVaegtDato]    DATETIME NULL,
+    [SlankeStartVaegt]      SMALLINT NULL,
+    [SidsteHunVaegtDato]    DATETIME NULL,
+    [SidstRettet]           DATETIME NULL,
+    [SidstRettetAfBrugerID] INT      NULL,
+    [Slettet]               BIT      NULL,
+    [StartAlder]            SMALLINT NULL,
+    [StartDato]             DATETIME NULL,
+    [SlutDato]              DATETIME NULL,
+    [Aar]                   INT      NULL,
+    [VinterHold]            BIT      NULL,
+    [DyreTypeID]            INT      NULL);
+

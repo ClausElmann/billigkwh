@@ -1,0 +1,40 @@
+<p>my user edit works</p>
+<div class="col-12">
+  <div class="card">
+    <h5>Advanced</h5>
+    <div class="p-fluid p-formgrid grid">
+      <div class="field col-12 md:col-6">
+        <label htmlFor="firstname">firstname</label>
+        <input pInputText id="firstname" type="text" />
+      </div>
+      <div class="field col-12 md:col-6">
+        <label htmlFor="lastname">lastname</label>
+        <input pInputText id="lastname" type="text" />
+      </div>
+      <div class="field col-12 md:col-6">
+        <label htmlFor="email">email</label>
+        <input pInputText id="email" type="text" />
+      </div>
+      <div class="field col-12 md:col-6">
+        <label htmlFor="password">password</label>
+        <p-password pInputText id="password" placeholder="Password" [toggleMask]="true"></p-password>
+      </div>
+      <div class="field col-12 md:col-6">
+        <label htmlFor="newsletterActive">newsletterActive</label>
+        <input pInputText id="newsletterActive" type="text" />
+      </div>
+      <div class="field col-12 md:col-6">
+        <label htmlFor="address">Address</label>
+        <textarea pInputTextarea id="address" rows="3" cols="15"></textarea>
+      </div>
+      <div class="field col-12 md:col-3">
+        <label htmlFor="state">State</label>
+        <p-dropdown optionLabel="name"></p-dropdown>
+      </div>
+      <div class="field col-12 md:col-3">
+        <label htmlFor="languageId">languageId</label>
+        <input pInputText id="languageId" type="text" />
+      </div>
+    </div>
+  </div>
+</div>

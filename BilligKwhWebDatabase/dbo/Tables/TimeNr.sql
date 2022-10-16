@@ -1,0 +1,9 @@
+﻿CREATE TABLE [dbo].[TimeNr] (
+    [ID]      SMALLINT NOT NULL,
+    [Dag]     SMALLINT CONSTRAINT [DF_TimeNr_Dag] DEFAULT ((0)) NOT NULL,
+    [Uge]     SMALLINT NOT NULL,
+    [DagTime] SMALLINT NOT NULL,
+    [UgeDag]  SMALLINT NOT NULL,
+    CONSTRAINT [PK_TimeNr] PRIMARY KEY CLUSTERED ([ID] ASC)
+);
+

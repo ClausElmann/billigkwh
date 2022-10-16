@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="1e9256e1-1cf3-4212-86c8-eb8c55816f14" ChangeDateTime="06/06/2022 13:00:37">
+    <Property Name="ElementName" Value="[dbo].[ElTavle].[NettoPris]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ElTavle]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Rabat" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b7db1c46-7463-461e-a4e4-07bc6e975377" ChangeDateTime="06/06/2022 21:43:16">
+    <Property Name="ElementName" Value="[dbo].[ElTavle].[1GangsRabat]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ElTavle]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="InitialRabat" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b03feea8-940d-4004-ba7f-f5d34b62e37a" ChangeDateTime="07/18/2022 10:35:02">
+    <Property Name="ElementName" Value="[dbo].[ElTavleSektionElKomponent].[ObjektGuid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ElTavleSektionElKomponent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ObjektGuidApp" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c3c29f3c-893c-415f-9402-6372084c98d4" ChangeDateTime="09/16/2022 15:51:40">
+    <Property Name="ElementName" Value="[dbo].[ElTavleLaage].[Pla[Navn]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ElTavleLaage]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Navn" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="3f530714-5153-4ec8-b8e1-28a7d0b41e92" ChangeDateTime="09/16/2022 15:55:03">
+    <Property Name="ElementName" Value="[dbo].[ElTavleLaage].[Dinskinner]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ElTavleLaage]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DinSkinner" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="86b5c395-c05e-4b45-ad5e-f7879e91d63e" ChangeDateTime="10/14/2022 12:47:44">
+    <Property Name="ElementName" Value="[dbo].[Elpris].[Oest]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Elpris]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Dk1" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="22c2b660-29c1-4840-8be1-6f041b4e574a" ChangeDateTime="10/14/2022 12:47:48">
+    <Property Name="ElementName" Value="[dbo].[Elpris].[Vest]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Elpris]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Dk2" />
+  </Operation>
+</Operations>

@@ -1,0 +1,49 @@
+<h1>Gruppetavle konfigurator Drag & Drop with a flex-wrap</h1>
+<!-- <button (click)="move()">Move last</button> -->
+<!-- <button (click)="add()">Add</button> <button (click)="shuffle()">Shuffle</button><br />
+<ul class="example-list">
+  <li *ngFor="let item of todo">{{ item.title }}</li>
+  <li *ngFor="let item of done">{{ item.title }}</li>
+</ul> -->
+
+<div cdkDropListGroup>
+
+  <div class="example-container" *ngFor="let item of someOtherVariable; let i= index">
+    <h2>Line {{i+1}}</h2>
+
+    <div
+      cdkDropList
+      [cdkDropListData]="someOtherVariable[i]"
+      class="example-list"
+      cdkDropListOrientation="horizontal"
+      (cdkDropListDropped)="drop($event)">
+
+      <ng-container *ngFor="let item of someOtherVariable[i]; let i= index">
+        <div class="example-box" [style.width]="getDivWidth(item.width)" cdkDrag>{{item.title}}</div>
+      </ng-container>
+
+    </div>
+  </div>
+
+  <!-- <div class="example-container">
+    <h2>Done</h2>
+
+    <div
+      cdkDropList
+      [cdkDropListData]="someOtherVariable[i]"
+      class="example-list"
+      cdkDropListOrientation="horizontal"
+      (cdkDropListDropped)="drop($event)">
+
+      <ng-container *ngFor="let item of someOtherVariable[i]; let i= index">
+        <div class="example-box" [style.width]="getDivWidth(item.width)" cdkDrag>{{item.title}}</div>
+      </ng-container>
+
+    </div>
+  </div> -->
+</div>
+
+
+<!-- Copyright 2022 Google LLC. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at https://angular.io/license -->

@@ -1,0 +1,13 @@
+﻿<h3>{{ title }}</h3>
+
+<div *ngIf="showResendEmailContent">
+  <p translate>
+    login.WishToResendEmail<a
+      class="Button Button--link"
+      (click)="resendEmail()"
+      translate
+      >shared.Here</a
+    >
+  </p>
+  <bi-spinner spinnerSize="small" *ngIf="working"></bi-spinner>
+</div>

@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[AccessCacheState] (
+    [ID]                   INT      NOT NULL,
+    [KundeTabel]           DATETIME CONSTRAINT [DF_AccessCacheState_KundeTabel] DEFAULT (getutcdate()) NOT NULL,
+    [KundeCount]           INT      CONSTRAINT [DF_AccessCacheState_KundeTabel1] DEFAULT ((0)) NOT NULL,
+    [BrugerTabel]          DATETIME CONSTRAINT [DF_AccessCacheState_BrugerTabel] DEFAULT (getutcdate()) NOT NULL,
+    [BrugerCount]          INT      CONSTRAINT [DF_AccessCacheState_BrugerTabel1] DEFAULT ((0)) NOT NULL,
+    [BrugerKundeTabel]     DATETIME CONSTRAINT [DF_AccessCacheState_BrugerKundeTabel] DEFAULT (getutcdate()) NOT NULL,
+    [BrugerKundeCount]     INT      CONSTRAINT [DF_AccessCacheState_BrugerKundeCount] DEFAULT ((0)) NOT NULL,
+    [KundeModulTabel]      DATETIME CONSTRAINT [DF_Table_1_BrugerTabel1] DEFAULT (getutcdate()) NOT NULL,
+    [KundeModulCount]      INT      CONSTRAINT [DF_AccessCacheState_KundeModulTabel1] DEFAULT ((0)) NOT NULL,
+    [RettighedTabel]       DATETIME CONSTRAINT [DF_Table_1_BrugerTabel2] DEFAULT (getutcdate()) NOT NULL,
+    [RettighedCount]       INT      CONSTRAINT [DF_AccessCacheState_RettighedTabel1] DEFAULT ((0)) NOT NULL,
+    [RolleTabel]           DATETIME CONSTRAINT [DF_Table_1_BrugerTabel3] DEFAULT (getutcdate()) NOT NULL,
+    [RolleCount]           INT      CONSTRAINT [DF_AccessCacheState_RolleTabel1] DEFAULT ((0)) NOT NULL,
+    [RolleRettighedTabel]  DATETIME CONSTRAINT [DF_Table_1_RolleTabel1] DEFAULT (getutcdate()) NOT NULL,
+    [RolleRettighedCount]  INT      CONSTRAINT [DF_AccessCacheState_RolleRettighedTabel1] DEFAULT ((0)) NOT NULL,
+    [BrugerRolleTabel]     DATETIME CONSTRAINT [DF_AccessCacheState_RolleTabel1_1] DEFAULT (getutcdate()) NOT NULL,
+    [BrugerRolleCount]     INT      CONSTRAINT [DF_AccessCacheState_RolleCount1] DEFAULT ((0)) NOT NULL,
+    [GæstBrugerRolleTabel] DATETIME CONSTRAINT [DF_Table_1_RolleTabel2] DEFAULT (getutcdate()) NOT NULL,
+    [GæstBrugerRolleCount] INT      CONSTRAINT [DF_AccessCacheState_GæstBrugerRolleTabel1] DEFAULT ((0)) NOT NULL,
+    [GæstKundeRolleTabel]  DATETIME CONSTRAINT [DF_Table_1_RolleTabel3] DEFAULT (getutcdate()) NOT NULL,
+    [GæstKundeRolleCount]  INT      CONSTRAINT [DF_AccessCacheState_GæstKundeRolleTabel1] DEFAULT ((0)) NOT NULL,
+    CONSTRAINT [PK_AccessCacheState] PRIMARY KEY CLUSTERED ([ID] ASC)
+);
+

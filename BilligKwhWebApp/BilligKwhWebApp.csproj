@@ -1,0 +1,259 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+		<TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+		<IsPackable>false</IsPackable>
+		<SpaRoot>BilligKwhApp\</SpaRoot>
+		<DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+
+		<!-- Set this to true if you enable server-side prerendering -->
+		<BuildServerSideRenderer>false</BuildServerSideRenderer>
+	</PropertyGroup>
+
+	<ItemGroup>
+<PackageReference Include="Cronos" Version="0.7.1" />
+<PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="FluentFTP" Version="33.0.2" />
+    <PackageReference Include="FluentValidation" Version="9.0.1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="9.0.1" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.29" />
+    <PackageReference Include="MediatR" Version="8.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.8" />
+    <PackageReference Include="RestSharp" Version="106.13.0" />
+    <PackageReference Include="SendGrid" Version="9.21.0" />
+    <PackageReference Include="Sustainsys.Saml2.AspNetCore2" Version="2.8.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.1.4" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
+    <PackageReference Include="System.ServiceModel.Duplex" Version="4.8.1" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.8.1" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.8.1" />
+    <PackageReference Include="System.ServiceModel.Security" Version="4.8.1" />
+    <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
+    <PackageReference Include="TimeZoneConverter" Version="3.3.0" />
+    <PackageReference Include="Z.Dapper.Plus" Version="4.0.26" />	</ItemGroup>
+
+<ItemGroup>
+    <EmbeddedResource Include="Resources\EmailTemplates\AdminOprettelse.1.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\BrugerOprettelse.1.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\Varmeberegning.1.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\Faktura.1.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\MasterTemplate.1.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\MasterTemplate.2.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\MasterTemplate.3.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\MasterTemplate.4.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\MasterTemplate.5.aspx">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EmailTemplates\NewUser.1.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\NewUser.2.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\NewUser.3.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\NewUser.4.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\NewUser.5.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\ResetPassword.1.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\ResetPassword.2.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\ResetPassword.3.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\ResetPassword.4.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\ResetPassword.5.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\TakForDinBestilling.1.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\ViHarNuSendtDinTavle.1.aspx" />
+    <Content Include="Static_Files\images\dashed-border.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static_Files\images\loader.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+<ItemGroup>
+    <None Update="BilligKwhApp\side-projects\subscription-app\src\assets\icons\dk.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\side-projects\subscription-app\src\assets\icons\en.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\side-projects\subscription-app\src\assets\icons\fi.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\side-projects\subscription-app\src\assets\icons\no.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\side-projects\subscription-app\src\assets\icons\se.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\src\assets\webfonts\fa-brands-400.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\src\assets\webfonts\fa-brands-400.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\src\assets\webfonts\fa-brands-400.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\src\assets\webfonts\fa-brands-400.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\src\assets\webfonts\fa-brands-400.woff2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\src\assets\webfonts\fa-regular-400.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\src\assets\webfonts\fa-regular-400.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\src\assets\webfonts\fa-regular-400.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\src\assets\webfonts\fa-regular-400.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\src\assets\webfonts\fa-regular-400.woff2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\src\assets\webfonts\fa-solid-900.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\src\assets\webfonts\fa-solid-900.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\src\assets\webfonts\fa-solid-900.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\src\assets\webfonts\fa-solid-900.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BilligKwhApp\src\assets\webfonts\fa-solid-900.woff2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+	<ItemGroup>
+		<!-- Don't publish the SPA source files, but do show them in the project files list -->
+		<Compile Remove="BilligKwhApp\src\app\components\customer\**" />
+		<Content Remove="$(SpaRoot)**" />
+		<Content Remove="BilligKwhApp\src\app\components\customer\**" />
+		<EmbeddedResource Remove="BilligKwhApp\src\app\components\customer\**" />
+		<None Remove="$(SpaRoot)**" />
+		<None Remove="BilligKwhApp\src\app\components\customer\**" />
+		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-edit\customer-edit-main.component.html" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-edit\customer-edit-main.component.scss" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-edit\customer-edit-main.component.ts" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-edit\customer-edit-users.component.html" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-edit\customer-edit-users.component.scss" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-edit\customer-edit-users.component.spec.ts" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-edit\customer-edit-users.component.ts" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-edit\customer-edit.component.html" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-edit\customer-edit.component.scss" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-edit\customer-edit.component.spec.ts" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-edit\customer-edit.component.ts" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-edit\customer-edit.guard.ts" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-edit\user-list.component.html" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-edit\user-list.component.scss" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-edit\user-list.component.spec.ts" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-edit\user-list.component.ts" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-list.component.html" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-list.component.scss" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-list.component.spec.ts" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-list.component.ts" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-resolved.ts" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer-resolver.service.ts" />
+	  <None Remove="BilligKwhApp\src\app\components\customer\customer.module.ts" />
+	  <None Remove="Resources\EmailTemplates\AdminOprettelse.1.aspx" />
+	  <None Remove="Resources\EmailTemplates\BrugerOprettelse.1.aspx" />
+	  <None Remove="Resources\EmailTemplates\Faktura.1.aspx" />
+	  <None Remove="Resources\EmailTemplates\FoelgeSeddel1.aspx" />
+	  <None Remove="Resources\EmailTemplates\MasterTemplate.1.aspx" />
+	  <None Remove="Resources\EmailTemplates\MasterTemplate.2.aspx" />
+	  <None Remove="Resources\EmailTemplates\MasterTemplate.3.aspx" />
+	  <None Remove="Resources\EmailTemplates\MasterTemplate.4.aspx" />
+	  <None Remove="Resources\EmailTemplates\MasterTemplate.5.aspx" />
+	  <None Remove="Resources\EmailTemplates\NewUser.1.aspx" />
+	  <None Remove="Resources\EmailTemplates\NewUser.2.aspx" />
+	  <None Remove="Resources\EmailTemplates\NewUser.3.aspx" />
+	  <None Remove="Resources\EmailTemplates\NewUser.4.aspx" />
+	  <None Remove="Resources\EmailTemplates\NewUser.5.aspx" />
+	  <None Remove="Resources\EmailTemplates\ResetPassword.1.aspx" />
+	  <None Remove="Resources\EmailTemplates\ResetPassword.2.aspx" />
+	  <None Remove="Resources\EmailTemplates\ResetPassword.3.aspx" />
+	  <None Remove="Resources\EmailTemplates\ResetPassword.4.aspx" />
+	  <None Remove="Resources\EmailTemplates\ResetPassword.5.aspx" />
+	  <None Remove="Resources\EmailTemplates\TakForDinBestilling.1.aspx" />
+	  <None Remove="Resources\EmailTemplates\Varmeberegning.1.aspx" />
+	  <None Remove="Resources\EmailTemplates\ViHarNuSendtDinTavle.1.aspx" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Properties\PublishProfiles\" />
+	  <Folder Include="Repositories\" />
+	  <Folder Include="Static_Files\images\svg\" />
+	</ItemGroup>
+
+	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+		<!-- Ensure Node.js is installed -->
+		<Exec Command="node --version" ContinueOnError="true">
+			<Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+		</Exec>
+		<Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+		<Message Importance="high" Text="Restoring dependencies using 'yarn'. This may take several minutes..." />
+		<Exec WorkingDirectory="$(SpaRoot)" Command="yarn" />
+	</Target>
+
+	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+		<!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+		<Exec WorkingDirectory="$(SpaRoot)" Command="yarn" />
+		<Exec WorkingDirectory="$(SpaRoot)" Command="yarn build" />
+
+		<!-- Include the newly-built files in the publish output -->
+		<ItemGroup>
+			<DistFiles Include="$(SpaRoot)dist\**" />
+			<ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+				<RelativePath>%(DistFiles.Identity)</RelativePath>
+				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			</ResolvedFileToPublish>
+		</ItemGroup>
+	</Target>
+
+	<ItemGroup>
+	  <Content Update="appsettings.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="appsettings.production.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="key">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Static_Files\iFrameScript.js">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Static_Files\lib\Quill\quill.bubble.css">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Static_Files\lib\Quill\quill.core.css">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Static_Files\lib\Quill\quill.core.js">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Static_Files\lib\Quill\quill.min.js">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Static_Files\lib\Quill\quill.snow.css">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+</Project>

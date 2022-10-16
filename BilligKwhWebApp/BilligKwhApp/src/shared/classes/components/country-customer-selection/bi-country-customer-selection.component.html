@@ -1,0 +1,43 @@
+<form *ngIf="form" [formGroup]="form" [@fadeInDown]>
+  <div class="grid p-fluid">
+    <div class="col-12 {{inputGridClassName}}" style="max-width: 450px;">
+      <label class="FieldLabel" translate>shared.Country</label>
+      <p-dropdown formControlName="countryId"
+        [showClear]="showClear"
+        [placeholder]="'shared.DropdownPlaceholder' | translate" [options]="countries$ | async">
+      </p-dropdown>
+    </div>
+
+    <!-- Customer select -->
+    <div class="col-12" [ngClass]="{'sm:col-4': hasProfileSelection, 'sm:col-6': !hasProfileSelection}" style="max-width: 450px;"
+      *ngIf="hasCustomerSelection && countryCtrl.valid">
+      <label class="FieldLabel" translate>shared.Customer</label>
+
+      <p-dropdown formControlName="customer" dataKey="id" [options]="customers"
+        [showClear]="showClear"
+        [placeholder]="'shared.DropdownPlaceholder' | translate" [filter]="true"
+        [filterPlaceholder]="'shared.Search' | translate"
+        [emptyFilterMessage]="'shared.NoSearchMatch' | translate"
+        *ngIf="!loadingCustomers; else customerSpinner">
+      </p-dropdown>
+
+      <ng-template #customerSpinner>
+        <p-progressSpinner class="bi-spinner small"></p-progressSpinner>
+      </ng-template>
+
+      <p class="field-error" *ngIf="customerCtrl.errors?.required && customerCtrl.dirty" translate>
+        errorMessages.PleaseSelect
+      </p>
+    </div>
+
+    <div class="col-12" *ngIf="hasOkButton"></div>
+
+    <div class="col-12 sm:col-2" *ngIf="hasOkButton" style="max-width: 140px">
+      <button pButton type="button"
+        class="p-button-raised search-save-button"
+        [label]="okButtonTitle"
+        [disabled]="form.invalid || form.pristine"
+        (click)="okClicked()"></button>
+    </div>
+  </div>
+</form>

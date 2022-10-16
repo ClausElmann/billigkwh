@@ -1,0 +1,31 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "module": "ESNext",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2015",
+    "typeRoots": ["node_modules/@types", "src/types"],
+    "paths": {
+      "@shared/*": ["src/shared/*"],
+      "@core/*": ["src/core/*"],
+      "@features/*": ["src/features/*"],
+      "@sharedFeatures/*": ["src/features-shared/*"],
+      "@models/*": ["src/models/*"],
+      "@apiModels/*": ["src/code-gen/model/*"],
+      "@enums/*": ["app-globals/enums/*"],
+      "@globals/*": ["app-globals/*"]
+    },
+    "lib": ["es2017", "ES2019", "dom"]
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": false
+  }
+}
