@@ -47,7 +47,6 @@
     [ResetPhone]                       BIGINT           NULL,
     CONSTRAINT [PK_Bruger] PRIMARY KEY CLUSTERED ([ID] ASC) WITH (FILLFACTOR = 90),
     CONSTRAINT [FK_Bruger_AktivKunde] FOREIGN KEY ([AktivKundeID]) REFERENCES [dbo].[Kunde] ([ID]),
-    CONSTRAINT [FK_Bruger_Bedrift] FOREIGN KEY ([StandardBedriftID]) REFERENCES [dbo].[Bedrift] ([ID]),
     CONSTRAINT [FK_Bruger_VærtKunde] FOREIGN KEY ([VærtKundeID]) REFERENCES [dbo].[Kunde] ([ID]),
     CONSTRAINT [UK_Brugernavn] UNIQUE NONCLUSTERED ([Brugernavn] ASC) WITH (FILLFACTOR = 90)
 );
@@ -57,36 +56,3 @@
 
 GO
 	
-CREATE TRIGGER [dbo].[BrugerAccessCacheUpdate] ON [dbo].[Bruger]
-    AFTER INSERT, UPDATE, DELETE
-AS
-    SET NOCOUNT ON 
-    
-	IF EXISTS (SELECT 1 FROM inserted)
-	BEGIN
-	  IF EXISTS (SELECT 1 FROM deleted)
-	  BEGIN
-		-- I am an update
-			IF (UPDATE(Brugernavn) OR UPDATE(Adgangskode) OR UPDATE(Slettet) OR UPDATE(Fornavn) OR UPDATE(Efternavn) OR UPDATE(VærtKundeID) OR UPDATE(SprogID) OR UPDATE(SystemAdministrator) OR UPDATE(KundeAdministrator))
-			BEGIN
-				/* 
-				this verifies that the column actually changed in value.  As a IF UPDATE() will return true if you execute 
-				a statement LIKE this UPDATE TABLE SET COLUMN = COLUMN which is not a change.
-				*/
-				IF EXISTS(SELECT 1 FROM inserted I JOIN deleted D ON I.ID = D.ID AND (I.Brugernavn <> D.Brugernavn OR I.Adgangskode <> D.Adgangskode OR I.Slettet <> D.Slettet OR I.Fornavn <> D.Fornavn OR I.Efternavn <> D.Efternavn OR I.VærtKundeID <> D.VærtKundeID OR I.SprogID <> D.SprogID OR I.SystemAdministrator <> D.SystemAdministrator OR I.KundeAdministrator <> D.KundeAdministrator))
-					BEGIN
-        					UPDATE [AccessCacheState] SET [BrugerTabel] = GETUTCDATE(), [BrugerCount] = [BrugerCount] + 1;
-					END 
-			END  
-	  END
-	  ELSE
-	  BEGIN
-		-- I am an insert
-  				UPDATE [AccessCacheState] SET [BrugerTabel] = GETUTCDATE(), [BrugerCount] = [BrugerCount] + 1;
-	  END
-	END
-	ELSE
-	BEGIN
-	  -- I am a delete
-        		UPDATE [AccessCacheState] SET [BrugerTabel] = GETUTCDATE(), [BrugerCount] = [BrugerCount] + 1;
-	END

@@ -12,6 +12,12 @@ GO
 ALTER TABLE [dbo].[LocaleStringResources] NOCHECK CONSTRAINT [FK_LocaleStringResources_Languages];
 
 
+
+
+GO
+
+
+
 GO
 CREATE NONCLUSTERED INDEX [ix_LocaleStringResources_ResourceName_LanguageId]
     ON [dbo].[LocaleStringResources]([ResourceName] ASC, [LanguageId] ASC)

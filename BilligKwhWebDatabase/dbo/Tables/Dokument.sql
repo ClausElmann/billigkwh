@@ -26,8 +26,6 @@
     [DeviceID]           NVARCHAR (50)    CONSTRAINT [DF_Dokument_DeviceID] DEFAULT ('') NULL,
     CONSTRAINT [PK_Dokument] PRIMARY KEY NONCLUSTERED ([ID] ASC) WITH (FILLFACTOR = 90),
     CONSTRAINT [FK_Dokument_Bruger] FOREIGN KEY ([OprettetAfBrugerID]) REFERENCES [dbo].[Bruger] ([ID]),
-    CONSTRAINT [FK_Dokument_BrugerDevice] FOREIGN KEY ([BrugerDeviceID]) REFERENCES [dbo].[BrugerDevice] ([ID]),
-    CONSTRAINT [FK_Dokument_Filtype] FOREIGN KEY ([FiltypeID]) REFERENCES [dbo].[Filtype] ([ID]),
     CONSTRAINT [FK_Dokument_Kunde] FOREIGN KEY ([KundeID]) REFERENCES [dbo].[Kunde] ([ID])
 );
 

@@ -26,3 +26,13 @@ ALTER TABLE [dbo].[UserRoleMappings] NOCHECK CONSTRAINT [FK_UserInRoles_UserRole
 GO
 
 
+
+
+
+GO
+ALTER TABLE [dbo].[UserRoleMappings] NOCHECK CONSTRAINT [FK_UserInRoles_UserRoles];
+
+
+GO
+
+

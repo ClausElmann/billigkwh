@@ -31,47 +31,7 @@
     [FakturaMobil]          NVARCHAR (50)    NULL,
     CONSTRAINT [PK_Kunde] PRIMARY KEY CLUSTERED ([ID] ASC) WITH (FILLFACTOR = 90),
     CONSTRAINT [FK_Kunde_PostnummerBy] FOREIGN KEY ([PostNr]) REFERENCES [dbo].[PostnummerBy] ([Postnummer]),
-    CONSTRAINT [FK_Kunde_Type] FOREIGN KEY ([KundeTypeID]) REFERENCES [dbo].[TypeID] ([ID]),
-    CONSTRAINT [FK_Kunde_Type1] FOREIGN KEY ([BrancheTypeID]) REFERENCES [dbo].[TypeID] ([ID])
 );
 
 
-
-
-
-
 GO
-
-CREATE TRIGGER [dbo].[KundeAccessCacheUpdate] ON [dbo].[Kunde]
-    AFTER INSERT, UPDATE, DELETE
-AS
-    SET NOCOUNT ON 
-
-	IF EXISTS (SELECT 1 FROM inserted)
-	BEGIN
-	  IF EXISTS (SELECT 1 FROM deleted)
-	  BEGIN
-		-- I am an update
-			IF (UPDATE(Kundenavn) OR UPDATE(Slettet) OR UPDATE(Skjult) OR UPDATE(SprogID)) 
-			BEGIN
-				/* 
-				this verifies that the column actually changed in value.  As a IF UPDATE() will return true if you execute 
-				a statement LIKE this UPDATE TABLE SET COLUMN = COLUMN which is not a change.
-				*/
-			IF EXISTS(SELECT 1 FROM inserted I JOIN deleted D ON I.ID = D.ID AND (I.Kundenavn <> D.Kundenavn OR I.Slettet <> D.Slettet OR I.Skjult <> D.Skjult OR I.SprogID <> D.SprogID))
-     				BEGIN
-        					UPDATE [AccessCacheState] SET [KundeTabel] = GETUTCDATE(), [KundeCount] = [KundeCount] + 1;
-					END 
-			END  
-	  END
-	  ELSE
-	  BEGIN
-		-- I am an insert
-		UPDATE [AccessCacheState] SET [KundeTabel] = GETUTCDATE(), [KundeCount] = [KundeCount] + 1;
-	  END
-	END
-	ELSE
-	BEGIN
-	  -- I am a delete
-	  UPDATE [AccessCacheState] SET [KundeTabel] = GETUTCDATE(), [KundeCount] = [KundeCount] + 1;
-	END

@@ -1,6 +1,0 @@
-﻿CREATE TABLE [dbo].[KundeType] (
-    [ID]   SMALLINT      NOT NULL,
-    [Navn] NVARCHAR (50) COLLATE SQL_Danish_Pref_CP1_CI_AS NOT NULL,
-    CONSTRAINT [PK_KundeType] PRIMARY KEY CLUSTERED ([ID] ASC)
-);
-
