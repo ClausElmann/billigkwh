@@ -289,7 +289,7 @@ namespace BilligKwhWebApp.Controllers
             }
         }
 
-        [HttpGet, Authorize(UserRolePermissionProvider.SuperAdmin)]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ElprisModel>))]
         public IActionResult GetElpriser(DateTime fromDateUtc, DateTime toDateUtc)
         {
