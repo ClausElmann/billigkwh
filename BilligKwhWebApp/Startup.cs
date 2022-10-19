@@ -43,6 +43,8 @@ using BilligKwhWebApp.Services.Dokuments.Repository;
 using BilligKwhWebApp.Services.Invoicing;
 using BilligKwhWebApp.Services.Komponenter.Repository;
 using BilligKwhWebApp.Jobs;
+using BilligKwhWebApp.Services.Arduino.Repository;
+using BilligKwhWebApp.Services.Arduino;
 
 namespace BilligKwhWebApp
 {
@@ -400,6 +402,9 @@ namespace BilligKwhWebApp
 
             services.AddScoped<IDokumentsRepository, DokumentsRepository>();
             services.AddScoped<IDokumentService, DokumentService>();
+
+            services.AddScoped<IArduinoRepository, ArduinoRepository>();
+            services.AddScoped<IArduinoService, ArduinoService>();
 
             //Factories
             services.AddScoped<IUserFactory, UserFactory>();

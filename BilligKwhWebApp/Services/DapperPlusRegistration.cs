@@ -76,6 +76,7 @@ namespace BilligKwhWebApp.Services
             DapperPlusManager.Entity<ElTavleLaageElKomponent>().Table("dbo.ElTavleLaageElKomponent").Identity(x => x.Id);
             DapperPlusManager.Entity<ElTavleLaage>().Table("dbo.ElTavleLaage").Identity(x => x.Id);
             DapperPlusManager.Entity<ElPris>().Table("dbo.ElPris").Identity(x => x.Id).Key(k => new { k.DatoUtc, k.TimeDk }).BatchTimeout(120 * 60);
+            DapperPlusManager.Entity<Print>().Table("dbo.Print").Identity(x => x.Id);
         }
     }
 }
