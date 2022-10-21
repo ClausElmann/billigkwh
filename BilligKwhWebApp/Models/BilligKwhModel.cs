@@ -10,8 +10,7 @@ namespace BilligKwhWebApp.Models
         public int Day { get; set; }
         public int Month { get; set; }
         public int Year { get; set; }
-        public bool[] Today { get; set; }
-        public bool[] Tomorrow { get; set; }
+        public long[] Recipe { get; set; }
         public string DeviceID { get; set; }
     }
 }

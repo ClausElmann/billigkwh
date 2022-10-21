@@ -5,13 +5,8 @@ using Microsoft.AspNetCore.Http;
 using BilligKwhWebApp.Core.Interfaces;
 using BilligKwhWebApp.Services.Interfaces;
 using BilligKwhWebApp.Models;
-using BilligKwhWebApp.Services.Localization;
-using BilligKwhWebApp.Services;
-using Microsoft.AspNetCore.Hosting;
 using BilligKwhWebApp.Services.Arduino;
 using BilligKwhWebApp.Core.Domain;
-using BilligKwhWebApp.Core.Dto;
-using BilligKwhWebApp.Core;
 
 namespace BilligKwhWebApp.Controllers
 {
@@ -48,8 +43,9 @@ namespace BilligKwhWebApp.Controllers
                 _arduinoService.Update(print);
             }
 
-            bool[] myNum = { true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false };
-
+            long[] myNum = { 221020, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 221021, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, };
+            long[] myNum1 = { 221020, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 221021, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
+       
             var datetime = DateTime.Now;
 
             var model = new BilligKwhModel()
@@ -60,8 +56,7 @@ namespace BilligKwhWebApp.Controllers
                 Hour = datetime.Hour,
                 Minute = datetime.Minute,
                 Second = datetime.Second,
-                Today = myNum,
-                Tomorrow = myNum,
+                Recipe = DateTime.Now.Millisecond % 2 == 0 ? myNum : myNum1,
                 DeviceID = deviceId
             };
             return Ok(model);
