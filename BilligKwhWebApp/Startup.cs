@@ -45,6 +45,8 @@ using BilligKwhWebApp.Services.Komponenter.Repository;
 using BilligKwhWebApp.Jobs;
 using BilligKwhWebApp.Services.Arduino.Repository;
 using BilligKwhWebApp.Services.Arduino;
+using BilligKwhWebApp.Services.Electricity.Repository;
+using BilligKwhWebApp.Services.Electricity;
 
 namespace BilligKwhWebApp
 {
@@ -218,24 +220,6 @@ namespace BilligKwhWebApp
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles();
-
-            // other DI registrations...
-            // register CronJobs below
-            //services.AddCronJob<MyCronJob3>(c =>
-            //{
-            //    c.TimeZoneInfo = TimeZoneInfo.Local;
-            //    c.CronExpression = @"*/5 * * * *";
-            //});
-            services.AddCronJob<MyCronJob3>(c =>
-            {
-                c.TimeZoneInfo = TimeZoneInfo.Local;
-                c.CronExpression = @"0 * * * *";
-            });
-            //services.AddCronJob<MyCronJob3>(c =>
-            //{
-            //    c.TimeZoneInfo = TimeZoneInfo.Local;
-            //    c.CronExpression = @"50 12 * * *";
-            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -405,6 +389,9 @@ namespace BilligKwhWebApp
 
             services.AddScoped<IArduinoRepository, ArduinoRepository>();
             services.AddScoped<IArduinoService, ArduinoService>();
+
+            services.AddScoped<IElectricityRepository, ElectricityRepository>();
+            services.AddScoped<IElectricityService, ElectricityService>();
 
             //Factories
             services.AddScoped<IUserFactory, UserFactory>();

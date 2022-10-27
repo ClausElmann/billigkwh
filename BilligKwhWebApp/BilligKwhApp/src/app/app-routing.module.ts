@@ -144,6 +144,12 @@ const routes: Routes = [
         canActivate: [AppCanActivateGuard],
         data: { preload: false },
         loadChildren: () => import("./components/circuit-configurator/circuit.module").then(m => m.CircuitModule)
+      },
+      {
+        path: "devices",
+        canActivate: [AppCanActivateGuard],
+        data: { preload: false },
+        loadChildren: () => import("./components/device/device.module").then(m => m.DeviceModule)
       }
     ]
   },

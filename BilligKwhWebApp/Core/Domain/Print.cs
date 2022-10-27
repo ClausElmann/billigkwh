@@ -8,5 +8,8 @@ namespace BilligKwhWebApp.Core.Domain
         public int? KundeId { get; set; }
         public DateTime OprettetDatoUtc { get; set; }
         public DateTime SidsteKontaktDatoUtc { get; set; }
+        public string Lokation { get; set; }
+        public DateTime? Slettet { get; set; }
+        public string Kommentar { get; set; }
     }
 }

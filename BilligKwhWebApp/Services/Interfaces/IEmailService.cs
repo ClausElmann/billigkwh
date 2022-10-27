@@ -42,6 +42,6 @@ namespace BilligKwhWebApp.Services.Interfaces
         IReadOnlyCollection<int> GetAllUnsent(DateTime fromDate);
         void SendMail(int messageId);
 
-        IReadOnlyCollection<ElprisModel> GetAllElpriser(DateTime fromDate, DateTime toDate);
+        IReadOnlyCollection<ElectricityPriceModel> GetAllElectricityPrices(DateTime fromDate, DateTime toDate);
     }
 }

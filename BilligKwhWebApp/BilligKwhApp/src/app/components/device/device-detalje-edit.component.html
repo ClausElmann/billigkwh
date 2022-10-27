@@ -1,0 +1,188 @@
+<form *ngIf="mainForm" [formGroup]="mainForm">
+  <div class="grid">
+    <div class="col-12">
+      <div class="card">
+        <div class="p-fluid p-formgrid grid">
+          <div class="field col-12 md:col-3">
+            <label for="lokation" class="block">Lokation</label>
+            <input formControlName="lokation" type="text" pInputText id="lokation" aria-describedby="lokation-help" />
+            <div *ngIf="lokation.errors && (lokation.dirty || lokation.touched)" class="p-error block"></div>
+          </div>
+
+          <div class="field">
+            <div class="formgroup-inline">
+              <div class="field"></div>
+              <div class="field"></div>
+            </div>
+          </div>
+
+          <div class="field col-12">
+            <div class="formgroup-inline">
+              <div class="field">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  [label]="createOrSave"
+                  class="p-button-raised"
+                  [title]="mainForm.valid ? 'Gem dine indtastede data' : 'Deaktiveret, indtil formulardataene er gyldige'"
+                  [disabled]="mainForm.pristine"
+                  (click)="saveItem()"
+                ></button>
+              </div>
+              <div class="field">
+                <button pButton pRipple type="button" class="p-button-outlined p-button-secondary" label="Tilbage" title="Tilbage" [routerLink]="['/printr/']"></button>
+              </div>
+              <div class="field">
+                <button pButton pRipple class="p-button-outlined p-button-warning" type="button" [label]="deleteOrRecreate" [title]="deleteOrRecreate + ' printn'" (click)="deleteRecreate()"></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="field col-12">
+            <div class="formgroup-inline">
+              <div *ngIf="print.kundeID === 88" class="field">
+                <button pButton pRipple class="p-button-outlined p-button-warning" type="button" [label]="'Flyt kunde'" [title]="'Flyt kunde'" (click)="flytKunde()"></button>
+              </div>
+
+              <div *ngIf="print.bestiltDato === null" class="field">
+                <button
+                  [disabled]="print.slettet === true"
+                  pButton
+                  pRipple
+                  class="p-button-raised"
+                  type="button"
+                  [label]="'Lav kladde om til bestiling'"
+                  [title]="'Bestil tavle'"
+                  (click)="bestilTavle()"
+                ></button>
+              </div>
+              <div
+                *ngIf="
+                  print.kundeID !== 88 &&
+                  print.nettoPris > 0 &&
+                  print.economicBookedInvoiceNumber === null &&
+                  (print.economicSidstRettet === null || print.economicSidstRettet < print.sidstRettet || economicManglerDatoOpdatering) &&
+                  print.economicCustomerNumber !== null
+                "
+                class="field"
+              >
+                <button
+                  pButton
+                  pRipple
+                  [disabled]="mainForm.dirty || print.economicCustomerNumber === null || print.bestiltDato === null"
+                  class="p-button-raised"
+                  type="button"
+                  [label]="updateEconomic"
+                  [title]="updateEconomic"
+                  (click)="createOrUpdateOrder()"
+                ></button>
+              </div>
+              <div *ngIf="print.bestiltDato === null" class="field">Lav kladden om til en bestilling før du kan redigere tavlen!</div>
+              <div *ngIf="print.kundeID === 88" class="field">Flyt tavlen til en anden kunde!</div>
+              <div *ngIf="print.bestiltDato !== null && print.nettoPris === 0" class="field">NettoPris skal værre angivet før den kan komme over i economic!</div>
+              <div *ngIf="print.economicCustomerNumber === null" class="field">Kunden er ikke oprettet i economic!</div>
+
+              <div *ngIf="print.economicOrderNumber !== null" class="field">
+                <button
+                  pButton
+                  pRipple
+                  [disabled]="mainForm.dirty || print.economicSidstRettet < print.sidstRettet"
+                  class="p-button-raised"
+                  type="button"
+                  [label]="'Vis følgeseddel'"
+                  [title]="'Vis følgeseddel'"
+                  (click)="showFoelgeseddel()"
+                ></button>
+              </div>
+
+              <div *ngIf="print.economicDraftInvoiceNumber !== null && print.economicBookedInvoiceNumber === null" class="field">
+                <button
+                  pButton
+                  pRipple
+                  [disabled]="mainForm.dirty || print.economicSidstRettet < print.sidstRettet"
+                  class="p-button-raised"
+                  type="button"
+                  [label]="'Vis faktura klade'"
+                  [title]="'Vis faktura klade'"
+                  (click)="showFakturaKladde()"
+                ></button>
+              </div>
+
+              <div *ngIf="print.economicOrderNumber !== null && print.economicDraftInvoiceNumber !== null && print.economicBookedInvoiceNumber === null" class="field">
+                <button
+                  pButton
+                  pRipple
+                  [disabled]="mainForm.dirty || print.economicSidstRettet < print.sidstRettet"
+                  class="p-button-raised"
+                  type="button"
+                  [label]="'Lås faktura i e-conomic'"
+                  [title]="'Lås faktura i e-conomic'"
+                  (click)="bookInvoice()"
+                ></button>
+              </div>
+
+              <div *ngIf="print.economicBookedInvoiceNumber !== null && print.economicBookedInvoiceNumber > 0" class="field">
+                <button
+                  pButton
+                  pRipple
+                  [disabled]="mainForm.dirty || print.economicSidstRettet < print.sidstRettet"
+                  class="p-button-raised"
+                  type="button"
+                  [label]="'Vis faktura'"
+                  [title]="'Vis faktura'"
+                  (click)="showFaktura()"
+                ></button>
+              </div>
+
+              <div *ngIf="print.economicBookedInvoiceNumber !== null && print.economicBookedInvoiceNumber > 0" class="field">
+                <button pButton pRipple label="Send faktura" icon="pi pi-envelope" class="p-button-raised" (click)="sendFakturaMail()"></button>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="field col-12">
+            <div class="field">
+              <button pButton pRipple class="p-button-outlined p-button-secondary" type="button" label="Test form for validation in console" (click)="getFormValidationErrors()"></button>
+            </div>
+            <br />Dirty: {{ mainForm.dirty }} <br />Touched: {{ mainForm.touched }} <br />Valid: {{ mainForm.valid }} <br />Values:
+            {{ mainForm.value | json }}
+            <p class="field-error" [@fadeIn] *ngIf="showFormErrorMessage" translate>errorMessages.OneOrMoreFieldsMissing</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{ width: '50vw' }" [baseZIndex]="10000"></p-confirmDialog>
+
+  <p-dialog *ngIf="deleteDialog" [(visible)]="deleteDialog" header="Confirm" [modal]="true" [style]="{ width: '450px' }">
+    <div class="flex align-items-center justify-content-center">
+      <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+      <span *ngIf="print"
+        >Er du sikker på du ønsker at slettet tavlen med tavle nr: <b>{{ print?.tavleNr }}</b
+        >?</span
+      >
+    </div>
+    <ng-template pTemplate="footer">
+      <button pButton pRipple icon="pi pi-check" class="p-button-raised" label="Bekræft" (click)="confirmDelete()"></button>
+      <button pButton pRipple icon="pi pi-times" class="p-button-outlined p-button-warning" label="Annuller" (click)="deleteDialog = false"></button
+    ></ng-template>
+  </p-dialog>
+
+  <!-- <p-dialog *ngIf="flytKundeDialog" [(visible)]="flytKundeDialog" [style]="{ width: '450px', height: '450px' }" header="Product Details" [modal]="true">
+    <div class="field">
+      <label class="block">Vælg kunde</label>
+      <p-dropdown optionLabel="name" dataKey="id" [options]="customers" (onChange)="onKundeChange($event)" [(ngModel)]="valgtKunde" [ngModelOptions]="{ standalone: true }"> </p-dropdown>
+      <div *ngIf="users">
+        <label class="block">Vælg bruger</label>
+        <p-dropdown optionLabel="email" dataKey="id" [options]="users" (onChange)="onBrugervalgt($event)" [(ngModel)]="valgtBruger" [ngModelOptions]="{ standalone: true }"> </p-dropdown>
+      </div>
+    </div>
+    <ng-template pTemplate="footer"
+      >valgtBruger:{{ valgtBruger }}
+      <button pButton pRipple icon="pi pi-check" class="p-button-raised" label="Bekræft" (click)="flytTilKunde()"></button>
+    </ng-template>
+  </p-dialog> -->
+
+  <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+</form>

@@ -19,7 +19,7 @@ import { ConfirmPopupModule } from "primeng/confirmpopup";
 import { SuperAdminEmailListComponent } from "./superadmin-emaillist.component";
 import { CalendarModule } from "primeng/calendar";
 import { EditorModule } from "primeng/editor";
-import { SuperAdminElprisListComponent } from "./superadmin-elprislist.component";
+import { SuperAdminElectricityPriceListComponent } from "./superadmin-elprislist.component";
 
 const primeNgModules = [
   DialogModule,
@@ -51,7 +51,7 @@ const primeNgModules = [
       },
       {
         path: "elpriser",
-        component: SuperAdminElprisListComponent
+        component: SuperAdminElectricityPriceListComponent
       },
       {
         path: ":id",
@@ -75,7 +75,7 @@ const primeNgModules = [
     SuperAdminCustomerCreateEditComponent,
     SuperAdminCustomerUserListComponent,
     SuperAdminEmailListComponent,
-    SuperAdminElprisListComponent
+    SuperAdminElectricityPriceListComponent
   ]
 })
 export class SuperAdminCustomerModule {}

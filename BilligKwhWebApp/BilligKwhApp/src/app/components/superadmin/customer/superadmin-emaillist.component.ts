@@ -91,7 +91,8 @@ export class SuperAdminEmailListComponent implements OnInit {
   ngOnInit() {
     this.text = "<h2>Vælg en email i listen for at se indholdet</h2>";
 
-    this.fromDate.setDate(new Date().getDate() - 30);
+    this.fromDate.setDate(new Date().getDate());
+    this.toDate.setDate(new Date().getDate() + 1);
 
     this.initializeEmails();
 

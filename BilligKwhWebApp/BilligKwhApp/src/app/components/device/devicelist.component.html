@@ -1,17 +1,17 @@
 <div class="flex align-items-left">
-  <p-dropdown optionLabel="label" dataKey="value" [options]="countries" [(ngModel)]="selectedCountryCode" (ngModelChange)="selectedCountryCodeChange($event)"> </p-dropdown>
+  <!-- <p-dropdown optionLabel="label" dataKey="value" [options]="countries" [(ngModel)]="selectedCountryCode" (ngModelChange)="selectedCountryCodeChange($event)"> </p-dropdown> -->
 
   <!-- From Date -->
-  <div class="col-12 sm:col-3 grid-nogutter">
+  <!-- <div class="col-12 sm:col-3 grid-nogutter">
     <label for="fromDate">Fra dato</label>
     <p-calendar [(ngModel)]="fromDate" dateFormat="dd/mm/yy" inputId="fromDate" (onSelect)="onDateFilterChanged()"></p-calendar>
-  </div>
+  </div> -->
 
   <!-- To Date -->
-  <div class="col-12 sm:col-3 grid-nogutter">
+  <!-- <div class="col-12 sm:col-3 grid-nogutter">
     <label for="fromDate">Til dato</label>
     <p-calendar [(ngModel)]="toDate" dateFormat="dd/mm/yy" inputId="toDate" (onSelect)="onDateFilterChanged()"></p-calendar>
-  </div>
+  </div> -->
 </div>
 
 <div class="grid">
@@ -27,35 +27,36 @@
         [columns]="columns$ | async"
         [globalFilterFields]="globalFilterFields$ | async"
         [loading]="loading"
-        sortField="hourUTC"
+        sortField="dateForSort"
         [sortOrder]="1"
         dataKey="id"
         csvSeparator=";"
         [exportFilename]="'export'"
         [paginator]="true"
-        [rows]="24"
+        [rows]="10"
         [showCurrentPageReport]="true"
         responsiveLayout="scroll"
         currentPageReportTemplate="Viser {first} til {last} af {totalRecords} poster"
-        [rowsPerPageOptions]="[24, 48, 96]"
+        [rowsPerPageOptions]="[10, 25, 50]"
       >
         <ng-template pTemplate="caption">
           <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 class="m-0">Emails</h5>
+            <h5 class="m-0">Mine enheder</h5>
 
-            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="table.exportCSV()"></button>
+            <button pButton pRipple label="CSV" icon="pi pi-upload" class="p-button-help" (click)="table.exportCSV()"></button>
 
             <!-- <button pButton pRipple label="Afsend ikke sendte" icon="pi pi-upload" class="p-button-help" (click)="sendEmails()"></button> -->
 
             <span class="block mt-2 md:mt-0 p-input-icon-left">
               <i class="pi pi-search"></i>
-              <input pInputText type="text" (input)="table.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+              <input pInputText type="text" (input)="table.filterGlobal($event.target.value, 'contains')" placeholder="Søg..." />
             </span>
           </div>
         </ng-template>
         <ng-template pTemplate="header" let-columns>
           <tr>
-            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            <th></th>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn>
               {{ col.header }}
               <p-sortIcon [field]="col.field"></p-sortIcon>
             </th>
@@ -63,9 +64,14 @@
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-columns="columns">
           <tr [pSelectableRow]="rowData">
-            <td *ngFor="let col of columns">
-              {{ rowData[col.field] }}
+            <td>
+              <div class="flex">
+                <div>
+                  <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editItem(rowData)"></button>
+                </div>
+              </div>
             </td>
+            <td *ngFor="let col of columns" [ngStyle]="{ 'text-decoration': rowData.slettet ? 'line-through' : 'none' }" [innerHtml]="rowData[col.field]"></td>
           </tr>
         </ng-template>
       </p-table>

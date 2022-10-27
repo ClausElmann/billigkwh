@@ -46,7 +46,7 @@ import { cloneObject } from "@globals/helper-functions";
 import { CustomerModel } from "src/code-gen/model/customerModel";
 import { UserModel } from "@apiModels/UserModel";
 import { EmailModel } from "@apiModels/emailModel";
-import { ElprisModel } from "@apiModels/elprisModel";
+import { ElectricityPriceModel } from "@apiModels/electricityPriceModel";
 
 class CustomerState {
   currentCustomer: CustomerModel;
@@ -129,14 +129,14 @@ export class CustomerService extends BiStore<CustomerState> {
       );
   }
 
-  public getElpriser(fromDateUtc: Date, toDateUtc: Date): Observable<ElprisModel[]> {
+  public getElectricityPrices(fromDateUtc: Date, toDateUtc: Date): Observable<ElectricityPriceModel[]> {
     const params: { [key: string]: string } = {
       fromDateUtc: fromDateUtc.toDateString(),
       toDateUtc: toDateUtc.toDateString()
     };
 
     return this.http
-      .get<ElprisModel[]>(ApiRoutes.commonRoutes.get.getElpriser, {
+      .get<ElectricityPriceModel[]>(ApiRoutes.commonRoutes.get.getElectricityPrices, {
         params: params
       })
       .pipe(

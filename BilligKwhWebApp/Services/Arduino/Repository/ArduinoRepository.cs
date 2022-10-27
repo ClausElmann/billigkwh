@@ -29,5 +29,22 @@ namespace BilligKwhWebApp.Services.Arduino.Repository
             SELECT * FROM [Print]
 			WHERE PrintId = @PrintId", new { PrintId = printId });
         }
+
+        public IReadOnlyCollection<PrintDto> GetAllPrintDto(int kundeId)
+        {
+
+            using var connection = ConnectionFactory.GetOpenConnection();
+            return connection.Query<PrintDto>(@"
+            SELECT *
+            FROM [Print] WHERE KundeID = @KundeId", new { KundeId = kundeId }).ToList();
+        }
+
+        public PrintDto GetDtoById(int id)
+        {
+            using var connection = ConnectionFactory.GetOpenConnection();
+            return connection.QueryFirstOrDefault<PrintDto>(@"
+            SELECT * FROM [Print] WHERE 
+            Id = @Id", new { Id = id });
+        }
     }
 }

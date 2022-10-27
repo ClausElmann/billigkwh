@@ -22,7 +22,7 @@ namespace BilligKwhWebApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    [Authorize(UserRolePermissionProvider.SuperAdmin)]
+    [Authorize(UserRolePermissionProvider.Bearer)]
     public class CustomerController : BaseController
     {
         // Dependencies

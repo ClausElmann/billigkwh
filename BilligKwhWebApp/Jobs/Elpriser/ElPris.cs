@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using System.Globalization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
-namespace BilligKwhWebApp.Jobs
+namespace BilligKwhWebApp.Jobs.ElectricityPrices
 {
-
-    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class Record
     {
         public DateTime HourUTC { get; set; }
@@ -25,8 +19,6 @@ namespace BilligKwhWebApp.Jobs
         public string dataset { get; set; }
         public List<Record> records { get; set; }
     }
-
-
 }
 
 

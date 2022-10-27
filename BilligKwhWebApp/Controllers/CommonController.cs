@@ -290,17 +290,17 @@ namespace BilligKwhWebApp.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ElprisModel>))]
-        public IActionResult GetElpriser(DateTime fromDateUtc, DateTime toDateUtc)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ElectricityPriceModel>))]
+        public IActionResult GetElectricityPrices(DateTime fromDateUtc, DateTime toDateUtc)
         {
-            var emails = _emailService.GetAllElpriser(fromDateUtc, toDateUtc);
+            var emails = _emailService.GetAllElectricityPrices(fromDateUtc, toDateUtc);
             if (emails != null)
             {
-                return Ok(emails.OrderByDescending(c => c.DatoUtc));
+                return Ok(emails.OrderByDescending(c => c.HourUTC));
             }
             else
             {
-                return Ok(new List<ElprisModel>());
+                return Ok(new List<ElectricityPriceModel>());
             }
         }
 

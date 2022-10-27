@@ -3,6 +3,8 @@ using BilligKwhWebApp.Services.Interfaces;
 using BilligKwhWebApp.Services.Customers;
 using BilligKwhWebApp.Services.Arduino;
 using BilligKwhWebApp.Services.Arduino.Repository;
+using System.Collections.Generic;
+using BilligKwhWebApp.Core.Dto;
 
 namespace BilligKwhWebApp.Services
 {
@@ -40,5 +42,14 @@ namespace BilligKwhWebApp.Services
             _arduinoRepository.Insert(print);
         }
 
+        public IReadOnlyCollection<PrintDto> GetAllPrintDto(int kundeId)
+        {
+            return _arduinoRepository.GetAllPrintDto(kundeId);
+        }
+
+        public PrintDto GetDtoById(int id)
+        {
+            return _arduinoRepository.GetDtoById(id);
+        }
     }
 }

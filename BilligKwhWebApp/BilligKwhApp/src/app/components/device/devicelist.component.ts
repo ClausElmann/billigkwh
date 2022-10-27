@@ -3,13 +3,14 @@ import { BiCountryId } from "@enums/BiLanguageAndCountryId";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { ConfirmationService, MessageService, SelectItem, SortEvent } from "primeng/api";
 import { finalize, map, Observable, ReplaySubject, tap } from "rxjs";
-import { CustomerService } from "@core/services/customer.service";
 import { BiLocalizationHelperService } from "@core/utility-services/bi-localization-helper.service";
 import moment from "moment";
 import { TableColumnPrimeNg } from "@shared/interfaces-and-enums/TableColumnPrimeNg";
-import { ElectricityPriceModel } from "@apiModels/electricityPriceModel";
+import { DeviceService } from "@core/services/device.service";
+import { PrintDto } from "@apiModels/printDto";
+import { ActivatedRoute, Router } from "@angular/router";
 
-export interface ElectricityPriceModelExt extends ElectricityPriceModel {
+export interface PrintDtoExt extends PrintDto {
   dateForSort?: moment.Moment;
   date?: string;
 }
@@ -20,15 +21,15 @@ export interface TableColumnPrimeNgExt extends TableColumnPrimeNg {
 
 @UntilDestroy()
 @Component({
-  templateUrl: "superadmin-elprislist.component.html",
-  styleUrls: ["superadmin-elprislist.component.scss"],
+  templateUrl: "devicelist.component.html",
+  styleUrls: ["devicelist.component.scss"],
   providers: [MessageService, ConfirmationService]
 })
-export class SuperAdminElectricityPriceListComponent implements OnInit {
+export class DeviceListComponent implements OnInit {
   public loading = true;
 
-  public elpriser: Array<ElectricityPriceModel> = [];
-  public elpriser$: Observable<Array<ElectricityPriceModel>>;
+  public elpriser: Array<PrintDto> = [];
+  public elpriser$: Observable<Array<PrintDto>>;
   private columns = new ReplaySubject<Array<TableColumnPrimeNgExt>>(1);
   public columns$ = this.columns.asObservable();
   private globalFilterFields = new ReplaySubject<Array<string>>(1);
@@ -56,14 +57,10 @@ export class SuperAdminElectricityPriceListComponent implements OnInit {
 
   text: string;
 
-  constructor(
-    private customerService: CustomerService,
-
-    private localizor: BiLocalizationHelperService
-  ) {}
+  constructor(private deviceService: DeviceService, private activeRoute: ActivatedRoute, private router: Router, private localizor: BiLocalizationHelperService) {}
 
   ngOnInit() {
-    this.text = "<h2>Vælg en email i listen for at se indholdet</h2>";
+    this.text = "<h2>Vælg en device i listen for at se indholdet</h2>";
 
     this.fromDate.setDate(new Date().getDate());
     this.toDate.setDate(new Date().getDate() + 1);
@@ -71,6 +68,10 @@ export class SuperAdminElectricityPriceListComponent implements OnInit {
     this.initializeElectricityPrices();
 
     this.initColumns();
+  }
+
+  editItem(item: PrintDto) {
+    this.router.navigate([item.id, "edit"], { relativeTo: this.activeRoute });
   }
 
   public selectedCountryCodeChange(item: SelectItem) {
@@ -93,21 +94,20 @@ export class SuperAdminElectricityPriceListComponent implements OnInit {
   }
 
   private initColumns() {
-    this.globalFilterFields.next(["timeDk", "dk1", "dk2"]);
+    this.globalFilterFields.next(["printId", "date"]);
     this.columns.next([
-      { field: "date", header: "Dato", sortField: "dateForSort" },
-      { field: "hourDKNo", header: "Time" },
-      { field: "dk1", header: "Dk1" },
-      { field: "dk2", header: "Dk2" }
+      { field: "lokation", header: "Lokation" },
+      { field: "printId", header: "PrintId" },
+      { field: "date", header: "SidsteKontakt", sortField: "dateForSort" }
     ]);
   }
 
   private initializeElectricityPrices() {
-    this.elpriser$ = this.customerService.getElectricityPrices(this.fromDate, this.toDate).pipe(
-      tap((data: Array<ElectricityPriceModelExt>) => {
+    this.elpriser$ = this.deviceService.getPrints().pipe(
+      tap((data: Array<PrintDtoExt>) => {
         data.forEach(element => {
-          element.date = this.localizor.localizeDateTime(element.hourUTC);
-          element.dateForSort = moment(element.hourUTC);
+          element.date = this.localizor.localizeDateTime(element.sidsteKontaktDatoUtc);
+          element.dateForSort = moment(element.sidsteKontaktDatoUtc);
         });
       }),
       untilDestroyed(this),

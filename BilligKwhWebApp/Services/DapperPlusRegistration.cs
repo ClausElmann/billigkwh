@@ -75,8 +75,14 @@ namespace BilligKwhWebApp.Services
             DapperPlusManager.Entity<ElTavle>().Table("dbo.ElTavle").Identity(x => x.Id);
             DapperPlusManager.Entity<ElTavleLaageElKomponent>().Table("dbo.ElTavleLaageElKomponent").Identity(x => x.Id);
             DapperPlusManager.Entity<ElTavleLaage>().Table("dbo.ElTavleLaage").Identity(x => x.Id);
-            DapperPlusManager.Entity<ElPris>().Table("dbo.ElPris").Identity(x => x.Id).Key(k => new { k.DatoUtc, k.TimeDk }).BatchTimeout(120 * 60);
+            DapperPlusManager.Entity<ElectricityPrice>().Table("dbo.ElectricityPrice").Identity(x => x.Id).Key(k => k.HourDK).BatchTimeout(120 * 60);
             DapperPlusManager.Entity<Print>().Table("dbo.Print").Identity(x => x.Id);
+            DapperPlusManager.Entity<Recipe>().Table("dbo.Recipe").Identity(x => x.Id);
+            DapperPlusManager.Entity<Schedule>().Table("dbo.Schedule").Identity(x => x.Id).Key(k => new
+            {
+                k.DeviceId,
+                k.Date
+            }).BatchTimeout(120 * 60);
         }
     }
 }

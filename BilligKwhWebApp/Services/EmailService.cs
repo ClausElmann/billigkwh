@@ -316,15 +316,15 @@ namespace BilligKwhWebApp.Services
             return _baseRepository.Query<EmailModel>(sql, param).ToList();
         }
 
-        public IReadOnlyCollection<ElprisModel> GetAllElpriser(DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<ElectricityPriceModel> GetAllElectricityPrices(DateTime fromDate, DateTime toDate)
         {
             var param = new { FromDateUtc = fromDate, ToDateUtc = toDate };
 
             var sql = @"SELECT * 
-                      FROM Elpris  
-                      WHERE DatoUtc between @FromDateUtc and dateadd(dy,1, @ToDateUtc)";
+                      FROM ElectricityPrice  
+                      WHERE [HourUTC] between @FromDateUtc and dateadd(dy,1, @ToDateUtc)";
 
-            return _baseRepository.Query<ElprisModel>(sql, param).ToList();
+            return _baseRepository.Query<ElectricityPriceModel>(sql, param).ToList();
         }
     }
 }

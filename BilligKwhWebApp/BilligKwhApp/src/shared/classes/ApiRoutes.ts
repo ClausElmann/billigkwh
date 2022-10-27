@@ -16,6 +16,8 @@ export class ApiRoutes {
 
   private static eltavleEndpoint = ApiRoutes.api + "Eltavle/";
 
+  private static deviceEndpoint = ApiRoutes.api + "Device/";
+
   /**
    * Api endpoints for user
    */
@@ -148,6 +150,18 @@ export class ApiRoutes {
     sendFakturaMail: ApiRoutes.eltavleEndpoint + "SendFakturaMail"
   };
 
+  public static deviceRoutes = {
+    get: {
+      getPrints: ApiRoutes.deviceEndpoint + "GetPrints",
+      getPrint: ApiRoutes.deviceEndpoint + "GetPrint"
+    },
+    post: {},
+    update: {
+      updatePrint: ApiRoutes.deviceEndpoint + "UpdatePrint"
+    },
+    delete: {}
+  };
+
   /**
    * Api endpoints for support
    */
@@ -163,7 +177,7 @@ export class ApiRoutes {
     get: {
       getEmails: ApiRoutes.commonEndpoint + "GetEmails",
       getTavleEmails: ApiRoutes.commonEndpoint + "GetTavleEmails",
-      getElpriser: ApiRoutes.commonEndpoint + "GetElpriser"
+      getElectricityPrices: ApiRoutes.commonEndpoint + "GetElectricityPrices"
     },
     errorLogging: {
       logJavascriptException: ApiRoutes.commonEndpoint + "LogJavascriptException",
