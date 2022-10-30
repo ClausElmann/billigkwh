@@ -38,7 +38,7 @@ namespace BilligKwhWebApp.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BilligKwhModel))]
-        public IActionResult GetBilligKwhModel(string deviceId)
+        public IActionResult GetBilligKwhModel(string deviceId, string consumption)
         {
             var print = _arduinoService.GetPrintById(deviceId);
 
@@ -49,6 +49,8 @@ namespace BilligKwhWebApp.Controllers
                     PrintId = deviceId,
                     OprettetDatoUtc = DateTime.UtcNow,
                     SidsteKontaktDatoUtc = DateTime.UtcNow,
+                    Kommentar = "",
+                    Lokation = "",
                 };
                 _arduinoService.Insert(print);
             }
@@ -56,6 +58,12 @@ namespace BilligKwhWebApp.Controllers
             {
                 print.SidsteKontaktDatoUtc = DateTime.UtcNow;
                 _arduinoService.Update(print);
+
+                if (!string.IsNullOrEmpty(consumption))
+                {
+                    var numbers = consumption?.Split(',')?.Select(long.Parse)?.ToList();
+                    _electricityService.UpdateConsumption(print.Id, numbers);
+                }
             }
 
             DateTime danish = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Romance Standard Time");
@@ -65,7 +73,7 @@ namespace BilligKwhWebApp.Controllers
             if (!schedules.Any())
                 return NotFound("Schedules not found"); ;
 
-            List<long> list = new List<long>();
+            List<long> list = new();
 
 
             //long[] recipe = new long[schedules.Count * 25];
@@ -138,7 +146,7 @@ namespace BilligKwhWebApp.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult> HentElectricityPrices()
+        public async Task<ActionResult> UpdateElectricityPrices()
         {
             await _electricityService.UpdateElectricityPrices();
             return Ok();
@@ -147,7 +155,7 @@ namespace BilligKwhWebApp.Controllers
 
 
 
-      
+
 
     }
 }

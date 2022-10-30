@@ -1,5 +1,4 @@
 ﻿using BilligKwhWebApp.Core.Domain;
-using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 
@@ -13,7 +12,8 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
         IReadOnlyCollection<Schedule> GetSchedulesForDate(DateTime date, int deviceId);
 
         //Print GetPrintById(string printId);
-        //void Update(Print print);
-        //void Insert(Print print);
+        Consumption GetConsumptionByIdAndDate(DateTime date, int deviceId);
+        void UpdateConsumption(Consumption consumption);
+        void InsertConsumption(Consumption consumption);
     }
 }

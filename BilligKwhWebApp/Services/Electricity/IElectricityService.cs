@@ -13,5 +13,6 @@ namespace BilligKwhWebApp.Services.Electricity
         //void Insert(Print print);
 
         Task UpdateElectricityPrices();
+        void UpdateConsumption(int deviceId, IReadOnlyCollection<long> list);
     }
 }

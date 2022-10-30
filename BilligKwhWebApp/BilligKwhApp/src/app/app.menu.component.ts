@@ -40,7 +40,7 @@ export class AppMenuComponent implements OnInit {
             routerLink: ["/"]
           },
           {
-            label: "ElectricityPrices",
+            label: "Elpriser",
             icon: "pi pi-fw pi-globe",
             routerLink: ["/superadmin/customers/elpriser"],
             visible: this.hasModule

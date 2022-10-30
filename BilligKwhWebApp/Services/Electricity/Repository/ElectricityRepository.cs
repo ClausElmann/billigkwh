@@ -3,6 +3,8 @@ using BilligKwhWebApp.Core.Domain;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using BilligKwhWebApp.Core.Dto;
+using Z.Dapper.Plus;
 
 namespace BilligKwhWebApp.Services.Electricity.Repository
 {
@@ -28,7 +30,7 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
             using var connection = ConnectionFactory.GetOpenConnection();
             return connection.Query<Schedule>(@"
                      SELECT * FROM [Schedule]
-            WHERE [Date] >= @Date AND DeviceId = @DeviceId", new { date.Date, DeviceId = deviceId }).ToList();
+            WHERE [Date] >= @Date AND DeviceId = @DeviceId order by [Date]", new { date.Date, DeviceId = deviceId }).ToList();
         }
 
         public IReadOnlyCollection<Schedule> Calculate(DateTime danish, IReadOnlyCollection<ElectricityPrice> elpriser, IReadOnlyCollection<Recipe> recipes)
@@ -169,6 +171,26 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
             var result = dk1SchedulesToday.Concat(dk1SchedulesTomorrow).Concat(dk2SchedulesToday).Concat(dk2SchedulesTomorrow).ToList();
 
             return result;
+        }
+
+        public Consumption GetConsumptionByIdAndDate(DateTime date, int deviceId)
+        {
+            using var connection = ConnectionFactory.GetOpenConnection();
+            return connection.QueryFirstOrDefault<Consumption>(@"
+            SELECT top 1 * FROM Consumption WHERE 
+            DeviceId = @DeviceId AND Date = @Date", new { Date = date, DeviceId = deviceId });
+        }
+
+        public void UpdateConsumption(Consumption consumption)
+        {
+            using var connection = ConnectionFactory.GetOpenConnection();
+            connection.BulkUpdate(consumption);
+        }
+
+        public void InsertConsumption(Consumption consumption)
+        {
+            using var connection = ConnectionFactory.GetOpenConnection();
+            connection.BulkInsert(consumption);
         }
     }
 }
