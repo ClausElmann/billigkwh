@@ -15,13 +15,13 @@ namespace BilligKwhWebApp
         public virtual Kunde Customer { get; set; }
 
         public int UserId { get; set; }
-        public virtual Bruger User { get; set; }
+        public virtual User User { get; set; }
 
         public CustomerUserMapping()
         {
 
         }
-        public CustomerUserMapping(Kunde customer, Bruger user)
+        public CustomerUserMapping(Kunde customer, User user)
         {
             Customer = customer;
             User = user;

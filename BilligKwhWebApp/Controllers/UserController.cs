@@ -85,12 +85,12 @@ namespace BilligKwhWebApp.Controllers
 
 
         #region Internals
-        private Language GetUserLanguage(Bruger user)
+        private Language GetUserLanguage(User user)
         {
             var languages = _languageService.GetAllLanguages();
-            if (user != null && user.SprogID > 0)
+            if (user != null && user.LanguageId > 0)
             {
-                return languages.FirstOrDefault(x => x.Id == user.SprogID);
+                return languages.FirstOrDefault(x => x.Id == user.LanguageId);
             }
 
             var currentLang = GetLanguageFromRequest(languages);
@@ -141,9 +141,9 @@ namespace BilligKwhWebApp.Controllers
             };
         }
 
-        private string GenerateAccessToken(Bruger user, int? impersonateFromUserId = null, DateTime? expires = null)
+        private string GenerateAccessToken(User user, int? impersonateFromUserId = null, DateTime? expires = null)
         {
-            return _authenticationService.GenerateAccessToken(user, user.VærtKundeID, expires, impersonateFromUserId);
+            return _authenticationService.GenerateAccessToken(user, user.CustomerId, expires, impersonateFromUserId);
         }
 
 
@@ -265,7 +265,7 @@ namespace BilligKwhWebApp.Controllers
                     user.FailedLoginCount = 0;
                     user.IsLockedOut = false;
                     user.DateLastLoginUtc = _utcClock.Now();
-                    user.SprogID = language;
+                    user.LanguageId = language;
                     _userService.Update(user);
 
                     var requestedAt = DateTime.UtcNow;
@@ -282,7 +282,7 @@ namespace BilligKwhWebApp.Controllers
                         AccessToken = GenerateAccessToken(user, impersonateUserID, expires: expiresIn),
                         RefreshTokenModel = refreshToken,
                         UserId = user.Id,
-                        CustomerId = user.VærtKundeID,
+                        CustomerId = user.CustomerId,
                         ImpersonateFromUserId = user.Id,
                     });
 
@@ -327,7 +327,7 @@ namespace BilligKwhWebApp.Controllers
                         user.FailedLoginCount = 0;
                         user.IsLockedOut = false;
                         user.DateLastLoginUtc = DateTime.UtcNow;
-                        user.SprogID = language;
+                        user.LanguageId = language;
                         _userService.Update(user);
 
                         var requestedAt = DateTime.UtcNow;
@@ -344,7 +344,7 @@ namespace BilligKwhWebApp.Controllers
                             AccessToken = GenerateAccessToken(user, impersonateUserID, expires: expiresIn),
                             RefreshTokenModel = refreshToken,
                             UserId = user.Id,
-                            CustomerId = user.VærtKundeID,
+                            CustomerId = user.CustomerId,
                             ImpersonateFromUserId = user.Id,
                         });
                     }
@@ -371,7 +371,7 @@ namespace BilligKwhWebApp.Controllers
 
                 if (_userService.IsUserLocked(user))
                 {
-                    return ForbidWithMessage($"User with e-mail {user.Brugernavn} is locked because of too many login attempts");
+                    return ForbidWithMessage($"User with e-mail {user.Email} is locked because of too many login attempts");
                 }
 
                 if (pinCodeIsValid)
@@ -390,7 +390,7 @@ namespace BilligKwhWebApp.Controllers
                         AccessToken = GenerateAccessToken(user, impersonateUserID, expires: expiresIn),
                         RefreshTokenModel = refreshToken,
                         UserId = user.Id,
-                        CustomerId = user.VærtKundeID,
+                        CustomerId = user.CustomerId,
                         ImpersonateFromUserId = user.Id,
                     });
                 }
@@ -442,7 +442,7 @@ namespace BilligKwhWebApp.Controllers
                     var profileUserID = refreshToken.UserId;
 
                     //ONLY BilligKwh customers can impersonate!(Id 1 and 9 are the db id's of existing Blue Idea customers)
-                    if (tokenUser.VærtKundeID != 1)
+                    if (tokenUser.CustomerId != 1)
                     {
                         //we are not BilligKwh - can't impersonate so stil : profileUserID = token.UserId;
                     }
@@ -464,7 +464,7 @@ namespace BilligKwhWebApp.Controllers
 
                     var requestedAt = DateTime.UtcNow;
                     var expiresIn = _authenticationService.GetAccessTokenExpirationTime();
-                    var accessToken = _authenticationService.GenerateAccessToken(accesTokenUser, accesTokenUser.VærtKundeID, expiresIn, refreshToken.UserId);
+                    var accessToken = _authenticationService.GenerateAccessToken(accesTokenUser, accesTokenUser.CustomerId, expiresIn, refreshToken.UserId);
 
                     _authenticationService.ExtendRefreshToken(refreshToken, requestedAt);
 
@@ -476,7 +476,7 @@ namespace BilligKwhWebApp.Controllers
                         AccessToken = accessToken,
                         RefreshTokenModel = refreshToken,
                         UserId = accesTokenUser.Id,
-                        CustomerId = accesTokenUser.VærtKundeID,
+                        CustomerId = accesTokenUser.CustomerId,
                         ImpersonateFromUserId = refreshToken.UserId,
                     });
                 }
@@ -504,28 +504,28 @@ namespace BilligKwhWebApp.Controllers
             var user = _userService.GetUserByEmail(email.Trim());
             if (user != null)
             {
-                var mailTemplate = _emailTemplateService.GetTemplateByNameEnum(user.SprogID, EmailTemplateName.ResetPassword);
+                var mailTemplate = _emailTemplateService.GetTemplateByNameEnum(user.LanguageId, EmailTemplateName.ResetPassword);
 
                 user.PasswordResetToken = Guid.NewGuid();
                 user.DatePasswordResetTokenExpiresUtc = DateTime.UtcNow.AddHours(1);
                 _userService.Update(user);
 
-                var url = $"{Url.ActionContext.HttpContext.Request.Scheme}://{Url.ActionContext.HttpContext.Request.Host}/reset-password?token={user.PasswordResetToken.ToString()}&email={user.Brugernavn}";
+                var url = $"{Url.ActionContext.HttpContext.Request.Scheme}://{Url.ActionContext.HttpContext.Request.Host}/reset-password?token={user.PasswordResetToken.ToString()}&email={user.Email}";
 
                 var fields = new List<KeyValuePair<string, object>>()
                             {
                                 new KeyValuePair<string, object>("RESET_URL", url),
-                                new KeyValuePair<string, object>("USERNAME", user.FuldtNavn),
+                                new KeyValuePair<string, object>("USERNAME", user.Name),
                             };
 
                 _emailTemplateService.MergeEmailFields(mailTemplate, fields);
 
                 _emailService.Save(
-                    customerId: user.AktivKundeID,
+                    customerId: user.CustomerId,
                     fromEmail: mailTemplate.FromEmail,
                     fromName: mailTemplate.FromName,
-                    sendTo: user.Brugernavn,
-                    sendToName: user.FuldtNavn,
+                    sendTo: user.Email,
+                    sendToName: user.Name,
                     replyTo: mailTemplate.ReplyTo,
                     subject: mailTemplate.Subject,
                     body: mailTemplate.Html,
@@ -850,14 +850,12 @@ namespace BilligKwhWebApp.Controllers
                     if (_workContext.CurrentUser.Id != bruger.Id && !isSuperAdmin)
                         return ForbidWithMessage("User must be super admin to update a different user than current!");
 
-                    if (bruger.Brugernavn != model.Email)
+                    if (bruger.Email != model.Email)
                     {
                         if (_userService.UserExists(model.Email))
                             return BadRequest("Email already exists");
 
-                        bruger.Brugernavn = model.Email;
-                        bruger.BrugernavnUtfCode = _authenticationService.BeregnBrugernavnHashUtfCode(model.Email);
-                        bruger.BrugernavnUnicode = _authenticationService.BeregnBrugernavnHashUnicode(model.Email);
+                        bruger.Email = model.Email;
                     }
 
                     if (bruger.Adgangskode != model.NewPassword)
@@ -866,16 +864,13 @@ namespace BilligKwhWebApp.Controllers
                         _authenticationService.SetNewPassword(model.NewPassword, bruger);
                     }
 
-                    bruger.Fornavn = model.Firstname;
-                    bruger.Efternavn = model.Lastname;
-
-                    bruger.Telefon = model.Phone;
-                    bruger.Mobil = model.Mobile;
-                    bruger.SprogID = model.LanguageId;
-                    bruger.LandID = model.CountryId;
-                    bruger.Slettet = model.Deleted;
-                    bruger.ErAdministrator = model.Administrator;
-                    bruger.SetTidzoneId(bruger.LandID);
+                    bruger.Name = model.Name;
+                    bruger.Phone = model.Phone;
+                    bruger.LanguageId = model.LanguageId;
+                    bruger.CountryId = model.CountryId;
+                    bruger.Deleted = model.Deleted;
+                    bruger.Administrator = model.Administrator;
+                    bruger.SetTidzoneId(bruger.CountryId);
 
                     _userService.Update(bruger);
                     return Ok(bruger.Id);
@@ -1001,10 +996,10 @@ namespace BilligKwhWebApp.Controllers
         /// <param name="user">The user for which a new password is requested</param>
         /// <param name="sendToEmails">String being a semicolon-separated list of emails (or just 1 email)</param>
         [ApiExplorerSettings(IgnoreApi = true)]
-        public void SendUserNewPasswordEmail(Bruger user)
+        public void SendUserNewPasswordEmail(User user)
         {
             // Send mail to new user with link to activate login
-            var mailTemplate = _emailTemplateService.GetTemplateByNameEnum(user.SprogID, EmailTemplateName.NewUser);
+            var mailTemplate = _emailTemplateService.GetTemplateByNameEnum(user.LanguageId, EmailTemplateName.NewUser);
 
             user.PasswordResetToken = _globallyUniqueIdentifier.NewGuid();
             user.DatePasswordResetTokenExpiresUtc = _utcClock.Now().AddHours(1);
@@ -1014,17 +1009,17 @@ namespace BilligKwhWebApp.Controllers
             var fields = new List<KeyValuePair<string, object>>()
                         {
                             new KeyValuePair<string, object>("NEWUSER_URL", url.ToString()),
-                            new KeyValuePair<string, object>("USERNAME", user.FuldtNavn),
+                            new KeyValuePair<string, object>("USERNAME", user.Name),
                         };
 
             _emailTemplateService.MergeEmailFields(mailTemplate, fields);
 
             _emailService.Save(
-                    customerId: user.AktivKundeID,
+                    customerId: user.CustomerId,
                     fromEmail: mailTemplate.FromEmail,
                     fromName: mailTemplate.FromName,
-                    sendTo: user.Brugernavn,
-                    sendToName: user.FuldtNavn,
+                    sendTo: user.Email,
+                    sendToName: user.Name,
                     replyTo: mailTemplate.ReplyTo,
                     subject: mailTemplate.Subject,
                     body: mailTemplate.Html,
@@ -1102,23 +1097,21 @@ namespace BilligKwhWebApp.Controllers
                             }
                         }
 
-                        if (model.Email != user.Brugernavn)
+                        if (model.Email != user.Email)
                         {
                             if (_userService.UserExists(model.Email))
                             {
                                 return BadRequest("Email already exists");
                             }
-                            user.Brugernavn = model.Email;
+                            user.Email = model.Email;
                         }
 
-                        user.Fornavn = model.Firstname;
-                        user.Efternavn = model.Lastname;
-                        user.Telefon = model.Phone;
-                        user.Mobil = model.Mobile;
-                        user.SprogID = model.LanguageId;
-                        user.ErAdministrator = model.Administrator;
-                        user.LandID = model.CountryId;
-                        user.Slettet = model.Deleted;
+                        user.Name = model.Name;
+                        user.Phone = model.Phone;
+                        user.LanguageId = model.LanguageId;
+                        user.Administrator = model.Administrator;
+                        user.CountryId = model.CountryId;
+                        user.Deleted = model.Deleted;
 
                         _userService.Update(user);
                         return Ok();
@@ -1175,12 +1168,12 @@ namespace BilligKwhWebApp.Controllers
 
 
 
-        //            //bruger.Brugernavn = model.Brugernavn;
+        //            //bruger.Email = model.Email;
         //            //bruger.Adgangskode = model.Adgangskode;
-        //            //bruger.BrugernavnUtfCode = model.BrugernavnUtfCode;
-        //            //bruger.BrugernavnUnicode = model.BrugernavnUnicode;
-        //            //bruger.VærtKundeID = model.VærtKundeID;
-        //            //bruger.AktivKundeID = model.AktivKundeID;
+        //            //bruger.EmailUtfCode = model.EmailUtfCode;
+        //            //bruger.EmailUnicode = model.EmailUnicode;
+        //            //bruger.CustomerId = model.CustomerId;
+        //            //bruger.CustomerId = model.CustomerId;
         //            //bruger.ErAdministrator = model.ErAdministrator;
         //            //bruger.SystemAdministrator = model.SystemAdministrator;
         //            //bruger.KundeAdministrator = model.KundeAdministrator;
@@ -1191,7 +1184,7 @@ namespace BilligKwhWebApp.Controllers
         //            //bruger.Mobil = model.Mobil;
         //            //bruger.NoLogin = model.NoLogin;
         //            //bruger.RemoteIp = model.RemoteIp;
-        //            //bruger.SprogID = model.SprogID;
+        //            //bruger.LanguageId = model.LanguageId;
         //            //bruger.OploesningVandret = model.OploesningVandret;
         //            //bruger.OploesningLodret = model.OploesningLodret;
         //            //bruger.UserAgent = model.UserAgent;
@@ -1203,7 +1196,7 @@ namespace BilligKwhWebApp.Controllers
         //            //bruger.Slettet = model.Slettet;
         //            //bruger.ErHelpdeskBCC = model.ErHelpdeskBCC;
         //            //bruger.StandardBedriftID = model.StandardBedriftID;
-        //            //bruger.FuldtNavn = model.FuldtNavn;
+        //            //bruger.Name = model.Name;
         //            //bruger.SecurityStamp = model.SecurityStamp;
         //            //bruger.PasswordHash = model.PasswordHash;
         //            //bruger.PortalAdministrator = model.PortalAdministrator;
@@ -1299,30 +1292,30 @@ namespace BilligKwhWebApp.Controllers
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public void SendNewUserEmail(Bruger user)
+        public void SendNewUserEmail(User user)
         {
             EmailTemplate mailTemplate = null;
 
-            if (user.ErAdministrator)
-                mailTemplate = _emailTemplateService.GetTemplateByNameEnum(user.SprogID, EmailTemplateName.AdminOprettelse);
+            if (user.Administrator)
+                mailTemplate = _emailTemplateService.GetTemplateByNameEnum(user.LanguageId, EmailTemplateName.AdminOprettelse);
             else
-                mailTemplate = _emailTemplateService.GetTemplateByNameEnum(user.SprogID, EmailTemplateName.BrugerOprettelse);
+                mailTemplate = _emailTemplateService.GetTemplateByNameEnum(user.LanguageId, EmailTemplateName.BrugerOprettelse);
 
             var fields = new List<KeyValuePair<string, object>>()
                         {
-                            new KeyValuePair<string, object>("NAME", user.FuldtNavn),
-                            new KeyValuePair<string, object>("USERNAME", user.Brugernavn),
-                            new KeyValuePair<string, object>("PASSWORD", user.Adgangskode),
+                            new KeyValuePair<string, object>("NAME", user.Name),
+                            new KeyValuePair<string, object>("USERNAME", user.Email),
+                            new KeyValuePair<string, object>("PASSWORD", user.Password),
                         };
 
             _emailTemplateService.MergeEmailFields(mailTemplate, fields);
 
             _emailService.Save(
-                    customerId: user.AktivKundeID,
+                    customerId: user.CustomerId,
                     fromEmail: mailTemplate.FromEmail,
                     fromName: mailTemplate.FromName,
-                    sendTo: user.Brugernavn,
-                    sendToName: user.FuldtNavn,
+                    sendTo: user.Email,
+                    sendToName: user.Name,
                     replyTo: mailTemplate.ReplyTo,
                     subject: mailTemplate.Subject,
                     body: mailTemplate.Html,
@@ -1330,11 +1323,6 @@ namespace BilligKwhWebApp.Controllers
                     refID: null,
                     categoryEnum: EmailCategoryEnum.SupportMails);
         }
-
-
-
-        
-
 
         /// <summary>
         /// Returns all users belonging to a specific customer
@@ -1344,7 +1332,7 @@ namespace BilligKwhWebApp.Controllers
         {
             var users = _userService.GetUsersByCustomer(customerId, onlyDeleted, userId);
             var result = users.Select(u => _userfactory.PrepareUserModel(u));
-            return Ok(result.OrderBy(u => u.Lastname).ThenBy(u => u.Firstname));
+            return Ok(result.OrderBy(u => u.Name));
         }
 
         /// <summary>
@@ -1366,7 +1354,7 @@ namespace BilligKwhWebApp.Controllers
 
             var userToImpersonate = _userService.Get(model.UserId);
 
-            if (userToImpersonate == null || userToImpersonate.Slettet)
+            if (userToImpersonate == null || userToImpersonate.Deleted)
             {
                 return BadRequest(userToImpersonate == null ? "User to impersonate was not found" : "User to impersonated is deleted");
             }
@@ -1390,7 +1378,7 @@ namespace BilligKwhWebApp.Controllers
                 AccessToken = GenerateAccessToken(userToImpersonate, _workContext.CurrentUser.Id, expiresIn),
                 RefreshTokenModel = refreshToken,
                 UserId = userToImpersonate.Id,
-                CustomerId = userToImpersonate.VærtKundeID,
+                CustomerId = userToImpersonate.CustomerId,
                 ImpersonateFromUserId = _workContext.CurrentUser.Id,
             });
 
@@ -1410,7 +1398,7 @@ namespace BilligKwhWebApp.Controllers
             {
                 var roles = PermissionService.GetUserRolesByUser(user.Id, _workContext.IsUserSuperAdmin());
                 var mappings = PermissionService.GetUserRoleMappingsbyUser(user.Id);
-                var access = _userfactory.PrepareUserRoleAccessModels(user.Id, roles.ToList(), mappings.ToList(), _workContext.CurrentUser.SprogID);
+                var access = _userfactory.PrepareUserRoleAccessModels(user.Id, roles.ToList(), mappings.ToList(), _workContext.CurrentUser.LanguageId);
 
                 return Ok(access.OrderBy(ua => ua.UserRole.NameLocalized));
             }
@@ -1443,7 +1431,7 @@ namespace BilligKwhWebApp.Controllers
                         AccessToken = GenerateAccessToken(user, user.ImpersonatingUserId, expires: expiresIn),
                         RefreshTokenModel = refreshToken,
                         UserId = user.Id,
-                        CustomerId = user.VærtKundeID,
+                        CustomerId = user.CustomerId,
                         ImpersonateFromUserId = user.Id,
                     });
                 }

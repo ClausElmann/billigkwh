@@ -96,8 +96,7 @@ export class UserEditMainComponent implements OnInit {
   private initFormGroup() {
     this.mainForm = new FormGroup({
       email: new FormControl(this.user?.email, [Validators.required, Validators.email]),
-      firstname: new FormControl(this.user?.firstname, [Validators.required, Validators.minLength(3)]),
-      lastname: new FormControl(this.user?.lastname),
+      firstname: new FormControl(this.user?.name, [Validators.required, Validators.minLength(3)]),
       phone: new FormControl(this.user?.phone, [Validators.maxLength(50)]),
       mobile: new FormControl(this.user?.phone, [Validators.maxLength(50)]),
       languageId: new FormControl(this.user?.languageId, [Validators.required]),
@@ -111,12 +110,8 @@ export class UserEditMainComponent implements OnInit {
     return this.mainForm.get("email");
   }
 
-  public get firstname() {
-    return this.mainForm.get("firstname");
-  }
-
-  public get lastname() {
-    return this.mainForm.get("lastname");
+  public get name() {
+    return this.mainForm.get("name");
   }
 
   public get phone() {
@@ -288,7 +283,7 @@ export class UserEditMainComponent implements OnInit {
         // }
 
         this.confirmationService.confirm({
-          message: `Er du sikker på du ønsker at slette brugeren: ${this.user.firstname} ${this.user.lastname}?`,
+          message: `Er du sikker på du ønsker at slette brugeren: ${this.user.name}?`,
           icon: "pi pi-exclamation-triangle",
           accept: () => {
             //confirm action

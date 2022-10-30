@@ -45,7 +45,7 @@ namespace BilligKwhWebApp.Services
 
         private static void SetupUserTables()
         {
-            DapperPlusManager.Entity<Bruger>().Table("dbo.Bruger").Identity(x => x.Id).Ignore(i => i.FuldtNavn);
+            DapperPlusManager.Entity<User>().Table("dbo.Bruger").Identity(x => x.Id).Ignore(i => i.Name);
             DapperPlusManager.Entity<UserRole>().Table("dbo.UserRoles").Identity(x => x.Id);
             DapperPlusManager.Entity<UserRoleMapping>().Table("dbo.UserRoleMappings").Identity(x => x.Id);
             DapperPlusManager.Entity<UserRefreshToken>().Table("dbo.UserRefreshTokens").Identity(i => i.Id);
@@ -69,12 +69,7 @@ namespace BilligKwhWebApp.Services
         private static void SetupMiscTables()
         {
             DapperPlusManager.Entity<Indstilling>().Table("dbo.Indstilling").Identity(x => x.Id);
-            DapperPlusManager.Entity<ElTavleSektionElKomponent>().Table("dbo.ElTavleSektionElKomponent").Identity(x => x.Id);
-            DapperPlusManager.Entity<ElTavleSektion>().Table("dbo.ElTavleSektion").Identity(x => x.Id);
             DapperPlusManager.Entity<Dokument>().Table("dbo.Dokument").Key(x => x.Id);
-            DapperPlusManager.Entity<ElTavle>().Table("dbo.ElTavle").Identity(x => x.Id);
-            DapperPlusManager.Entity<ElTavleLaageElKomponent>().Table("dbo.ElTavleLaageElKomponent").Identity(x => x.Id);
-            DapperPlusManager.Entity<ElTavleLaage>().Table("dbo.ElTavleLaage").Identity(x => x.Id);
             DapperPlusManager.Entity<ElectricityPrice>().Table("dbo.ElectricityPrice").Identity(x => x.Id).Key(k => k.HourDK).BatchTimeout(120 * 60);
             DapperPlusManager.Entity<Print>().Table("dbo.Print").Identity(x => x.Id);
             DapperPlusManager.Entity<Recipe>().Table("dbo.Recipe").Identity(x => x.Id);

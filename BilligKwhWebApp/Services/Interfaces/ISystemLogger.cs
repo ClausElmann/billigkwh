@@ -12,6 +12,6 @@ namespace BilligKwhWebApp.Services.Interfaces
             int pageIndex = 0, int pageSize = int.MaxValue);
 
 
-        int InsertLogAsync(LogLevel logLevel, string shortMessage, string fullMessage = "", Bruger user = null, string module = null, object dataObject = null);
+        int InsertLogAsync(LogLevel logLevel, string shortMessage, string fullMessage = "", User user = null, string module = null, object dataObject = null);
     }
 }

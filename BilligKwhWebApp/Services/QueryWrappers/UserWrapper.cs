@@ -6,6 +6,6 @@ namespace BilligKwhWebApp.Services.QueryWrappers
     public class UserWrapper
     {
         public int PseudoId { get; set; }
-        public ICollection<Bruger> Users { get; set; } = new List<Bruger>();
+        public ICollection<User> Users { get; set; } = new List<User>();
     }
 }

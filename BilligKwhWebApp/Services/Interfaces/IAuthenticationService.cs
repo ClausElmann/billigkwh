@@ -12,13 +12,13 @@ namespace BilligKwhWebApp.Services.Interfaces
 
         string GenerateSHA256Hash(string password, string salt);
         bool IsPasswordValid(string password);
-        Bruger GetAuthenticatedUser();
+        User GetAuthenticatedUser();
 
         int GetClaimValue(AccessTokenClaims claimType);
 
         void Logout(int userId);
 
-        bool SetNewPassword(string newPassword, Bruger user);
+        bool SetNewPassword(string newPassword, User user);
 
         int GeneratePinCode();
 
@@ -32,7 +32,7 @@ namespace BilligKwhWebApp.Services.Interfaces
 
         #region RefreshTokens
         UserRefreshToken CreateRefreshtoken(int userId, TimeSpan? duration = null);
-        string GenerateAccessToken(Bruger user, int customerId, DateTime? expires = null, int? impersonateFromUserId = null);
+        string GenerateAccessToken(User user, int customerId, DateTime? expires = null, int? impersonateFromUserId = null);
 
         /// <summary>
         /// Extends a refresh token

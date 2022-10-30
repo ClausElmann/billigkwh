@@ -12,18 +12,10 @@
           </div>
 
           <div class="field col-12 md:col-6">
-            <label for="firstname" class="block">Fornavn</label>
-            <input formControlName="firstname" type="text" maxlength="200" pInputText id="firstname" aria-describedby="firstname-help" />
-            <div *ngIf="firstname.errors && (firstname.dirty || firstname.touched)" class="p-error block">
-              <div *ngIf="firstname.errors?.required">Påkrævet</div>
-            </div>
-          </div>
-
-          <div class="field col-12 md:col-6">
-            <label for="lastname" class="block">Efternavn</label>
-            <input formControlName="lastname" type="text" maxlength="200" pInputText id="lastname" aria-describedby="lastname-help" />
-            <div *ngIf="lastname.errors && (lastname.dirty || lastname.touched)" class="p-error block">
-              <div *ngIf="lastname.errors?.required">Påkrævet</div>
+            <label for="name" class="block">Navn</label>
+            <input formControlName="name" type="text" maxlength="200" pInputText id="name" aria-describedby="name-help" />
+            <div *ngIf="name.errors && (name.dirty || name.touched)" class="p-error block">
+              <div *ngIf="name.errors?.required">Påkrævet</div>
             </div>
           </div>
 

@@ -13,7 +13,5 @@ namespace BilligKwhWebApp.Services.Customers
         void InsertCustomerUserRoleMapping(IEnumerable<CustomerUserRoleMapping> customerMappings);
 
         IReadOnlyCollection<Kunde> GetAll(bool inclDeleted = false);
-
-        Task<int> CreateOrUpdateEconomicCustomer(int kundeId);
     }
 }

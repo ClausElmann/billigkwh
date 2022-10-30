@@ -13,7 +13,7 @@ namespace BilligKwhWebApp.Services.Dokuments.Repository
             using var connection = ConnectionFactory.GetOpenConnection();
 
             var list = connection.Query<DokumentDto>(@"
-            SELECT  Dokument.Oprettet, '' as Base64Data, Dokument.FilData,Bruger.FuldtNavn, Bruger.Brugernavn FROM Dokument INNER JOIN
+            SELECT  Dokument.Oprettet, '' as Base64Data, Dokument.FilData,Bruger.Name, Bruger.Email FROM Dokument INNER JOIN
             Bruger ON Dokument.OprettetAfBrugerID = Bruger.ID WHERE KundeID = @CustormerId AND RefTypeID = @RefTypeID AND RefGuid = @RefGuid",
                     new { CustormerId = custormerId, RefTypeID = refTypeId, RefGuid = refGuid }).ToList();
 

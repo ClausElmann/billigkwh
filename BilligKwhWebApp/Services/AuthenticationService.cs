@@ -49,7 +49,7 @@ namespace BilligKwhWebApp.Services
         private readonly IStaticCacheManager _cacheManager;
         private readonly ISystemLogger _logger;
 
-        private Bruger _cachedUser;
+        private User _cachedUser;
 
         // Ctor
         public AuthenticationService(IUserService userService,
@@ -260,7 +260,7 @@ namespace BilligKwhWebApp.Services
 
         #region Public
 
-        public virtual Bruger GetAuthenticatedUser()
+        public virtual User GetAuthenticatedUser()
         {
             if (_cachedUser != null)
                 return _cachedUser;
@@ -295,7 +295,7 @@ namespace BilligKwhWebApp.Services
             _baseRepository.Execute("DELETE FROM dbo.UserRefreshTokens WHERE UserId = @UserId", new { UserId = userId });
         }
 
-        public bool SetNewPassword(string newPassword, Bruger user)
+        public bool SetNewPassword(string newPassword, User user)
         {
             if (IsPasswordValid(newPassword))
             {
@@ -366,7 +366,7 @@ namespace BilligKwhWebApp.Services
             }
         }
 
-        public string GenerateAccessToken(Bruger user, int customerId, DateTime? expires = null, int? impersonateFromUserId = null)
+        public string GenerateAccessToken(User user, int customerId, DateTime? expires = null, int? impersonateFromUserId = null)
         {
             if (user == null) return string.Empty;
 
@@ -379,7 +379,7 @@ namespace BilligKwhWebApp.Services
 
             // Add claims to the token payload. These can always be accessed through HttpContext.User.Claims in Controllers
             ClaimsIdentity identity = new(
-                new GenericIdentity(user.Brugernavn, "TokenAuth"),
+                new GenericIdentity(user.Email, "TokenAuth"),
                 new[] {
                     new Claim(AccessTokenClaims.UserId.ToString(), user.Id.ToString()),
                     new Claim(AccessTokenClaims.CustomerId.ToString(), customerId.ToString()),

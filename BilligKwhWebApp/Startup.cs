@@ -38,11 +38,7 @@ using BilligKwhWebApp.Tools.Url;
 using System.Net.Http;
 using BilligKwhWebApp.Services.Customers.Repository;
 using BilligKwhWebApp.Services.Customers;
-using BilligKwhWebApp.Services.Eltavler.Repository;
 using BilligKwhWebApp.Services.Dokuments.Repository;
-using BilligKwhWebApp.Services.Invoicing;
-using BilligKwhWebApp.Services.Komponenter.Repository;
-using BilligKwhWebApp.Jobs;
 using BilligKwhWebApp.Services.Arduino.Repository;
 using BilligKwhWebApp.Services.Arduino;
 using BilligKwhWebApp.Services.Electricity.Repository;
@@ -376,14 +372,6 @@ namespace BilligKwhWebApp
 
             services.AddScoped<ISettingsService, SettingsService>();
 
-            services.AddScoped<IInvoicingService, InvoicingService>();
-
-            services.AddScoped<IEltavlerRepository, EltavlerRepository>();
-            services.AddScoped<IEltavleService, EltavleService>();
-
-            services.AddScoped<IKomponenterRepository, KomponenterRepository>();
-            services.AddScoped<IKomponentService, KomponentService>();
-
             services.AddScoped<IDokumentsRepository, DokumentsRepository>();
             services.AddScoped<IDokumentService, DokumentService>();
 
@@ -396,10 +384,6 @@ namespace BilligKwhWebApp
             //Factories
             services.AddScoped<IUserFactory, UserFactory>();
             services.AddScoped<ICustomerFactory, CustomerFactory>();
-
-            // HTTP Clients
-            services.AddHttpClient<IEconomicHttpClient, EconomicHttpClient>()
-                .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.GZip });
 
             // Services
             if (Environment.IsDevelopment())

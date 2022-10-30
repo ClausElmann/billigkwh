@@ -49,7 +49,7 @@ namespace BilligKwhWebApp.Services
             return logs;
         }
 
-        public virtual int InsertLogAsync(LogLevel logLevel, string shortMessage, string fullMessage = "", Bruger user = null, string module = null, object dataObject = null)
+        public virtual int InsertLogAsync(LogLevel logLevel, string shortMessage, string fullMessage = "", User user = null, string module = null, object dataObject = null)
         {
             bool doLogReferrer = (logLevel > LogLevel.Information && _webHelper != null);
 

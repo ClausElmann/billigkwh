@@ -4,7 +4,7 @@ namespace BilligKwhWebApp.Core.Interfaces
 {
     public interface IWorkContext
     {
-        Bruger CurrentUser { get; set; }
+        User CurrentUser { get; set; }
 
         Kunde CurrentCustomer { get; }
 

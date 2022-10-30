@@ -16,7 +16,6 @@ using MediatR;
 using BilligKwhWebApp.Services;
 using BilligKwhWebApp.Infrastructure.DataTransferObjects.Common;
 using BilligKwhWebApp.Services.Customers;
-using BilligKwhWebApp.Services.Invoicing.Economic.Customers;
 
 namespace BilligKwhWebApp.Controllers
 {
@@ -34,9 +33,7 @@ namespace BilligKwhWebApp.Controllers
         private readonly IMediator _mediator;
         private readonly IApplicationSettingService _applicationSettingService;
         private readonly ISettingsService _settingsService;
-        private readonly IEconomicHttpClient _economicHttpClient;
         private readonly IEmailService _emailService;
-
 
         // Ctor
         public CustomerController(
@@ -50,7 +47,6 @@ namespace BilligKwhWebApp.Controllers
             IApplicationSettingService applicationSettingService,
             IMediator mediator,
             ISettingsService settingsService,
-            IEconomicHttpClient economicClient,
             IEmailService emailService) : base(logger, workContext, permissionService)
         {
             _customerService = customerService;
@@ -61,7 +57,7 @@ namespace BilligKwhWebApp.Controllers
             _workContext = workContext;
             _localizationService = localizationService;
             _settingsService = settingsService;
-            _economicHttpClient = economicClient;
+
             _emailService = emailService;
         }
 
@@ -137,7 +133,7 @@ namespace BilligKwhWebApp.Controllers
         //            Slettet = entity.Slettet,
         //            KundeGuid = entity.KundeGuid.ToString(),
         //            BrancheTypeID = entity.BrancheTypeID,
-        //            SprogID = entity.SprogID,
+        //            SprogID = entity.LanguageId,
         //            Kontaktperson = entity.Kontaktperson,
         //            KundeOverskrift = entity.KundeOverskrift,
         //            LandID = entity.LandID,
@@ -222,10 +218,10 @@ namespace BilligKwhWebApp.Controllers
 
                     UpdateHourWageAndCoveragePercentage(entity.Id, model.CoveragePercentage, model.HourWage);
 
-                    if (!string.IsNullOrWhiteSpace(entity.FakturaMail))
-                    {
-                        _customerService.CreateOrUpdateEconomicCustomer(entity.Id);
-                    }
+                    //if (!string.IsNullOrWhiteSpace(entity.FakturaMail))
+                    //{
+                    //    _customerService.CreateOrUpdateEconomicCustomer(entity.Id);
+                    //}
 
                     return Ok(entity.Id);
                 }
@@ -238,10 +234,10 @@ namespace BilligKwhWebApp.Controllers
 
                 UpdateHourWageAndCoveragePercentage(customer.Id, model.CoveragePercentage, model.HourWage);
 
-                if (!string.IsNullOrWhiteSpace(customer.FakturaMail))
-                {
-                    _customerService.CreateOrUpdateEconomicCustomer(customer.Id);
-                }
+                //if (!string.IsNullOrWhiteSpace(customer.FakturaMail))
+                //{
+                //    _customerService.CreateOrUpdateEconomicCustomer(customer.Id);
+                //}
                 return Ok(customer.Id);
             }
         }
@@ -323,7 +319,7 @@ namespace BilligKwhWebApp.Controllers
             var user = _workContext.CurrentUser;
             var roles = PermissionService.GetAllUserRoles();
             var mappings = PermissionService.GetCustomerUserRoleMappings(customerId);
-            var accessModels = _customerfactory.PrepareCustomerUserRoleAccessModels(customerId, roles.ToList(), mappings.ToList(), user.SprogID);
+            var accessModels = _customerfactory.PrepareCustomerUserRoleAccessModels(customerId, roles.ToList(), mappings.ToList(), user.LanguageId);
 
             if (onlyHasAccess.HasValue && onlyHasAccess.Value)
                 accessModels = accessModels.Where(model => model.HasAccess == true).ToList(); // fiter away roles that users will not have access to

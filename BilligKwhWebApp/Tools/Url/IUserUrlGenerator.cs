@@ -6,6 +6,6 @@ namespace BilligKwhWebApp.Tools.Url
 {
     public interface IUserUrlGenerator
     {
-        Uri GetNewPasswordUrl(Bruger user, IUrlHelper urlHelper);
+        Uri GetNewPasswordUrl(User user, IUrlHelper urlHelper);
     }
 }

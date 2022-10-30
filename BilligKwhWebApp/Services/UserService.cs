@@ -47,42 +47,42 @@ namespace BilligKwhWebApp.Services
             _cacheManager = cacheManager;
         }
 
-        public Bruger Get(int userId, bool inclDeleted = false)
+        public User Get(int userId, bool inclDeleted = false)
         {
-            return _baseRepository.QueryFirstOrDefault<Bruger>(
+            return _baseRepository.QueryFirstOrDefault<User>(
                 @"SELECT * 
                     FROM dbo.Bruger 
                     WHERE Id = @Id 
                     AND (@InclDeleted = 1 OR Slettet <> 1)",
                 new { Id = userId, InclDeleted = inclDeleted });
         }
-        public IEnumerable<Bruger> GetUsers()
+        public IEnumerable<User> GetUsers()
         {
-            return _baseRepository.Query<Bruger>(
+            return _baseRepository.Query<User>(
                 @"SELECT * 
                     FROM dbo.Bruger users");
         }
-        public IEnumerable<Bruger> GetUsers(int customerId)
+        public IEnumerable<User> GetUsers(int customerId)
         {
-            return _baseRepository.Query<Bruger>(
+            return _baseRepository.Query<User>(
                 @"SELECT * 
 	                    FROM dbo.Bruger users
 	                    WHERE users.CurrentCustomerId = @CustomerId",
             new { CustomerId = customerId });
         }
-        public IEnumerable<Bruger> GetUsers(IEnumerable<int> userIds)
+        public IEnumerable<User> GetUsers(IEnumerable<int> userIds)
         {
             var param = new { UserIds = userIds };
             var sql = @"SELECT *
                         FROM dbo.Bruger
                         WHERE Id IN @UserIds";
 
-            return _baseRepository.Query<Bruger>(sql, param);
+            return _baseRepository.Query<User>(sql, param);
         }
 
-        public IList<Bruger> GetUsersByCustomer(int customerId, bool onlyDeleted = false, int? userId = null)
+        public IList<User> GetUsersByCustomer(int customerId, bool onlyDeleted = false, int? userId = null)
         {
-            var query = _baseRepository.Query<Bruger>(@"		
+            var query = _baseRepository.Query<User>(@"		
 					SELECT * FROM dbo.Bruger  
 					WHERE (VærtKundeID = @CustomerId AND 
 						((@OnlyDeleted = 1 AND Slettet = 1) OR (@OnlyDeleted = 0 AND Slettet <> 1))) or (@UserId IS NOT NULL AND Id = @UserId)",
@@ -152,7 +152,7 @@ namespace BilligKwhWebApp.Services
             }, param);
         }
 
-        public IEnumerable<Bruger> GetUsersWithRoles(int customerId)
+        public IEnumerable<User> GetUsersWithRoles(int customerId)
         {
             var param = new { CustomerId = customerId };
             var sql = @"SELECT
@@ -165,9 +165,9 @@ namespace BilligKwhWebApp.Services
                         WHERE [user].CurrentCustomerId = @CustomerId AND [user].Id = 67";
 
             var userWrapperLookup = new Dictionary<int, UserWrapper>();
-            var userLookUp = new Dictionary<int, Bruger>();
+            var userLookUp = new Dictionary<int, User>();
 
-            var result = _baseRepository.Query<UserWrapper, Bruger, UserRole>(sql, (userWrapper, user, userRole) =>
+            var result = _baseRepository.Query<UserWrapper, User, UserRole>(sql, (userWrapper, user, userRole) =>
             {
                 // Lookup Wrapper
                 if (!userWrapperLookup.TryGetValue(userWrapper.PseudoId, out var currentWrapper))
@@ -187,20 +187,20 @@ namespace BilligKwhWebApp.Services
             return result;
         }
 
-        public Bruger GetUserByEmail(string brugernavn)
+        public User GetUserByEmail(string email)
         {
 
            // _logger.Fatal($"Failed to send E-mail", null);
 
-            if (string.IsNullOrWhiteSpace(brugernavn))
+            if (string.IsNullOrWhiteSpace(email))
             {
                 return null;
             }
-            var user = _baseRepository.QueryFirstOrDefault<Bruger>(
+            var user = _baseRepository.QueryFirstOrDefault<User>(
                 @"SELECT * 
-                  FROM dbo.Bruger 
-                  WHERE Brugernavn = @Brugernavn AND Slettet <> 1 and NoLogin <> 1",
-                new { brugernavn = brugernavn.Trim() });
+                  FROM dbo.Users 
+                  WHERE Email = @Email AND Deleted <> 1 and NoLogin <> 1",
+                new { Email = email.Trim() });
 
             return user;
         }
@@ -210,16 +210,16 @@ namespace BilligKwhWebApp.Services
             return GetUserByEmail(email) != null;
         }
 
-        public void Create(Bruger user)
+        public void Create(User user)
         {
             if (user is null)
                 throw new ArgumentNullException(nameof(user));
 
-            user.SidstRettet = DateTime.UtcNow;
+            user.LastEditedUtc = DateTime.UtcNow;
             _baseRepository.Insert(user);
         }
 
-        public void Update(Bruger user)
+        public void Update(User user)
         {
             if (user is null)
                 throw new ArgumentNullException(nameof(user));
@@ -227,7 +227,7 @@ namespace BilligKwhWebApp.Services
             if (user.Id == 0)
                 throw new ArgumentNullException(nameof(user));
 
-            user.SidstRettet = DateTime.UtcNow;
+            user.LastEditedUtc = DateTime.UtcNow;
             _baseRepository.Update(user);
         }
 
@@ -241,14 +241,14 @@ namespace BilligKwhWebApp.Services
                     new { userId, idOfUserToAccess }).Any();
         }
 
-        public void CountFailedLoginTry(Bruger user)
+        public void CountFailedLoginTry(User user)
         {
             user.DateLastFailedLoginUtc = DateTime.UtcNow;
             user.FailedLoginCount = (short)Math.Min(user.FailedLoginCount + 1, short.MaxValue);
 
             Update(user);
         }
-        public bool IsUserLocked(Bruger user)
+        public bool IsUserLocked(User user)
         {
             // 5 Tries in 5min intervals
             if (user.IsLockedOut || (user.DateLastFailedLoginUtc.HasValue && user.FailedLoginCount > 5) &&
@@ -263,29 +263,29 @@ namespace BilligKwhWebApp.Services
             }
             return false;
         }
-        public void UnlockLogIn(Bruger user)
+        public void UnlockLogIn(User user)
         {
             user.FailedLoginCount = 0;
             user.DateLastFailedLoginUtc = null;
             user.IsLockedOut = false;
-            user.SidstRettet = DateTime.UtcNow;
+            user.LastEditedUtc = DateTime.UtcNow;
             _baseRepository.Update(user);
         }
 
-        public void SendTwoFactorPinCodeByEmail(Bruger user, int pinCode)
+        public void SendTwoFactorPinCodeByEmail(User user, int pinCode)
         {
             // Get Template and Que Email Message
-            var mailTemplate = _emailTemplateService.GetMasterTemplate(user.SprogID);
-            var subjectText = _localizationService.GetLocalizedResource("login.TwofactorEmailSubject", user.SprogID);
-            var bodyText = _localizationService.GetLocalizedResource("login.TwofactorEmailText", user.SprogID)
+            var mailTemplate = _emailTemplateService.GetMasterTemplate(user.LanguageId);
+            var subjectText = _localizationService.GetLocalizedResource("login.TwofactorEmailSubject", user.LanguageId);
+            var bodyText = _localizationService.GetLocalizedResource("login.TwofactorEmailText", user.LanguageId)
                             .Replace("[code]", pinCode.ToString(CultureInfo.InvariantCulture).AddSpacesBetweenCharacters(), StringComparison.OrdinalIgnoreCase)
-                            .Replace("[name]", user.FuldtNavn, StringComparison.OrdinalIgnoreCase);
+                            .Replace("[name]", user.Name, StringComparison.OrdinalIgnoreCase);
 
             var emailMessage = new EmailMessage
             {
-                CustomerId = user.AktivKundeID,
-                ToEmail = user.Brugernavn,
-                ToName = user.FuldtNavn,
+                CustomerId = user.CustomerId,
+                ToEmail = user.Email,
+                ToName = user.Name,
                 FromEmail = "e-mail@noreply.nu",
                 FromName = "BilligKwh",
                 ReplyTo = "e-mail@noreply.nu",
@@ -300,9 +300,9 @@ namespace BilligKwhWebApp.Services
         }
 
 
-        public Result<Bruger> Excist(EmailAddress emailAddress)
+        public Result<User> Excist(EmailAddress emailAddress)
         {
-            var user = _baseRepository.QueryFirstOrDefault<Bruger>(
+            var user = _baseRepository.QueryFirstOrDefault<User>(
                         @"SELECT * 
                           FROM dbo.Bruger 
                           WHERE Email = @Email",
@@ -312,7 +312,7 @@ namespace BilligKwhWebApp.Services
             {
                 return Result.Ok(user);
             }
-            return Result.Fail<Bruger>("No User Excist");
+            return Result.Fail<User>("No User Excist");
         }
     }
 }

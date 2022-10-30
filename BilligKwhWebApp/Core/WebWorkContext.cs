@@ -10,7 +10,7 @@ namespace BilligKwhWebApp.Core
     public partial class WebWorkContext : IWorkContext
     {
         // Cache
-        private Bruger _cachedUser;
+        private User _cachedUser;
         private Kunde _cachedCustomer;
         private int? _cachedUserId;
         private int? _cachedCustomerId;
@@ -56,7 +56,7 @@ namespace BilligKwhWebApp.Core
             }
         }
 
-        public virtual Bruger CurrentUser
+        public virtual User CurrentUser
         {
             get
             {
@@ -65,7 +65,7 @@ namespace BilligKwhWebApp.Core
 
                 var user = _userService.Get(CurrentUserId);
 
-                if (user == null || user.Slettet)
+                if (user == null || user.Deleted)
                     return null;
 
                 _cachedUser = user;

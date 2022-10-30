@@ -8,8 +8,7 @@ namespace BilligKwhWebApp.Models
     {
         public int CustomerId { get; set; }
         public string Email { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
+        public string Name { get; set; }
         public string Phone { get; set; }
         public string Mobile { get; set; }
         public int LanguageId { get; set; }
@@ -30,21 +29,19 @@ namespace BilligKwhWebApp.Models
 
         }
 
-        public UserModel(Bruger entity)
+        public UserModel(User entity)
         {
             if (entity is null) throw new ArgumentNullException(nameof(entity));
-            CustomerId = entity.VærtKundeID;
-            Email = entity.Brugernavn;
-            Firstname = entity.Fornavn;
-            Lastname = entity.Efternavn;
-            Phone = entity.Telefon;
-            Mobile = entity.Mobil;
-            LanguageId = entity.VærtKundeID;
-            Deleted = entity.Slettet;
-            CountryId = entity.VærtKundeID;
-            TimezoneId = entity.TidzoneId;
-            ResetPhone = entity.VærtKundeID;
-            IsSuperAdmin = entity.VærtKundeID == 1;
+            CustomerId = entity.CustomerId;
+            Email = entity.Email;
+            Name = entity.Name;
+            Phone = entity.Phone;
+            LanguageId = entity.LanguageId;
+            Deleted = entity.Deleted;
+            CountryId = entity.CountryId;
+            TimezoneId = entity.TimezoneId;
+            ResetPhone = entity.ResetPhone;
+            IsSuperAdmin = entity.CustomerId == 1;
         }
     }
 

@@ -31,24 +31,22 @@ namespace BilligKwhWebApp.Core.Factories
 
 
         // Public Api
-        public UserEditModel PrepareUserModel(Bruger user)
+        public UserEditModel PrepareUserModel(User user)
         {
             if (user == null) throw new ArgumentNullException(nameof(user));
 
             var model = new UserEditModel
             {
                 Id = user.Id,
-                CustomerId = user.VærtKundeID,
+                CustomerId = user.CustomerId,
                 NewPassword = user.Adgangskode,
-                CountryId = user.LandID,
-                Email = user.Brugernavn,
-                Firstname = user.Fornavn,
-                Lastname = user.Efternavn,
-                LanguageId = user.SprogID,
-                Administrator = user.ErAdministrator,
-                Mobile = user.Mobil,
-                Phone = user.Telefon,
-                Deleted = user.Slettet,
+                CountryId = user.CountryId,
+                Email = user.Email,
+                Name = user.Name,
+                LanguageId = user.LanguageId,
+                Administrator = user.Administrator,
+                Phone = user.Phone,
+                Deleted = user.Deleted,
             };
 
             return model;
@@ -73,7 +71,7 @@ namespace BilligKwhWebApp.Core.Factories
         //        Telefon = "",
         //        Mobil = "",
         //        NoLogin = false,
-        //        SprogID = customer.SprogID != 0 ? customer.SprogID : CountryConstants.DanishLanguageId,
+        //        SprogID = customer.LanguageId != 0 ? customer.LanguageId : CountryConstants.DanishLanguageId,
         //        SidstRettet = DateTime.UtcNow,
         //        SidstRettetAfBrugerID = -1,
         //        Slettet = false,
@@ -93,43 +91,30 @@ namespace BilligKwhWebApp.Core.Factories
         //}
 
 
-        public Bruger CreateUserEntity(UserEditModel model, Kunde customer)
+        public User CreateUserEntity(UserEditModel model, Kunde customer)
         {
             if (model is null) throw new ArgumentNullException(nameof(model));
 
             if (customer == null) return null;
 
-            var user = new Bruger
+            var user = new User
             {
                 Id = model.Id,
-                Brugernavn = model.Email,
+                Email = model.Email,
                 Adgangskode = model.NewPassword,
-                BrugernavnUtfCode = _authenticationService.BeregnBrugernavnHashUtfCode(model.Email),
-                BrugernavnUnicode = _authenticationService.BeregnBrugernavnHashUnicode(model.Email),
-                VærtKundeID = customer.Id,
-                AktivKundeID = customer.Id,
-                ErAdministrator = model.Administrator,
+                CustomerId = customer.Id,
+                Administrator = model.Administrator,
                 SystemAdministrator = false,
-                KundeAdministrator = false,
-                Fornavn = model.Firstname,
-                Efternavn = model.Lastname,
-                Telefon = model.Phone,
-                Mobil = model.Mobile,
+                Name = model.Name,
+                Phone = model.Phone,
                 NoLogin = false,
-                SprogID = model.LanguageId,
-                SidstRettet = DateTime.UtcNow,
-                SidstRettetAfBrugerID = -1,
-                Slettet = false,
-                StandardBedriftID = 0,
-                SecurityStamp = "",
-                PasswordHash = "",
-                PortalAdministrator = false,
-                LandID = model.CountryId,
+                LanguageId = model.LanguageId,
+                CountryId = model.CountryId,
                 Password = "",
                 PasswordSalt = "",
                 FailedLoginCount = 0,
                 IsLockedOut = false,
-                TidzoneId = "Romance Standard Time"
+                TimezoneId = "Romance Standard Time",
             };
 
             return user.SetTidzoneId(model.LanguageId);

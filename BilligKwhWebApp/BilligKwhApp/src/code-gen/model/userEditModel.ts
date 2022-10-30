@@ -15,10 +15,8 @@ export interface UserEditModel {
     id?: number;
     customerId?: number;
     email?: string | null;
-    firstname?: string | null;
-    lastname?: string | null;
+    name?: string | null;
     phone?: string | null;
-    mobile?: string | null;
     languageId?: number;
     countryId?: number;
     newPassword?: string | null;

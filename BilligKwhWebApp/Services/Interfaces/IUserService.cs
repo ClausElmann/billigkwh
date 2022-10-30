@@ -6,23 +6,23 @@ namespace BilligKwhWebApp.Services.Interfaces
     public interface IUserService
     {
         //CRUD
-        void Create(Bruger customer);
-        void Update(Bruger customer);
-        Bruger Get(int userId, bool inclDeleted = false);
+        void Create(User customer);
+        void Update(User customer);
+        User Get(int userId, bool inclDeleted = false);
         bool CanUserAccessUser(int userId, int idOfUserToAccess);
-        Bruger GetUserByEmail(string email);
+        User GetUserByEmail(string email);
 
-        IEnumerable<Bruger> GetUsers();
-        IEnumerable<Bruger> GetUsers(int customerId);
-        IEnumerable<Bruger> GetUsers(IEnumerable<int> userIds);
+        IEnumerable<User> GetUsers();
+        IEnumerable<User> GetUsers(int customerId);
+        IEnumerable<User> GetUsers(IEnumerable<int> userIds);
         IEnumerable<UserRoleMapping> GetUserRoles(int userId);
-        IEnumerable<Bruger> GetUsersWithRoles(int customerId);
+        IEnumerable<User> GetUsersWithRoles(int customerId);
         bool UserExists(string email);
-        void CountFailedLoginTry(Bruger user);
-        bool IsUserLocked(Bruger user);
-        void UnlockLogIn(Bruger user);
+        void CountFailedLoginTry(User user);
+        bool IsUserLocked(User user);
+        void UnlockLogIn(User user);
 
-        void SendTwoFactorPinCodeByEmail(Bruger user, int pinCode);
-        IList<Bruger> GetUsersByCustomer(int customerId, bool onlyDeleted = false, int? userId = null);
+        void SendTwoFactorPinCodeByEmail(User user, int pinCode);
+        IList<User> GetUsersByCustomer(int customerId, bool onlyDeleted = false, int? userId = null);
     }
 }

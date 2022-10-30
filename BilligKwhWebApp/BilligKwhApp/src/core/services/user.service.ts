@@ -573,8 +573,7 @@ export class UserService extends BiStore<UserServiceState> {
     return {
       id: 0,
       customerId: 0,
-      firstname: "",
-      lastname: "",
+      name: "",
       email: "",
       countryId: 1,
       deleted: false,
