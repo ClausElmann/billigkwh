@@ -11,7 +11,7 @@ namespace BilligKwhWebApp.Core
     {
         // Cache
         private User _cachedUser;
-        private Kunde _cachedCustomer;
+        private Customer _cachedCustomer;
         private int? _cachedUserId;
         private int? _cachedCustomerId;
         private int? _cachedProfileId;
@@ -116,16 +116,16 @@ namespace BilligKwhWebApp.Core
             }
         }
 
-        public virtual Kunde CurrentCustomer
+        public virtual Customer CurrentCustomer
         {
             get
             {
-                if (_cachedCustomer != null && _cachedCustomer.Id == CurrentCustomerId)
+                if (_cachedCustomer != null && _cachedCustomer.Id == CustomerId)
                     return _cachedCustomer;
 
-                var customer = _customerService.Get(CurrentCustomerId);
+                var customer = _customerService.Get(CustomerId);
 
-                if (customer == null || customer.Slettet)
+                if (customer == null || customer.Deleted)
                     return null;
 
                 _cachedCustomer = customer;
@@ -138,7 +138,7 @@ namespace BilligKwhWebApp.Core
             }
         }
 
-        public virtual int CurrentCustomerId
+        public virtual int CustomerId
         {
             get
             {

@@ -5,10 +5,10 @@ namespace BilligKwhWebApp.Events
 {
     public class CustomerUpdatedEvent : INotification
     {
-        public CustomerUpdatedEvent(Kunde customer)
+        public CustomerUpdatedEvent(Customer customer)
         {
             Customer = customer;
         }
-        public Kunde Customer { get; }
+        public Customer Customer { get; }
     }
 }

@@ -12,7 +12,7 @@ namespace BilligKwhWebApp
 
         // Foreign Keys
         public int CustomerId { get; set; }
-        public virtual Kunde Customer { get; set; }
+        public virtual Customer Customer { get; set; }
 
         public int UserId { get; set; }
         public virtual User User { get; set; }
@@ -21,7 +21,7 @@ namespace BilligKwhWebApp
         {
 
         }
-        public CustomerUserMapping(Kunde customer, User user)
+        public CustomerUserMapping(Customer customer, User user)
         {
             Customer = customer;
             User = user;

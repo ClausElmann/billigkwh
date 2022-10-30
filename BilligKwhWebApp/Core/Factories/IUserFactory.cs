@@ -12,7 +12,7 @@ namespace BilligKwhWebApp.Core.Factories
 
         //Bruger CreateUserEntity(UserModel dto);
 
-        User CreateUserEntity(UserEditModel model, Kunde customer);
+        User CreateUserEntity(UserEditModel model, Customer customer);
 
         /// <param name="languageId">Used for correct translation</param>
         IList<UserRoleAccessModel> PrepareUserRoleAccessModels(int userId, IList<UserRole> roles, IList<UserRoleMapping> mappings, int languageId);

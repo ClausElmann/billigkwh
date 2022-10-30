@@ -71,7 +71,7 @@ namespace BilligKwhWebApp.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<CustomerModel> GetCustomer(int? id, Guid? publicId)
         {
-            Kunde customer;
+            Customer customer;
 
             if (id != null)
             {
@@ -90,80 +90,8 @@ namespace BilligKwhWebApp.Controllers
 
             var model = _customerfactory.CreateCustomerModel(customer);
 
-            var eltavleTimePris = _settingsService.Get((int)InstillingEnum.EltavleTimePris, customer.Id);
-            model.HourWage = eltavleTimePris?._Int ?? 0;
-
-            var eltavleDB = _settingsService.Get((int)InstillingEnum.EltavleDB, customer.Id);
-            model.CoveragePercentage = (double)(eltavleDB?._Double ?? (decimal)0.0);
-
             return Ok(model);
         }
-
-        ///// <summary>
-        ///// Get customer data intended for "edit info" pages. Current customer is returned if not providing an id (must be super admin in that case).
-        ///// </summary>
-        ///// <returns>Current customer </returns>
-        //[HttpGet]
-        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(KundeModel))]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDto))]
-        //public IActionResult GetCustomerForEdit(int? id)
-        //{
-        //    Kunde entity;
-        //    if (id != null && !PermissionService.DoesUserHaveRole(_workContext.CurrentUser.Id, UserRolesEnum.SuperAdmin))
-        //    {
-        //        return ForbidWithMessage(new { ErrorMessage = "User is not super admin", UserId = _workContext.CurrentUser.Id, CustomerId = id });
-        //    }
-
-        //    entity = id != null ? _customerService.Get(id.Value) : _workContext.CurrentCustomer;
-
-        //    if (entity != null)
-        //    {
-        //        return Ok(new KundeModel()
-        //        {
-        //            Id = entity.Id,
-        //            Kundenavn = entity.Kundenavn,
-        //            Adresse = entity.Adresse,
-        //            Kontakt = entity.Kontakt,
-        //            Telefon = entity.Telefon,
-        //            Fax = entity.Fax,
-        //            Email = entity.Email,
-        //            PostNr = entity.PostNr,
-        //            KundeTypeID = entity.KundeTypeID,
-        //            Skjult = entity.Skjult,
-        //            Slettet = entity.Slettet,
-        //            KundeGuid = entity.KundeGuid.ToString(),
-        //            BrancheTypeID = entity.BrancheTypeID,
-        //            SprogID = entity.LanguageId,
-        //            Kontaktperson = entity.Kontaktperson,
-        //            KundeOverskrift = entity.KundeOverskrift,
-        //            LandID = entity.LandID,
-        //            Cvr = entity.Cvr,
-        //            TidzoneId = entity.TidzoneId,
-        //        });
-        //    }
-        //    else
-        //    {
-        //        return BadRequest(new { ErrorMessage = "Customer not found", WorkContext = _workContext });
-        //    }
-        //}
-
-        /// <summary>
-        /// Returns all users mapped to a customer
-        /// </summary>
-        /// <returns>A list of UserModels</returns>
-        //[HttpGet]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDto))]
-        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserModel>))]
-        //public IActionResult GetCustomerUsers()
-        //{
-        //    var users = _userService.GetList(_workContext.CurrentCustomerId);
-        //    if (users == null)
-        //    {
-        //        return BadRequest(new { ErrorMessage = "Customers does not contain any users", _workContext.CurrentUser });
-        //    }
-
-        //    return Ok(users.Select(x => _userFactory.PrepareUserModel(x)));
-        //}
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDto))]
@@ -189,34 +117,19 @@ namespace BilligKwhWebApp.Controllers
                     if (_workContext.CurrentCustomer.Id != entity.Id && !isSuperAdmin)
                         return ForbidWithMessage("User must be super admin to update a different customer than current!");
 
-                    entity.Kundenavn = model.Name;
-                    entity.Adresse = model.Address;
-                    entity.Kontakt = "";
-                    entity.Telefon = "";
-                    entity.Fax = "";
-                    entity.Email = "";
-                    entity.PostNr = model.Zipcode;
-                    entity.By = model.City;
-                    entity.KundeTypeID = 12;
-                    entity.Skjult = false;
-                    entity.Slettet = model.Deleted;
-                    entity.BrancheTypeID = 11;
-                    entity.SprogID = model.LanguageId;
-                    entity.Kontaktperson = "";
-                    entity.KundeOverskrift = model.Name;
-                    entity.LandID = model.CountryId;
-                    entity.Cvr = model.CompanyRegistrationId;
-                    entity.TidzoneId = model.TimeZoneId;
-                    entity.FakturaMail = model.InvoiceMail;
-                    entity.FakturaKontaktPerson = model.InvoiceContactPerson;
-                    entity.FakturaTelefonFax = model.InvoicePhoneFax;
-                    entity.FakturaMobil = model.InvoiceMobile;
-
-                    entity.SetTidzoneId(entity.LandID);
+                    entity.Name = model.Name;
+                    entity.Address = model.Address;
+                    entity.Deleted = model.Deleted;
+                    entity.LanguageId = model.LanguageId;
+                    entity.Name = model.Name;
+                    entity.CountryId = model.CountryId;
+                    entity.CompanyRegistrationId = model.CompanyRegistrationId;
+                    entity.TimeZoneId = model.TimeZoneId;
+                 
+                    entity.SetTidzoneId(entity.CountryId);
 
                     _customerService.Update(entity);
 
-                    UpdateHourWageAndCoveragePercentage(entity.Id, model.CoveragePercentage, model.HourWage);
 
                     //if (!string.IsNullOrWhiteSpace(entity.FakturaMail))
                     //{
@@ -232,8 +145,6 @@ namespace BilligKwhWebApp.Controllers
                 var customer = _customerfactory.CreateCustomerEntity(model);
                 _customerService.Create(customer);
 
-                UpdateHourWageAndCoveragePercentage(customer.Id, model.CoveragePercentage, model.HourWage);
-
                 //if (!string.IsNullOrWhiteSpace(customer.FakturaMail))
                 //{
                 //    _customerService.CreateOrUpdateEconomicCustomer(customer.Id);
@@ -241,48 +152,7 @@ namespace BilligKwhWebApp.Controllers
                 return Ok(customer.Id);
             }
         }
-
-        private void UpdateHourWageAndCoveragePercentage(int kundeId, double coveragePercentage, int hourWage)
-        {
-            var eltavleTimePris = _settingsService.Get((int)InstillingEnum.EltavleTimePris, kundeId);
-            if (eltavleTimePris == null)
-            {
-                _settingsService.Create(new Indstilling()
-                {
-                    KundeID = kundeId,
-                    InstillingEnumID = (int)InstillingEnum.EltavleTimePris,
-                    Slettet = false,
-                    _Int = hourWage,
-                    SidstRettet = DateTime.UtcNow,
-                });
-            }
-            else
-            {
-                eltavleTimePris._Int = hourWage;
-                eltavleTimePris.SidstRettet = DateTime.UtcNow;
-                _settingsService.Update(eltavleTimePris);
-            }
-
-            var eltavleDB = _settingsService.Get((int)InstillingEnum.EltavleDB, kundeId);
-            if (eltavleDB == null)
-            {
-                _settingsService.Create(new Indstilling()
-                {
-                    KundeID = kundeId,
-                    InstillingEnumID = (int)InstillingEnum.EltavleDB,
-                    Slettet = false,
-                    _Double = (decimal)coveragePercentage,
-                    SidstRettet = DateTime.UtcNow,
-                });
-            }
-            else
-            {
-                eltavleDB._Double = (decimal)coveragePercentage;
-                eltavleDB.SidstRettet = DateTime.UtcNow;
-                _settingsService.Update(eltavleDB);
-            }
-        }
-
+             
 
         /// <summary>
         /// Get all customers. Optionally, you can pass a countryId for filtering by country
@@ -292,11 +162,11 @@ namespace BilligKwhWebApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CustomerModel>))]
         public IActionResult GetCustomers(int? countryId, bool onlyDeleted = false)
         {
-            var customers = _customerService.GetAll(onlyDeleted).Where(w => w.BrancheTypeID == 11 || w.BrancheTypeID == 12);
+            var customers = _customerService.GetAll(onlyDeleted);
             if (customers != null)
             {
                 if (countryId.HasValue)
-                    customers = customers.Where(c => c.LandID == countryId.Value).ToList();
+                    customers = customers.Where(c => c.CountryId == countryId.Value).ToList();
 
                 var customerModels = customers.Select(c => _customerfactory.CreateCustomerModel(c));
 

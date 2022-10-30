@@ -6,9 +6,9 @@ namespace BilligKwhWebApp.Core.Interfaces
     {
         User CurrentUser { get; set; }
 
-        Kunde CurrentCustomer { get; }
+        Customer CurrentCustomer { get; }
 
-        int CurrentCustomerId { get; }
+        int CustomerId { get; }
 
         int CurrentUserId { get; }
 

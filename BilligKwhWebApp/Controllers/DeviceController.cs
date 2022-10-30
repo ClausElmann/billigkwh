@@ -35,7 +35,7 @@ namespace BilligKwhWebApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PrintDto>))]
         public IActionResult GetPrints(int? countryId, int? customerId)
         {
-            customerId ??= _workContext.CurrentCustomerId;
+            customerId ??= _workContext.CustomerId;
 
             var prints = _arduinoService.GetAllPrintDto((int)customerId);
 

@@ -51,30 +51,30 @@ namespace BilligKwhWebApp.Services
         {
             return _baseRepository.QueryFirstOrDefault<User>(
                 @"SELECT * 
-                    FROM dbo.Bruger 
+                    FROM dbo.Users 
                     WHERE Id = @Id 
-                    AND (@InclDeleted = 1 OR Slettet <> 1)",
+                    AND (@InclDeleted = 1 OR Deleted <> 1)",
                 new { Id = userId, InclDeleted = inclDeleted });
         }
         public IEnumerable<User> GetUsers()
         {
             return _baseRepository.Query<User>(
                 @"SELECT * 
-                    FROM dbo.Bruger users");
+                    FROM dbo.Users users");
         }
         public IEnumerable<User> GetUsers(int customerId)
         {
             return _baseRepository.Query<User>(
                 @"SELECT * 
-	                    FROM dbo.Bruger users
-	                    WHERE users.CurrentCustomerId = @CustomerId",
+	                    FROM dbo.Users users
+	                    WHERE users.CustomerId = @CustomerId",
             new { CustomerId = customerId });
         }
         public IEnumerable<User> GetUsers(IEnumerable<int> userIds)
         {
             var param = new { UserIds = userIds };
             var sql = @"SELECT *
-                        FROM dbo.Bruger
+                        FROM dbo.Users
                         WHERE Id IN @UserIds";
 
             return _baseRepository.Query<User>(sql, param);
@@ -83,9 +83,9 @@ namespace BilligKwhWebApp.Services
         public IList<User> GetUsersByCustomer(int customerId, bool onlyDeleted = false, int? userId = null)
         {
             var query = _baseRepository.Query<User>(@"		
-					SELECT * FROM dbo.Bruger  
-					WHERE (VærtKundeID = @CustomerId AND 
-						((@OnlyDeleted = 1 AND Slettet = 1) OR (@OnlyDeleted = 0 AND Slettet <> 1))) or (@UserId IS NOT NULL AND Id = @UserId)",
+					SELECT * FROM dbo.Users  
+					WHERE (CustomerId = @CustomerId AND 
+						((@OnlyDeleted = 1 AND Deleted = 1) OR (@OnlyDeleted = 0 AND Deleted <> 1))) or (@UserId IS NOT NULL AND Id = @UserId)",
                         new { CustomerId = customerId, OnlyDeleted = onlyDeleted, UserId = userId });
 
             return query.ToList();
@@ -102,12 +102,12 @@ namespace BilligKwhWebApp.Services
         //                 [user].[Name] AS Name,
         //                 [user].Email AS Email,
         //                 [user].CountryId AS CountryId,
-        //                    [user].Slettet AS Deleted,
+        //                    [user].Deleted AS Deleted,
         //                    [user].DateLastLoginUtc AS LastLoggedIn,
         //                 customer.[Name] AS Customer,
         //                 customer.Id AS CustomerId                     
-        //                FROM dbo.Bruger [user]
-        //                 INNER JOIN dbo.Kunde customer ON customer.Id = [user].CurrentCustomerId
+        //                FROM dbo.Users [user]
+        //                 INNER JOIN dbo.Customers customer ON customer.Id = [user].CustomerId
         //                ORDER BY customer.[Name] ASC";
 
         //        return _baseRepository.Query<Index_User>(sql);
@@ -121,12 +121,12 @@ namespace BilligKwhWebApp.Services
         //                   [user].[Name] AS Name,
         //                   [user].Email AS Email,
         //                   [user].CountryId AS CountryId,
-        //                   [user].Slettet AS Deleted,
+        //                   [user].Deleted AS Deleted,
         //                   [user].DateLastLoginUtc AS LastLoggedIn,
         //                   customer.[Name] AS Customer,
         //                   customer.Id AS CustomerId
-        //            FROM dbo.Bruger [user]
-        //            INNER JOIN dbo.Kunde customer ON customer.Id = [user].CurrentCustomerId
+        //            FROM dbo.Users [user]
+        //            INNER JOIN dbo.Customers customer ON customer.Id = [user].CustomerId
         //            WHERE
         //                (SELECT count(*)
         //                 FROM dbo.UserRoleMappings AS urm
@@ -159,10 +159,10 @@ namespace BilligKwhWebApp.Services
                             1 AS PseudoId,
 	                        [user].*,
 	                        [userRole].*
-	                    FROM dbo.Bruger [user]
+	                    FROM dbo.Users [user]
 	                        INNER JOIN dbo.UserRoleMappings userRoleMapping ON userRoleMapping.UserId = [user].Id
 	                        INNER JOIN dbo.UserRoles userRole ON userRoleMapping.UserRoleId = userRole.Id
-                        WHERE [user].CurrentCustomerId = @CustomerId AND [user].Id = 67";
+                        WHERE [user].CustomerId = @CustomerId AND [user].Id = 67";
 
             var userWrapperLookup = new Dictionary<int, UserWrapper>();
             var userLookUp = new Dictionary<int, User>();
@@ -304,7 +304,7 @@ namespace BilligKwhWebApp.Services
         {
             var user = _baseRepository.QueryFirstOrDefault<User>(
                         @"SELECT * 
-                          FROM dbo.Bruger 
+                          FROM dbo.Users 
                           WHERE Email = @Email",
                         new { emailAddress.Email });
 

@@ -6,13 +6,13 @@ namespace BilligKwhWebApp.Services.Customers.Repository
 {
     public interface ICustomerRepository
     {
-        void Insert(Kunde customer);
-        void Update(Kunde customer);
-        Kunde GetByName(string name);
-        Kunde GetByEconomicId(int economicId);
-        Kunde GetByGuid(Guid publicId);
-        IReadOnlyCollection<Kunde> GetAll(bool onlyDeleted);
-        IReadOnlyCollection<Kunde> GetAllByUser(int userId);
-        Kunde GetById(int customerId);
+        void Insert(Customer customer);
+        void Update(Customer customer);
+        Customer GetByName(string name);
+        Customer GetByEconomicId(int economicId);
+        Customer GetByGuid(Guid publicId);
+        IReadOnlyCollection<Customer> GetAll(bool onlyDeleted);
+        IReadOnlyCollection<Customer> GetAllByUser(int userId);
+        Customer GetById(int customerId);
     }
 }

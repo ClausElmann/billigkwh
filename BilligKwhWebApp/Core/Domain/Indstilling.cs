@@ -4,8 +4,8 @@ namespace BilligKwhWebApp.Core.Domain
 {
     public enum InstillingEnum : int
     {
-        EltavleDB = 15,
-        EltavleTimePris = 16,
+        //EltavleDB = 15,
+        //EltavleTimePris = 16,
     }
 
     public class Indstilling : BaseEntity

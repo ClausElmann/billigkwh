@@ -32,11 +32,11 @@ namespace BilligKwhWebApp.Services.Customers
             _mediator = mediator;
         }
 
-        public void Create(Kunde customer)
+        public void Create(Customer customer)
         {
             if (customer != null)
             {
-                customer.SidstRettet = DateTime.UtcNow;
+                customer.LastEditedUtc = DateTime.UtcNow;
                 _customerRepository.Insert(customer);
                 _mediator.Publish(new CustomerCreatedEvent(customer));
             }
@@ -45,11 +45,11 @@ namespace BilligKwhWebApp.Services.Customers
                 _logger.Warning("Customer NULL in InsertCustomer", null, "CustomerService");
             }
         }
-        public void Update(Kunde customer)
+        public void Update(Customer customer)
         {
             if (customer != null)
             {
-                customer.SidstRettet = DateTime.UtcNow;
+                customer.LastEditedUtc = DateTime.UtcNow;
                 _customerRepository.Update(customer);
                 _mediator.Publish(new CustomerUpdatedEvent(customer));
             }
@@ -66,39 +66,39 @@ namespace BilligKwhWebApp.Services.Customers
         }
 
         // Queries
-        public Kunde Get(int customerId)
+        public Customer Get(int customerId)
         {
             return _customerRepository.GetById(customerId);
         }
 
-        public Result<Kunde> GetByName(string name)
+        public Result<Customer> GetByName(string name)
         {
             var customer = _customerRepository.GetByName(name);
 
             if (customer == null)
-                return Result.Fail<Kunde>("Customer not found.");
+                return Result.Fail<Customer>("Customer not found.");
             else
                 return Result.Ok(customer);
         }
-        public Result<Kunde> GetByEconomicId(int economicId)
+        public Result<Customer> GetByEconomicId(int economicId)
         {
             var customer = _customerRepository.GetByEconomicId(economicId);
 
             if (customer == null)
-                return Result.Fail<Kunde>("Customer not found.");
+                return Result.Fail<Customer>("Customer not found.");
             else
                 return Result.Ok(customer);
         }
-        public Kunde GetByGuid(Guid publicId)
+        public Customer GetByGuid(Guid publicId)
         {
             return _customerRepository.GetByGuid(publicId);
         }
-        public IReadOnlyCollection<Kunde> GetAll(bool inclDeleted = false)
+        public IReadOnlyCollection<Customer> GetAll(bool inclDeleted = false)
         {
             return _customerRepository.GetAll(inclDeleted);
         }
 
-        public IReadOnlyCollection<Kunde> GetAllByUser(int userId)
+        public IReadOnlyCollection<Customer> GetAllByUser(int userId)
         {
             return _customerRepository.GetAllByUser(userId);
         }

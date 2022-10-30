@@ -61,7 +61,7 @@ export class CustomerService extends BiStore<CustomerState> {
   private customersLastRefreshed: moment.Moment;
   private customersCacheExpirationHours = 2;
 
-  public currentCustomerId: number;
+  public CustomerId: number;
 
   constructor(private http: HttpClient, eventsManager: GlobalStateAndEventsService) {
     super(new CustomerState());
@@ -172,15 +172,11 @@ export class CustomerService extends BiStore<CustomerState> {
       id: 0,
       name: "",
       address: "",
-      city: "",
-      zipcode: 0,
       countryId: 1,
       deleted: false,
       timeZoneId: null,
       languageId: 1,
-      companyRegistrationId: null,
-      hourWage: 450,
-      coveragePercentage: 1.3
+      companyRegistrationId: null
     };
   }
 

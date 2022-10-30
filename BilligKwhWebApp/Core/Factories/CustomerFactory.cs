@@ -16,67 +16,45 @@ namespace BilligKwhWebApp.Core.Factories
             _localizationService = localizationService;
         }
 
-        public CustomerModel CreateCustomerModel(Kunde entity)
+        public CustomerModel CreateCustomerModel(Customer entity)
         {
             if (entity is null) throw new ArgumentNullException(nameof(entity));
 
             return new CustomerModel
             {
                 Id = entity.Id,
-                Name = entity.Kundenavn,
-                Address = entity.Adresse,
-                DisplayAddress = entity.Adresse + ", " + entity.PostNr + " " + entity.By,
-                Zipcode = entity.PostNr,
-                Deleted = entity.Slettet,
-                LanguageId = entity.SprogID,
-                CountryId = entity.LandID,
-                CompanyRegistrationId = entity.Cvr,
-                TimeZoneId = entity.TidzoneId,
-                InvoiceMail = entity.FakturaMail,
-                InvoiceContactPerson = entity.FakturaKontaktPerson,
-                InvoicePhoneFax = entity.FakturaTelefonFax,
-                InvoiceMobile = entity.FakturaMobil,
-                City = entity.By,
-                EconomicId = entity.EconomicId,
+                Name = entity.Name,
+                Address = entity.Address,
+                Deleted = entity.Deleted,
+                LanguageId = entity.LanguageId,
+                CountryId = entity.CountryId,
+                CompanyRegistrationId = entity.CompanyRegistrationId,
+                TimeZoneId = entity.TimeZoneId,
             };
         }
 
-        public Kunde CreateCustomerEntity(CustomerModel model)
+        public Customer CreateCustomerEntity(CustomerModel model)
         {
             if (model is null) throw new ArgumentNullException(nameof(model));
 
-            var kunde = new Kunde
+            var kunde = new Customer
             {
                 Id = model.Id,
-                Kundenavn = model.Name,
-                Adresse = model.Address,
-                Kontakt = "",
-                Telefon = "",
-                Fax = "",
-                Email = "",
-                PostNr = model.Zipcode,
-                By = model.City,
-                Lat = 0,
-                Lon = 0,
-                KundeTypeID = 12,
-                Skjult = false,
-                Slettet = model.Deleted,
-                KundeGuid = new Guid(),
-                BrancheTypeID = 11,
-                SprogID = model.LanguageId,
-                Kontaktperson = "",
-                KundeOverskrift = "",
-                LandID = model.CountryId,
-                Cvr = model.CompanyRegistrationId,
-                TidzoneId = model.TimeZoneId,
-                FakturaMail = model.InvoiceMail,
-                FakturaKontaktPerson = model.InvoiceContactPerson,
-                FakturaTelefonFax = model.InvoicePhoneFax,
-                FakturaMobil = model.InvoiceMobile,
-                EconomicId = model.EconomicId
+                Name = model.Name,
+                Address = model.Address,
+                Deleted = model.Deleted,
+                LanguageId = model.LanguageId,
+                CountryId = model.CountryId,
+                CompanyRegistrationId = model.CompanyRegistrationId,
+                TimeZoneId = model.TimeZoneId,
+                Active = model.Active,
+                DateCreatedUtc = model.DateCreatedUtc,
+                DateDeletedUtc = model.DateDeletedUtc,
+                DateLastUpdatedUtc = model.DateLastUpdatedUtc,
+                PublicId = model.PublicId,
             };
 
-            return kunde.SetTidzoneId(kunde.LandID);
+            return kunde.SetTidzoneId(kunde.CountryId);
         }
 
         public IList<UserRoleAccessModel> PrepareCustomerUserRoleAccessModels(int customerId, IList<UserRole> roles, IList<CustomerUserRoleMapping> mappings, int languageId)

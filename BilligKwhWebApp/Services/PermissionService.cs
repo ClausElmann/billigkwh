@@ -306,12 +306,12 @@ namespace BilligKwhWebApp.Services
 
                 // Add new roles to users, if they don't already exists
                 sql = @"INSERT INTO UserRoleMappings(UserId, UserRoleId,CustomerId) 
-                        SELECT distinct u.Id, ur.Id, u.CurrentCustomerId
-                        FROM dbo.Brugere u
+                        SELECT distinct u.Id, ur.Id, u.CustomerId
+                        FROM dbo.Userse u
                         CROSS JOIN dbo.UserRoles ur
-                        WHERE u.CurrentCustomerId = @customerId AND u.Deleted = 0 
+                        WHERE u.CustomerId = @customerId AND u.Deleted = 0 
                         AND ur.Id IN @newDefaultSelectedUserRoleId 
-                        AND NOT ur.Id IN (SELECT UserRoleId FROM dbo.UserRoleMappings WHERE CustomerId = u.CurrentCustomerId AND UserId = u.Id) ";
+                        AND NOT ur.Id IN (SELECT UserRoleId FROM dbo.UserRoleMappings WHERE CustomerId = u.CustomerId AND UserId = u.Id) ";
                 connection.Execute(sql, new { newDefaultSelectedUserRoleId, customerId });
             }
 

@@ -1,8 +1,8 @@
 ﻿CREATE TABLE [dbo].[EmailMessages] (
     [Id]             INT            IDENTITY (1, 1) NOT NULL,
     [CustomerId]     INT            CONSTRAINT [DF_EmailMessages_CustomerId] DEFAULT ((0)) NOT NULL,
-    [RefTypeID]      INT               NULL,
-    [RefID]          INT               NULL,
+    [RefTypeID]      INT            NULL,
+    [RefID]          INT            NULL,
     [CategoryId]     INT            CONSTRAINT [DF__EmailMess__CateG__22D8BFEE] DEFAULT ((0)) NOT NULL,
     [Subject]        NVARCHAR (200) NOT NULL,
     [FromName]       NVARCHAR (200) NULL,
@@ -16,8 +16,11 @@
     [UseBcc]         BIT            CONSTRAINT [DF__EmailMess__UseBc__21E49BB5] DEFAULT ((1)) NOT NULL,
     [ReplyTo]        NVARCHAR (200) NOT NULL,
     [Body]           NVARCHAR (MAX) NULL,
-    CONSTRAINT [PK__EmailMess__3214EC07A07B5Z6B] PRIMARY KEY CLUSTERED ([Id] ASC)
+    CONSTRAINT [PK__EmailMess__3214EC07A07B5Z6B] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_EmailMessages_Customers] FOREIGN KEY ([CustomerId]) REFERENCES [dbo].[Customers] ([Id])
 );
+
+
 
 
 

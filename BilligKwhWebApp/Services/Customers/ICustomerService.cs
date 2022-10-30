@@ -7,11 +7,11 @@ namespace BilligKwhWebApp.Services.Customers
     public partial interface ICustomerService
     {
         //CRUD
-        void Create(Kunde customer);
-        Kunde Get(int customerId);
-        void Update(Kunde customer);
+        void Create(Customer customer);
+        Customer Get(int customerId);
+        void Update(Customer customer);
         void InsertCustomerUserRoleMapping(IEnumerable<CustomerUserRoleMapping> customerMappings);
 
-        IReadOnlyCollection<Kunde> GetAll(bool inclDeleted = false);
+        IReadOnlyCollection<Customer> GetAll(bool inclDeleted = false);
     }
 }

@@ -5,7 +5,7 @@
     [CustomerId] INT NOT NULL,
     CONSTRAINT [PK__Users_In__3214EC078DF87398] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_UserInRoles_UserRoles] FOREIGN KEY ([UserRoleId]) REFERENCES [dbo].[UserRoles] ([Id]),
-    CONSTRAINT [FK_UserInRoles_Users] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id])
+    CONSTRAINT [FK_UserRoleMappings_Users] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id])
 );
 
 
@@ -13,8 +13,14 @@ GO
 ALTER TABLE [dbo].[UserRoleMappings] NOCHECK CONSTRAINT [FK_UserInRoles_UserRoles];
 
 
+
+
 GO
-ALTER TABLE [dbo].[UserRoleMappings] NOCHECK CONSTRAINT [FK_UserInRoles_Users];
+ALTER TABLE [dbo].[UserRoleMappings] NOCHECK CONSTRAINT [FK_UserInRoles_UserRoles];
+
+
+GO
+
 
 
 

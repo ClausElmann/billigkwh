@@ -91,7 +91,7 @@ namespace BilligKwhWebApp.Core.Factories
         //}
 
 
-        public User CreateUserEntity(UserEditModel model, Kunde customer)
+        public User CreateUserEntity(UserEditModel model, Customer customer)
         {
             if (model is null) throw new ArgumentNullException(nameof(model));
 

@@ -149,7 +149,7 @@ export class UserEditMainComponent implements OnInit {
       returnObject.id = this.user.id;
       returnObject.deleted = this.user.deleted;
     } else {
-      returnObject.customerId = this.customerService.currentCustomerId;
+      returnObject.customerId = this.customerService.CustomerId;
     }
 
     return returnObject;
@@ -213,7 +213,7 @@ export class UserEditMainComponent implements OnInit {
     this.mainForm.reset();
     // if (stay) this.router.navigate(["/superadmin/users", this.user.id, "main"]);
     // else this.router.navigate(["/superadmin/users"]);
-    this.router.navigate(["/superadmin/customers", this.customerService.currentCustomerId, "users"]);
+    this.router.navigate(["/superadmin/customers", this.customerService.CustomerId, "users"]);
   }
 
   confirmBrugerMail(event: Event) {

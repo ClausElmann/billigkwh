@@ -884,7 +884,7 @@ namespace BilligKwhWebApp.Controllers
                     return BadRequest("Email already exists");
                 }
 
-                var customer = _customerService.Get(_workContext.CurrentCustomerId);
+                var customer = _customerService.Get(_workContext.CustomerId);
 
                 if (_workContext.IsUserSuperAdmin())
                 {
@@ -981,7 +981,7 @@ namespace BilligKwhWebApp.Controllers
                     return ForbidWithMessage("User is protected");
                 }
 
-                PermissionService.SetUserRoleAccess(_workContext.CurrentUser.Id, _workContext.CurrentCustomerId, userId, roleIds, hasAccess);
+                PermissionService.SetUserRoleAccess(_workContext.CurrentUser.Id, _workContext.CustomerId, userId, roleIds, hasAccess);
                 return Ok();
             }
             else
@@ -1240,7 +1240,7 @@ namespace BilligKwhWebApp.Controllers
         //    }
         //    else
         //    {
-        //        int customerId = _workContext.CurrentCustomerId;
+        //        int customerId = _workContext.CustomerId;
 
         //        bool isSuperAdmin = PermissionService.DoesUserHaveRole(_workContext.CurrentUser.Id, UserRolesEnum.SuperAdmin);
 

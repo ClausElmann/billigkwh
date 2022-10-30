@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace BilligKwhWebApp.Models
+namespace BilligKwhWebApp.Core.Domain
 {
-    public class CustomerModel : BaseModel
+    public class Customer : BaseEntity
     {
         public Guid PublicId { get; set; }
         public string Name { get; set; }
@@ -18,5 +18,15 @@ namespace BilligKwhWebApp.Models
         public string CompanyRegistrationId { get; set; }
         public DateTime LastEditedUtc { get; set; }
 
+        public Customer SetTidzoneId(int countryId)
+        {
+            if (countryId == CountryConstants.DanishCountryId) TimeZoneId = "Romance Standard Time";
+            else if (countryId == CountryConstants.SwedishCountryId) TimeZoneId = "Romance Standard Time";
+            else if (countryId == CountryConstants.FinnishCountryId) TimeZoneId = "FLE Standard Time";
+            else if (countryId == CountryConstants.NorwegianCountryId) TimeZoneId = "Romance Standard Time";
+            else TimeZoneId = "Romance Standard Time";
+
+            return this;
+        }
     }
 }

@@ -5,10 +5,10 @@ namespace BilligKwhWebApp.Events
 {
     public class CustomerDeletedEvent : INotification
     {
-        public CustomerDeletedEvent(Kunde customer)
+        public CustomerDeletedEvent(Customer customer)
         {
             Customer = customer;
         }
-        public Kunde Customer { get; }
+        public Customer Customer { get; }
     }
 }

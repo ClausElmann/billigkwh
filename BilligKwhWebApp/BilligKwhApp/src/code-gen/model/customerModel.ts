@@ -13,22 +13,18 @@
 
 export interface CustomerModel { 
     id?: number;
+    publicId?: string;
     name?: string | null;
     address?: string | null;
-    zipcode?: number;
-    city?: string | null;
-    displayAddress?: string | null;
-    deleted?: boolean;
-    languageId?: number;
     countryId?: number;
-    companyRegistrationId?: number | null;
+    active?: boolean;
+    dateCreatedUtc?: string;
+    dateDeletedUtc?: string | null;
+    deleted?: boolean;
+    dateLastUpdatedUtc?: string;
     timeZoneId?: string | null;
-    hourWage?: number;
-    coveragePercentage?: number;
-    economicId?: number | null;
-    invoiceMail?: string | null;
-    invoiceContactPerson?: string | null;
-    invoicePhoneFax?: string | null;
-    invoiceMobile?: string | null;
+    languageId?: number;
+    companyRegistrationId?: string | null;
+    lastEditedUtc?: string;
 }
 

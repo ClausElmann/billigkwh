@@ -10,3 +10,10 @@
     CONSTRAINT [PK_Elpris] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
+
+
+
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [IX_ElectricityPrice_UX]
+    ON [dbo].[ElectricityPrice]([HourDK] ASC);
+

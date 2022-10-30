@@ -45,7 +45,7 @@ namespace BilligKwhWebApp.Services
 
         private static void SetupUserTables()
         {
-            DapperPlusManager.Entity<User>().Table("dbo.Bruger").Identity(x => x.Id).Ignore(i => i.Name);
+            DapperPlusManager.Entity<User>().Table("dbo.Users").Identity(x => x.Id).Ignore(i => i.Name);
             DapperPlusManager.Entity<UserRole>().Table("dbo.UserRoles").Identity(x => x.Id);
             DapperPlusManager.Entity<UserRoleMapping>().Table("dbo.UserRoleMappings").Identity(x => x.Id);
             DapperPlusManager.Entity<UserRefreshToken>().Table("dbo.UserRefreshTokens").Identity(i => i.Id);
@@ -54,7 +54,7 @@ namespace BilligKwhWebApp.Services
 
         private static void SetupCustomerTables()
         {
-            DapperPlusManager.Entity<Kunde>().Table("dbo.Kunde").Identity(i => i.Id);
+            DapperPlusManager.Entity<Customer>().Table("dbo.Customers").Identity(i => i.Id);
             DapperPlusManager.Entity<CustomerUserMapping>().Table("dbo.CustomerUserMappings").Identity(i => i.Id);
             DapperPlusManager.Entity<CustomerUserRoleMapping>().Table("dbo.CustomerUserRoleMappings").Identity(i => i.Id);
         }

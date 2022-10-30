@@ -17,21 +17,12 @@ import { ConfirmationService, MessageService, SelectItem } from "primeng/api";
 interface MainFormValue {
   name: string;
   address: string;
-  zipcode: number;
-  city: string;
   deleted: boolean;
   publicId: string;
   languageId: number;
   countryId: number;
-  companyRegistrationId: number;
+  companyRegistrationId: string;
   timeZoneId: string;
-  hourWage: number;
-  coveragePercentage: number;
-  economicId: number;
-  invoiceMail: string;
-  invoiceContactPerson: string;
-  invoicePhoneFax: string;
-  invoiceMobile: string;
 }
 
 @UntilDestroy()
@@ -73,7 +64,7 @@ export class SuperAdminCustomerCreateEditComponent implements OnInit {
         switchMap(params => {
           if (!params["id"] || isNaN(+params["id"])) return of(this.customerService.initializeCustomerModel());
           if (+params["id"] === 0) return of(this.customerService.initializeCustomerModel());
-          this.customerService.currentCustomerId = +params["id"];
+          this.customerService.CustomerId = +params["id"];
           return this.customerService.getCustomer(+params["id"], null);
         })
       )
@@ -96,14 +87,6 @@ export class SuperAdminCustomerCreateEditComponent implements OnInit {
       languageId: new FormControl(this.customer?.languageId, [Validators.required]),
       countryId: new FormControl(this.customer?.countryId, [Validators.required]),
       companyRegistrationId: new FormControl(this.customer?.companyRegistrationId, [NumberValidators.range(10000000, 99999999)]),
-      hourWage: new FormControl(this.customer?.hourWage, [Validators.required, NumberValidators.range(0, 2000)]),
-      coveragePercentage: new FormControl(this.customer?.coveragePercentage, [Validators.required, NumberValidators.range(1, 2.0)]),
-      invoiceMail: new FormControl(this.customer?.invoiceMail, [Validators.email]),
-      invoiceContactPerson: new FormControl(this.customer?.invoiceContactPerson),
-      invoicePhoneFax: new FormControl(this.customer?.invoicePhoneFax, [Validators.maxLength(10)]),
-      invoiceMobile: new FormControl(this.customer?.invoiceMobile, [Validators.maxLength(50)]),
-      zipcode: new FormControl(this.customer?.zipcode, [Validators.required, Validators.maxLength(4), NumberValidators.range(0, 9999)]),
-      city: new FormControl(this.customer?.city, [Validators.required])
     });
   }
 
@@ -127,45 +110,11 @@ export class SuperAdminCustomerCreateEditComponent implements OnInit {
     return this.mainForm.get("companyRegistrationId");
   }
 
-  public get hourWage() {
-    return this.mainForm.get("hourWage");
-  }
-
-  public get coveragePercentage() {
-    return this.mainForm.get("coveragePercentage");
-  }
-
-  public get invoiceMail() {
-    return this.mainForm.get("invoiceMail");
-  }
-
-  public get invoiceContactPerson() {
-    return this.mainForm.get("invoiceContactPerson");
-  }
-
-  public get invoicePhoneFax() {
-    return this.mainForm.get("invoicePhoneFax");
-  }
-
-  public get invoiceMobile() {
-    return this.mainForm.get("invoiceMobile");
-  }
-
-  public get zipcode() {
-    return this.mainForm.get("zipcode");
-  }
-
-  public get city() {
-    return this.mainForm.get("city");
-  }
-
   private createObjectFromFormValue(formValue: MainFormValue): CustomerModel {
     const returnObject: Partial<CustomerModel> = {
       ...formValue,
       id: 0
     };
-
-    returnObject.coveragePercentage = +returnObject.coveragePercentage;
 
     // If editing an existing customer, we can set all other data fields
     if (this.customer) {

@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[Dokument] (
-    [ID]                 INT              IDENTITY (1, 1) NOT NULL,
+    [Id]                 INT              IDENTITY (1, 1) NOT NULL,
     [KundeID]            INT              NOT NULL,
     [ObjektGuid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Dokument_DokumentGuid] DEFAULT (newid()) NOT NULL,
     [RefTypeID]          INT              CONSTRAINT [DF_Dokument_TypeID] DEFAULT ((0)) NOT NULL,
@@ -24,10 +24,12 @@
     [RefObjektGuid]      VARCHAR (50)     CONSTRAINT [DF_Dokument_RefObjektGuid1] DEFAULT (newid()) NULL,
     [RefID]              INT              CONSTRAINT [DF_Dokument_ObjectID] DEFAULT ((0)) NULL,
     [DeviceID]           NVARCHAR (50)    CONSTRAINT [DF_Dokument_DeviceID] DEFAULT ('') NULL,
-    CONSTRAINT [PK_Dokument] PRIMARY KEY NONCLUSTERED ([ID] ASC) WITH (FILLFACTOR = 90),
-    CONSTRAINT [FK_Dokument_Bruger] FOREIGN KEY ([OprettetAfBrugerID]) REFERENCES [dbo].[Bruger] ([ID]),
-    CONSTRAINT [FK_Dokument_Kunde] FOREIGN KEY ([KundeID]) REFERENCES [dbo].[Kunde] ([ID])
+    CONSTRAINT [PK_Dokument] PRIMARY KEY NONCLUSTERED ([Id] ASC) WITH (FILLFACTOR = 90),
+    CONSTRAINT [FK_Dokument_Customers] FOREIGN KEY ([KundeID]) REFERENCES [dbo].[Customers] ([Id]),
+    CONSTRAINT [FK_Dokument_Users] FOREIGN KEY ([OprettetAfBrugerID]) REFERENCES [dbo].[Users] ([Id])
 );
+
+
 
 
 GO

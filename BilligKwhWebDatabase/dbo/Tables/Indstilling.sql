@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[Indstilling] (
-    [ID]                    INT             IDENTITY (1, 1) NOT NULL,
+    [Id]                    INT             IDENTITY (1, 1) NOT NULL,
     [KundeID]               INT             NOT NULL,
     [BrugerID]              INT             NULL,
     [InstillingEnumID]      INT             NOT NULL,
@@ -12,11 +12,12 @@
     [SidstRettet]           DATETIME        CONSTRAINT [DF_Indstilling_SidstRettet] DEFAULT (getutcdate()) NOT NULL,
     [SidstRettetAfBrugerID] INT             CONSTRAINT [DF_Indstilling_SidstRettetAfBrugerID] DEFAULT ((-1)) NOT NULL,
     [Slettet]               BIT             NOT NULL,
-    CONSTRAINT [PK_Indstilling] PRIMARY KEY NONCLUSTERED ([ID] ASC) WITH (FILLFACTOR = 90),
-    CONSTRAINT [FK_Aktion_Indstilling] FOREIGN KEY ([SidstRettetAfBrugerID]) REFERENCES [dbo].[Bruger] ([ID]),
-    CONSTRAINT [FK_Indstilling] FOREIGN KEY ([KundeID]) REFERENCES [dbo].[Kunde] ([ID]),
-    CONSTRAINT [FK_Indstilling_IndstillingEnum] FOREIGN KEY ([InstillingEnumID]) REFERENCES [dbo].[IndstillingEnum] ([ID])
+    CONSTRAINT [PK_Indstilling] PRIMARY KEY NONCLUSTERED ([Id] ASC) WITH (FILLFACTOR = 90),
+    CONSTRAINT [FK_Indstilling_IndstillingEnum] FOREIGN KEY ([InstillingEnumID]) REFERENCES [dbo].[IndstillingEnum] ([Id]),
+    CONSTRAINT [FK_Indstilling_Users] FOREIGN KEY ([BrugerID]) REFERENCES [dbo].[Users] ([Id])
 );
+
+
 
 
 
