@@ -10,6 +10,7 @@ using BilligKwhWebApp.Core.Domain;
 using BilligKwhWebApp.Core;
 using BilligKwhWebApp.Core.Toolbox;
 using BilligKwhWebApp.Services.Enums;
+using System.Text.Json;
 
 namespace BilligKwhWebApp.Services
 {
@@ -56,7 +57,7 @@ namespace BilligKwhWebApp.Services
             string sDataObj;
             try
             {
-                sDataObj = dataObject == null ? null : SimpleJson.SerializeObject(dataObject);
+                sDataObj = dataObject == null ? null : JsonSerializer.Serialize(dataObject, JsonHelper.JsonSerializerOptions);
             }
             catch
             {

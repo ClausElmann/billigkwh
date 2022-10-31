@@ -64,12 +64,12 @@ namespace BilligKwhWebApp
             services.Configure<EnvironmentSettings>(Configuration.GetSection("EnvironmentSettings"));
 
             services
-                .AddMvc(options => { options.EnableEndpointRouting = false; })
-                .AddFluentValidation(fv =>
-                {
-                    fv.RegisterValidatorsFromAssemblyContaining<Startup>();
-                    fv.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-                });
+               .AddMvc(options => { options.EnableEndpointRouting = false; })
+               .AddFluentValidation(fv =>
+               {
+                   fv.RegisterValidatorsFromAssemblyContaining<Startup>();
+                   fv.DisableDataAnnotationsValidation = true;
+               });
 
             //InitValidators(services);
 
@@ -199,11 +199,11 @@ namespace BilligKwhWebApp
             var connectionString = "";
             if (Environment.IsDevelopment() || Environment.IsStaging())
             {
-                connectionString = Configuration.GetConnectionString("farmgain_com_db_feederDev");
+                connectionString = Configuration.GetConnectionString("billigkwh_dk_db_prodDev");
             }
             else
             {
-                connectionString = Configuration.GetConnectionString("farmgain_com_db_feeder");
+                connectionString = Configuration.GetConnectionString("billigkwh_dk_db_prod");
             }
 
             // Setup DapperPlus general settings

@@ -284,10 +284,10 @@ namespace BilligKwhWebApp.Core.Toolbox
             return new HashSet<T>(source, comparer);
         }
 
-        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
-        {
-            return source?.GroupBy(keySelector).Select(grp => grp.First());
-        }
+        //public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+        //{
+        //    return source?.GroupBy(keySelector).Select(grp => grp.First());
+        //}
 
         /// <summary>
         /// Writes a list to CSV file on local disc for debugging
