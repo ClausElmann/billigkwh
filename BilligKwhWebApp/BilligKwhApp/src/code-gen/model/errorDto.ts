@@ -12,7 +12,7 @@
 
 
 export interface ErrorDto { 
-    readonly errorMessage?: any | null;
-    readonly logId?: number;
+    errorMessage?: any | null;
+    logId?: number;
 }
 

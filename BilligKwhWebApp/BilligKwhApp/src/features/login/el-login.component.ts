@@ -148,7 +148,7 @@ export class ElLoginComponent implements OnInit, AfterViewInit {
 
   public onTwoFactorLogin() {
     this.userService
-      .logInTwoFactor(this.email.value, this.twoFactorAuthenticationForm.value)
+      .logInTwoFactor(this.email.value, Number(this.twoFactorAuthenticationForm.value))
       .pipe(
         take(1),
         finalize(() => {
