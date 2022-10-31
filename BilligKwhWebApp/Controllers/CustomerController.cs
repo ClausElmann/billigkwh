@@ -32,7 +32,6 @@ namespace BilligKwhWebApp.Controllers
         private readonly ILocalizationService _localizationService;
         private readonly IMediator _mediator;
         private readonly IApplicationSettingService _applicationSettingService;
-        private readonly ISettingsService _settingsService;
         private readonly IEmailService _emailService;
 
         // Ctor
@@ -46,7 +45,6 @@ namespace BilligKwhWebApp.Controllers
             ICustomerFactory customerFactory,
             IApplicationSettingService applicationSettingService,
             IMediator mediator,
-            ISettingsService settingsService,
             IEmailService emailService) : base(logger, workContext, permissionService)
         {
             _customerService = customerService;
@@ -56,8 +54,6 @@ namespace BilligKwhWebApp.Controllers
             _userFactory = userFactory;
             _workContext = workContext;
             _localizationService = localizationService;
-            _settingsService = settingsService;
-
             _emailService = emailService;
         }
 

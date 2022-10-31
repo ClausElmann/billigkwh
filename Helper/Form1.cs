@@ -23,7 +23,7 @@ namespace Helper
 
         public List<PropertyInfo> GetListOfProperties()
         {
-            var assembly = Assembly.GetAssembly(typeof( BilligKwhWebApp.Core.Dto.DokumentDto));
+            var assembly = Assembly.GetAssembly(typeof( BilligKwhWebApp.Core.Dto.RefreshTokenDto));
 
             var dtoClasses = new List<Type>();
 
@@ -153,7 +153,7 @@ namespace Helper
 
         private void buttonAssembly_Click(object sender, EventArgs e)
         {
-            var assembly = Assembly.GetAssembly(typeof(BilligKwhWebApp.Core.Dto.DokumentDto));
+            var assembly = Assembly.GetAssembly(typeof(BilligKwhWebApp.Core.Dto.RefreshTokenDto));
 
             var dtoClasses = new List<Type>();
 

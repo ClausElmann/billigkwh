@@ -35,10 +35,8 @@ using BilligKwhWebApp.Infrastructure.RootFolder;
 using MediatR;
 using BilligKwhWebApp.Core.Factories;
 using BilligKwhWebApp.Tools.Url;
-using System.Net.Http;
 using BilligKwhWebApp.Services.Customers.Repository;
 using BilligKwhWebApp.Services.Customers;
-using BilligKwhWebApp.Services.Dokuments.Repository;
 using BilligKwhWebApp.Services.Arduino.Repository;
 using BilligKwhWebApp.Services.Arduino;
 using BilligKwhWebApp.Services.Electricity.Repository;
@@ -369,11 +367,6 @@ namespace BilligKwhWebApp
             services.AddScoped<IApplicationSettingService, ApplicationSettingService>();
             services.AddScoped<IRootFolderService, RootFolderService>();
             services.AddScoped<IIconService, IconService>();
-
-            services.AddScoped<ISettingsService, SettingsService>();
-
-            services.AddScoped<IDokumentsRepository, DokumentsRepository>();
-            services.AddScoped<IDokumentService, DokumentService>();
 
             services.AddScoped<IArduinoRepository, ArduinoRepository>();
             services.AddScoped<IArduinoService, ArduinoService>();
