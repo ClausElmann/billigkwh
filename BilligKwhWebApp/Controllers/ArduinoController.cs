@@ -6,20 +6,11 @@ using BilligKwhWebApp.Core.Interfaces;
 using BilligKwhWebApp.Services.Interfaces;
 using BilligKwhWebApp.Models;
 using BilligKwhWebApp.Services.Arduino;
-using BilligKwhWebApp.Core.Domain;
 using BilligKwhWebApp.Services.Electricity;
 using System.Linq;
 using System.Collections.Generic;
-using BilligKwhWebApp.Jobs.ElectricityPrices;
-using BilligKwhWebApp.Services.Electricity.Repository;
-using System.Net.Http;
-using System.Threading;
-using System.Text.Json;
 using System.Threading.Tasks;
-using System.Reflection;
-using BilligKwhWebApp.Core.Dto;
-using BilligKwhWebApp.Services;
-using BilligKwhWebApp.Infrastructure.DataTransferObjects.Common;
+using BilligKwhWebApp.Services.Arduino.Domain;
 
 namespace BilligKwhWebApp.Controllers
 {

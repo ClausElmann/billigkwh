@@ -1,10 +1,10 @@
-﻿using System;
+﻿using BilligKwhWebApp.Core.Domain;
+using System;
 
-namespace BilligKwhWebApp.Core.Dto
+namespace BilligKwhWebApp.Services.Arduino.Domain
 {
-    public class PrintDto
+    public class Print : BaseEntity
     {
-        public int Id { get; set; }
         public string PrintId { get; set; }
         public int? KundeId { get; set; }
         public DateTime OprettetDatoUtc { get; set; }

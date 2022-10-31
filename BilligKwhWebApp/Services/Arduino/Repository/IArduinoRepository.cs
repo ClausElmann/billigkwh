@@ -1,5 +1,5 @@
-﻿using BilligKwhWebApp.Core.Domain;
-using BilligKwhWebApp.Core.Dto;
+﻿using BilligKwhWebApp.Services.Arduino.Domain;
+using BilligKwhWebApp.Services.Arduino.Dto;
 using System.Collections.Generic;
 
 namespace BilligKwhWebApp.Services.Arduino.Repository

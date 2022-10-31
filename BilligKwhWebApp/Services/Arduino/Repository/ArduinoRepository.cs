@@ -1,9 +1,9 @@
 ﻿using Dapper;
-using BilligKwhWebApp.Core.Domain;
-using BilligKwhWebApp.Core.Dto;
 using System.Collections.Generic;
 using System.Linq;
 using Z.Dapper.Plus;
+using BilligKwhWebApp.Services.Arduino.Dto;
+using BilligKwhWebApp.Services.Arduino.Domain;
 
 namespace BilligKwhWebApp.Services.Arduino.Repository
 {

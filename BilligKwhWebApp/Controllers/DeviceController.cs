@@ -12,9 +12,9 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BilligKwhWebApp.Core;
-using BilligKwhWebApp.Core.Dto;
 using BilligKwhWebApp.Services;
 using BilligKwhWebApp.Infrastructure.DataTransferObjects.Common;
+using BilligKwhWebApp.Services.Arduino.Dto;
 
 namespace BilligKwhWebApp.Controllers
 {

@@ -15,5 +15,6 @@ namespace BilligKwhWebApp.Core.Domain
         public DateTime RequestedOnUtc { get; set; }
         public int Ticks { get; set; }
         public bool IsSuccessStatusCode { get; set; }
+        public string IpAddress { get; set; }
     }
 }

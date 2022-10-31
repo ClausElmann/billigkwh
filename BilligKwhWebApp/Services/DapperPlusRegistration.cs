@@ -1,5 +1,6 @@
 ﻿using Z.Dapper.Plus;
 using BilligKwhWebApp.Core.Domain;
+using BilligKwhWebApp.Services.Arduino.Domain;
 
 namespace BilligKwhWebApp.Services
 {
