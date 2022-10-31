@@ -10,7 +10,8 @@
     "start": "ng serve --hmr --port 4202 --disable-host-check",
     "openapi": "SET JAVA_OPTS=-Dio.swagger.parser.util.RemoteUrl.trustAll=true -Dio.swagger.v3.parser.util.RemoteUrl.trustAll=true && openapi-generator-cli generate -i https://localhost:44321/swagger/v1/swagger.json -g typescript-angular -o ./src/code-gen --global-property models",
     "test": "ng test",
-    "watch": "ng build --watch --configuration development"
+    "watch": "ng build --watch --configuration development",
+    "find-deadcode": "ts-prune"
   },
   "dependencies": {
     "@angular/animations": "^14.2.8",
@@ -103,6 +104,7 @@
     "prettier": "2.7.1",
     "protractor": "~7.0.0",
     "ts-node": "~10.9.1",
+    "ts-prune": "^0.10.3",
     "typescript": "4.8.4"
   }
 }
