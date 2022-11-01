@@ -14,6 +14,38 @@
         //ReadyMails = 10,
     }
 
+  
+
+    //public enum UserRoleName
+    //{
+    //    None = 0,
+    //    SuperAdmin = 1,
+    //    ManageUsers = 2,
+    //    ManageProfiles = 3,
+    //    CanCreateScheduledBroadcasts = 13,
+    //    ManageReports = 14,
+    //    ManageMessages = 15,
+    //    ManageBenchmarks = 17,
+    //    ManageCustomer = 19,
+    //    Benchmark = 21,
+    //    CustomerSetup = 22,
+    //    Searching = 23,
+    //    WEBMessages = 24,
+    //    StandardReceivers = 25,
+    //    SubscriptionModule = 26,
+    //    MessageTemplates = 27,
+    //    CanSetupStatstidende = 28,
+    //    API = 29,
+    //    CanSetupSubscriptionReminders = 30,
+    //    Protected = 31,
+    //    TwoFactorAuthenticate = 32,
+    //    ADLogin = 33,
+    //    RequiresApproval = 34,
+    //    WeatherWarning = 35,
+    //    AlwaysTestMode = 36,
+
+    //}
+
     public enum Cc_Bcc
     {
         CC,

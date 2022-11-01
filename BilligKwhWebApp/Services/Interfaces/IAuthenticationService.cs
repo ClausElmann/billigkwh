@@ -7,8 +7,6 @@ namespace BilligKwhWebApp.Services.Interfaces
     public partial interface IAuthenticationService
     {
         string CreateSalt();
-        Guid BeregnBrugernavnHashUnicode(string username);
-        Guid BeregnBrugernavnHashUtfCode(string username);
 
         string GenerateSHA256Hash(string password, string salt);
         bool IsPasswordValid(string password);

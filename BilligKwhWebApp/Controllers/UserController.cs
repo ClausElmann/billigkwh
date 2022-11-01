@@ -178,7 +178,7 @@ namespace BilligKwhWebApp.Controllers
         {
             //Specific user is requested - this requires access validation!
             if (_workContext.IsUserSuperAdmin() ||
-            (PermissionService.DoesUserHaveRole(_workContext.CurrentUser.Id, UserRolesEnum.CustomerSetup) && _userService.CanUserAccessUser(_workContext.CurrentUser.Id, id)))
+            (_permissionService.DoesUserHaveRole(_workContext.CurrentUser.Id, UserRolesEnum.CustomerSetup) && _userService.CanUserAccessUser(_workContext.CurrentUser.Id, id)))
             {
                 // find the user with the id
                 var foundUser = _userService.Get(id, inclDeleted);
@@ -202,7 +202,7 @@ namespace BilligKwhWebApp.Controllers
         public IActionResult GetUserRoles(int? userId)
         {
             var idOfUser = userId ?? _workContext.CurrentUser.Id;
-            var roles = PermissionService.GetUserRoles(idOfUser);
+            var roles = _permissionService.GetUserRoles(idOfUser);
 
             if (roles == null || !roles.Any())
             {
@@ -842,7 +842,7 @@ namespace BilligKwhWebApp.Controllers
                 var bruger = _userService.Get(model.Id);
 
 
-                bool isSuperAdmin = PermissionService.DoesUserHaveRole(_workContext.CurrentUser.Id, UserRolesEnum.SuperAdmin);
+                bool isSuperAdmin = _permissionService.DoesUserHaveRole(_workContext.CurrentUser.Id, UserRolesEnum.SuperAdmin);
 
                 // Only allow this if current user is the one to update. If not, user must be super admin
                 if (bruger != null)
@@ -981,7 +981,7 @@ namespace BilligKwhWebApp.Controllers
                     return ForbidWithMessage("User is protected");
                 }
 
-                PermissionService.SetUserRoleAccess(_workContext.CurrentUser.Id, _workContext.CustomerId, userId, roleIds, hasAccess);
+                _permissionService.SetUserRoleAccess(_workContext.CurrentUser.Id, _workContext.CustomerId, userId, roleIds, hasAccess);
                 return Ok();
             }
             else
@@ -1064,7 +1064,7 @@ namespace BilligKwhWebApp.Controllers
             if (model is null) throw new ArgumentNullException(nameof(model));
 
             if (_workContext.IsUserSuperAdmin() ||
-                (PermissionService.DoesUserHaveRole(_workContext.CurrentUser.Id, UserRolesEnum.CustomerSetup) && _userService.CanUserAccessUser(_workContext.CurrentUser.Id, model.Id)))
+                (_permissionService.DoesUserHaveRole(_workContext.CurrentUser.Id, UserRolesEnum.CustomerSetup) && _userService.CanUserAccessUser(_workContext.CurrentUser.Id, model.Id)))
             {
                 var emailResult = EmailAddress.Create(model.Email);
                 if (emailResult.IsSuccess)
@@ -1396,8 +1396,8 @@ namespace BilligKwhWebApp.Controllers
 
             if (user != null)
             {
-                var roles = PermissionService.GetUserRolesByUser(user.Id, _workContext.IsUserSuperAdmin());
-                var mappings = PermissionService.GetUserRoleMappingsbyUser(user.Id);
+                var roles = _permissionService.GetUserRolesByUser(user.Id, _workContext.IsUserSuperAdmin());
+                var mappings = _permissionService.GetUserRoleMappingsbyUser(user.Id);
                 var access = _userfactory.PrepareUserRoleAccessModels(user.Id, roles.ToList(), mappings.ToList(), _workContext.CurrentUser.LanguageId);
 
                 return Ok(access.OrderBy(ua => ua.UserRole.NameLocalized));
@@ -1439,6 +1439,16 @@ namespace BilligKwhWebApp.Controllers
             return BadRequest("You are not impersonating any user");
         }
         #endregion
+
+        protected bool CheckForUserRole(UserRolesEnum role, int userId)
+        {
+            return _permissionService.DoesUserHaveRole(userId, role);
+        }
+
+        protected bool CheckForProfileRole(ProfileRoleName role, int profileId)
+        {
+            return _permissionService.DoesProfileHaveRole(profileId, role);
+        }
     }
 }
 

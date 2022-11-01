@@ -200,7 +200,7 @@ export class UserService extends BiStore<UserServiceState> {
       params: {
         customerId: customerId.toString(),
         onlyDeleted: onlyDeleted ? "true" : "false",
-        userId : userId
+        userId: userId
       }
     });
   }
@@ -283,6 +283,7 @@ export class UserService extends BiStore<UserServiceState> {
   // }
 
   public updateUser(user: UserModel, sendEmail = true) {
+    debugger;
     const params: { [key: string]: string } = {
       //customerId: user.customerId.toString()
     };

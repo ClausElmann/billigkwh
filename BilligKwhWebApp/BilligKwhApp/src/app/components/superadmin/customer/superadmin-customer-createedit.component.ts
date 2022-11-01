@@ -10,7 +10,6 @@ import { CustomerModel } from "@apiModels/customerModel";
 import { CustomerService } from "@core/services/customer.service";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { BiCustomAnimations } from "@shared/classes/BICustomAnimations";
-import { NumberValidators } from "@globals/classes/number.validator";
 import { BiCountryId, BiLanguageId } from "@enums/BiLanguageAndCountryId";
 import { ConfirmationService, MessageService, SelectItem } from "primeng/api";
 
@@ -86,7 +85,7 @@ export class SuperAdminCustomerCreateEditComponent implements OnInit {
       address: new FormControl(this.customer?.address, [Validators.required]),
       languageId: new FormControl(this.customer?.languageId, [Validators.required]),
       countryId: new FormControl(this.customer?.countryId, [Validators.required]),
-      companyRegistrationId: new FormControl(this.customer?.companyRegistrationId, [NumberValidators.range(10000000, 99999999)]),
+      companyRegistrationId: new FormControl(this.customer?.companyRegistrationId)
     });
   }
 

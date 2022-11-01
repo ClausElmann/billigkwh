@@ -30,6 +30,7 @@ namespace BilligKwhWebApp.Core.Factories
                 CountryId = entity.CountryId,
                 CompanyRegistrationId = entity.CompanyRegistrationId,
                 TimeZoneId = entity.TimeZoneId,
+                DateCreatedUtc = entity.DateCreatedUtc,
             };
         }
 
@@ -45,12 +46,12 @@ namespace BilligKwhWebApp.Core.Factories
                 Deleted = model.Deleted,
                 LanguageId = model.LanguageId,
                 CountryId = model.CountryId,
-                CompanyRegistrationId = model.CompanyRegistrationId,
+                CompanyRegistrationId = model.CompanyRegistrationId + "",
                 TimeZoneId = model.TimeZoneId,
                 Active = model.Active,
-                DateCreatedUtc = model.DateCreatedUtc,
+                DateCreatedUtc = DateTime.UtcNow,
                 DateDeletedUtc = model.DateDeletedUtc,
-                DateLastUpdatedUtc = model.DateLastUpdatedUtc,
+                DateLastUpdatedUtc = DateTime.UtcNow,
                 PublicId = model.PublicId,
             };
 

@@ -81,59 +81,59 @@ namespace BilligKwhWebApp.Services
         }
 
 
-        public Guid BeregnBrugernavnHashUnicode(string username)
-        {
-            Guid g = Guid.Empty;
-            byte[] source;
-            int offset = 0;
+        //public Guid BeregnBrugernavnHashUnicode(string username)
+        //{
+        //    Guid g = Guid.Empty;
+        //    byte[] source;
+        //    int offset = 0;
 
-            var sha = new System.Security.Cryptography.SHA1Managed();
-            sha.Initialize();
+        //    var sha = new System.Security.Cryptography.SHA1Managed();
+        //    sha.Initialize();
 
-            source = sha.ComputeHash(Encoding.Unicode.GetBytes(username.ToLower(CultureInfo.InvariantCulture)));
+        //    source = sha.ComputeHash(Encoding.Unicode.GetBytes(username.ToLower(CultureInfo.InvariantCulture)));
 
-            g = new Guid(
-                (source[offset + 3] << 0x18) | (source[offset + 2] << 0x10) | (source[offset + 1] << 8) | source[offset + 0],
-                (short)((source[offset + 5] << 8) | source[offset + 4]),
-                (short)((source[offset + 7] << 8) | source[offset + 6]),
-                source[offset + 8],
-                source[offset + 9],
-                source[offset + 10],
-                source[offset + 11],
-                source[offset + 12],
-                source[offset + 13],
-                source[offset + 14],
-                source[offset + 15]);
+        //    g = new Guid(
+        //        (source[offset + 3] << 0x18) | (source[offset + 2] << 0x10) | (source[offset + 1] << 8) | source[offset + 0],
+        //        (short)((source[offset + 5] << 8) | source[offset + 4]),
+        //        (short)((source[offset + 7] << 8) | source[offset + 6]),
+        //        source[offset + 8],
+        //        source[offset + 9],
+        //        source[offset + 10],
+        //        source[offset + 11],
+        //        source[offset + 12],
+        //        source[offset + 13],
+        //        source[offset + 14],
+        //        source[offset + 15]);
 
-            return g;
-        }
+        //    return g;
+        //}
 
-        public Guid BeregnBrugernavnHashUtfCode(string username)
-        {
-            Guid g = Guid.Empty;
-            byte[] source;
-            int offset = 0;
+        //public Guid BeregnBrugernavnHashUtfCode(string username)
+        //{
+        //    Guid g = Guid.Empty;
+        //    byte[] source;
+        //    int offset = 0;
 
-            var sha = new System.Security.Cryptography.SHA1Managed();
-            sha.Initialize();
+        //    var sha = new System.Security.Cryptography.SHA1Managed();
+        //    sha.Initialize();
 
-            source = sha.ComputeHash(Encoding.UTF8.GetBytes(username.ToLower(CultureInfo.InvariantCulture)));
+        //    source = sha.ComputeHash(Encoding.UTF8.GetBytes(username.ToLower(CultureInfo.InvariantCulture)));
 
-            g = new Guid(
-                (source[offset + 3] << 0x18) | (source[offset + 2] << 0x10) | (source[offset + 1] << 8) | source[offset + 0],
-                (short)((source[offset + 5] << 8) | source[offset + 4]),
-                (short)((source[offset + 7] << 8) | source[offset + 6]),
-                source[offset + 8],
-                source[offset + 9],
-                source[offset + 10],
-                source[offset + 11],
-                source[offset + 12],
-                source[offset + 13],
-                source[offset + 14],
-                source[offset + 15]);
+        //    g = new Guid(
+        //        (source[offset + 3] << 0x18) | (source[offset + 2] << 0x10) | (source[offset + 1] << 8) | source[offset + 0],
+        //        (short)((source[offset + 5] << 8) | source[offset + 4]),
+        //        (short)((source[offset + 7] << 8) | source[offset + 6]),
+        //        source[offset + 8],
+        //        source[offset + 9],
+        //        source[offset + 10],
+        //        source[offset + 11],
+        //        source[offset + 12],
+        //        source[offset + 13],
+        //        source[offset + 14],
+        //        source[offset + 15]);
 
-            return g;
-        }
+        //    return g;
+        //}
 
 
 

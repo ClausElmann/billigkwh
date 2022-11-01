@@ -16,7 +16,6 @@ namespace BilligKwhWebApp.Core.Domain
         public string TimeZoneId { get; set; }
         public int LanguageId { get; set; }
         public string CompanyRegistrationId { get; set; }
-        public DateTime LastEditedUtc { get; set; }
 
         public Customer SetTidzoneId(int countryId)
         {

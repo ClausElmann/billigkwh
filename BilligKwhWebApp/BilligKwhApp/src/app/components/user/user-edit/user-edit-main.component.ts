@@ -18,24 +18,13 @@ import { BiNotificationConfig, BiToastNotificationService, NotificationType } fr
 import { TranslateService } from "@ngx-translate/core";
 
 interface MainFormValue {
+  email: string;
   name: string;
-  address: string;
-  zipcode: number;
-  city: string;
-  deleted: boolean;
-  publicId: string;
   languageId: number;
   countryId: number;
-  companyRegistrationId: number;
   timeZoneId: string;
-  hourWage: number;
-  coveragePercentage: number;
-  economicId: number;
-  invoiceMail: string;
-  invoiceContactPerson: string;
-  invoicePhoneFax: string;
-  invoiceMobile: string;
   administrator: boolean;
+  newPassword: string;
 }
 
 @UntilDestroy()
@@ -85,6 +74,7 @@ export class UserEditMainComponent implements OnInit {
       .subscribe(data => {
         if (data) {
           this.user = data;
+          debugger;
           if (this.user.deleted == true) this.deleteOrRecreate = "Genskab";
           this.createOrSave = "Gem";
         }
@@ -96,9 +86,8 @@ export class UserEditMainComponent implements OnInit {
   private initFormGroup() {
     this.mainForm = new FormGroup({
       email: new FormControl(this.user?.email, [Validators.required, Validators.email]),
-      firstname: new FormControl(this.user?.name, [Validators.required, Validators.minLength(3)]),
+      name: new FormControl(this.user?.name, [Validators.required, Validators.minLength(3)]),
       phone: new FormControl(this.user?.phone, [Validators.maxLength(50)]),
-      mobile: new FormControl(this.user?.phone, [Validators.maxLength(50)]),
       languageId: new FormControl(this.user?.languageId, [Validators.required]),
       countryId: new FormControl(this.user?.countryId, [Validators.required]),
       newPassword: new FormControl(this.user?.newPassword, [Validators.required, Validators.minLength(4)]),
@@ -116,10 +105,6 @@ export class UserEditMainComponent implements OnInit {
 
   public get phone() {
     return this.mainForm.get("phone");
-  }
-
-  public get mobile() {
-    return this.mainForm.get("mobile");
   }
 
   public get languageId() {
@@ -171,6 +156,8 @@ export class UserEditMainComponent implements OnInit {
   }
 
   public saveUser(toggleDelete: boolean) {
+    debugger;
+
     if (!this.checkAndValidateForm()) return;
 
     const stay = this.user.id === 0;
@@ -213,7 +200,8 @@ export class UserEditMainComponent implements OnInit {
     this.mainForm.reset();
     // if (stay) this.router.navigate(["/superadmin/users", this.user.id, "main"]);
     // else this.router.navigate(["/superadmin/users"]);
-    this.router.navigate(["/superadmin/customers", this.customerService.CustomerId, "users"]);
+    debugger;
+    this.router.navigate(["/superadmin/customers", this.user.customerId, "users"]);
   }
 
   confirmBrugerMail(event: Event) {

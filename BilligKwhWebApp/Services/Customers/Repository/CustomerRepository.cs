@@ -14,8 +14,8 @@ namespace BilligKwhWebApp.Services.Customers.Repository
             using var connection = ConnectionFactory.GetOpenConnection();
             return connection.Query<Customer>(@"		
 					SELECT * 
-					FROM dbo.Customers
-					WHERE (@OnlyDeleted = 1 AND Deleted=1) OR (@OnlyDeleted=0 AND Deleted <> 1)",
+					FROM dbo.Customers WHERE ID > 3 AND
+					 ((@OnlyDeleted = 1 AND Deleted=1) OR (@OnlyDeleted=0 AND Deleted <> 1))",
                     new { OnlyDeleted = onlyDeleted }).ToList();
         }
 
@@ -70,8 +70,6 @@ namespace BilligKwhWebApp.Services.Customers.Repository
         {
             using var connection = ConnectionFactory.GetOpenConnection();
             connection.BulkInsert(customer);
-            connection.ExecuteScalar($"INSERT INTO KundeModul ([KundeID],[ModulID],[Antal],[Pris],[PrisService],[PrisHosting])VALUES ({customer.Id},1,1,0,0,0);");
-            connection.ExecuteScalar($"INSERT INTO KundeModul ([KundeID],[ModulID],[Antal],[Pris],[PrisService],[PrisHosting])VALUES ({customer.Id},24,1,0,0,0);");
         }
 
         public void Update(Customer customer)

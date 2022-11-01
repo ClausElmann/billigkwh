@@ -105,7 +105,7 @@ namespace BilligKwhWebApp.Controllers
             {
                 var entity = _customerService.Get(model.Id);
 
-                bool isSuperAdmin = PermissionService.DoesUserHaveRole(_workContext.CurrentUser.Id, UserRolesEnum.SuperAdmin);
+                bool isSuperAdmin = _permissionService.DoesUserHaveRole(_workContext.CurrentUser.Id, UserRolesEnum.SuperAdmin);
 
                 // Only allow this if current customer is the one to update. If not, user must be super admin
                 if (entity != null)
@@ -121,7 +121,7 @@ namespace BilligKwhWebApp.Controllers
                     entity.CountryId = model.CountryId;
                     entity.CompanyRegistrationId = model.CompanyRegistrationId;
                     entity.TimeZoneId = model.TimeZoneId;
-                 
+                    entity.DateLastUpdatedUtc = DateTime.UtcNow;
                     entity.SetTidzoneId(entity.CountryId);
 
                     _customerService.Update(entity);
@@ -183,8 +183,8 @@ namespace BilligKwhWebApp.Controllers
         public IActionResult GetCustomerUserRoleAccess(int customerId, bool? onlyHasAccess)
         {
             var user = _workContext.CurrentUser;
-            var roles = PermissionService.GetAllUserRoles();
-            var mappings = PermissionService.GetCustomerUserRoleMappings(customerId);
+            var roles = _permissionService.GetAllUserRoles();
+            var mappings = _permissionService.GetCustomerUserRoleMappings(customerId);
             var accessModels = _customerfactory.PrepareCustomerUserRoleAccessModels(customerId, roles.ToList(), mappings.ToList(), user.LanguageId);
 
             if (onlyHasAccess.HasValue && onlyHasAccess.Value)

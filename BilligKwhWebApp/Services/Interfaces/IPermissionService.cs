@@ -6,7 +6,8 @@ namespace BilligKwhWebApp.Services.Interfaces
 {
     public interface IPermissionService
     {
- 
+        bool DoesProfileHaveRole(int profileId, ProfileRoleName role);
+
         #region User
         bool DoesUserHaveRole(int userId, UserRolesEnum role);
         IEnumerable<UserRole> GetUserRoles(int userId);

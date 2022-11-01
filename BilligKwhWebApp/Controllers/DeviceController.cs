@@ -35,7 +35,7 @@ namespace BilligKwhWebApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PrintDto>))]
         public IActionResult GetPrints(int? countryId, int? customerId)
         {
-            customerId ??= _workContext.CustomerId;
+            customerId ??= WorkContext.CustomerId;
 
             var prints = _arduinoService.GetAllPrintDto((int)customerId);
 
@@ -63,7 +63,7 @@ namespace BilligKwhWebApp.Controllers
         {
             PrintDto dto = _arduinoService.GetDtoById(id);
 
-            if (dto == null) return BadRequest(new { ErrorMessage = "Print not found", WorkContext = _workContext });
+            if (dto == null) return BadRequest(new { ErrorMessage = "Print not found", WorkContext = WorkContext });
 
             return Ok(dto);
         }

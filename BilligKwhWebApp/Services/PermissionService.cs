@@ -10,6 +10,7 @@ using BilligKwhWebApp.Core.Domain;
 using BilligKwhWebApp.Core.Caching;
 using BilligKwhWebApp.Core;
 using BilligKwhWebApp.Core.Toolbox;
+using System.Globalization;
 
 namespace BilligKwhWebApp.Services
 {
@@ -333,6 +334,12 @@ namespace BilligKwhWebApp.Services
             //Clear cache
             _cacheManager.RemoveByPattern(CacheKeys.UserRolesByCustomerAndUser);
         }
+
+        public bool DoesProfileHaveRole(int profileId, ProfileRoleName role)
+        {
+            return false;
+        }
+
 
         #endregion
     }

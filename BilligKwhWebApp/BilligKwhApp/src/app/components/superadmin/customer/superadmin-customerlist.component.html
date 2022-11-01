@@ -11,8 +11,8 @@
       <p-table
         #table
         [value]="customers$ | async"
-        [columns]="cols"
-        [globalFilterFields]="cols"
+        [columns]="columns$ | async"
+        [globalFilterFields]="globalFilterFields$ | async"
         [loading]="loading"
         selectionMode="single"
         [(selection)]="selectedCustomer"
@@ -58,8 +58,8 @@
       </p-table>
     </div>
 
-    <input #newHero />
+    <!-- <input #newHero />
 
-    <button type="button" (click)="sendMail(newHero.value)">Send</button>
+    <button type="button" (click)="sendMail(newHero.value)">Send</button> -->
   </div>
 </div>

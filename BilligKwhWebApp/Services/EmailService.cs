@@ -36,7 +36,6 @@ namespace BilligKwhWebApp.Services
                 string>> attachments = null, Cc_Bcc isCc_or_Bcc = Cc_Bcc.BCC
            )
         {
-            var isDevDb = false;
             var mailMessage = new EmailMessage
             {
                 DateCreatedUtc = DateTime.UtcNow,

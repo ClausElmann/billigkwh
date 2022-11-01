@@ -36,7 +36,7 @@ namespace BilligKwhWebApp.Services.Customers
         {
             if (customer != null)
             {
-                customer.LastEditedUtc = DateTime.UtcNow;
+                customer.DateLastUpdatedUtc = DateTime.UtcNow;
                 _customerRepository.Insert(customer);
                 _mediator.Publish(new CustomerCreatedEvent(customer));
             }
@@ -49,7 +49,7 @@ namespace BilligKwhWebApp.Services.Customers
         {
             if (customer != null)
             {
-                customer.LastEditedUtc = DateTime.UtcNow;
+                customer.DateLastUpdatedUtc = DateTime.UtcNow;
                 _customerRepository.Update(customer);
                 _mediator.Publish(new CustomerUpdatedEvent(customer));
             }

@@ -43,14 +43,6 @@
             </div>
           </div>
 
-          <div class="field col-12 md:col-6">
-            <label for="mobile" class="block">Mobil</label>
-            <input formControlName="mobile" type="text" maxlength="200" pInputText id="mobile" aria-describedby="mobile-help" />
-            <div *ngIf="mobile.errors && (mobile.dirty || mobile.touched)" class="p-error block">
-              <div *ngIf="mobile.errors?.required">Påkrævet</div>
-            </div>
-          </div>
-
           <div class="field col-12 md:col-3">
             <label for="administrator" class="block">Administrator</label>
             <p-dropdown id="administrator" formControlName="administrator" [options]="janej" [autoDisplayFirst]="false" aria-describedby="administrator-help"></p-dropdown>
@@ -110,14 +102,14 @@
               </div>
             </div>
           </div>
-          <div class="field col-12">
+          <!-- <div class="field col-12">
             <div class="field">
               <button pButton pRipple class="p-button-outlined p-button-secondary" type="button" label="Test form for validation in console" (click)="getFormValidationErrors()"></button>
             </div>
             <br />Dirty: {{ mainForm.dirty }} <br />Touched: {{ mainForm.touched }} <br />Valid: {{ mainForm.valid }} <br />Values:
             {{ mainForm.value | json }}
             <p class="field-error" [@fadeIn] *ngIf="showFormErrorMessage" translate>errorMessages.OneOrMoreFieldsMissing</p>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

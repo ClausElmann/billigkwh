@@ -33,7 +33,7 @@ namespace BilligKwhWebApp.Services
                         return connection;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     if (retryNo < maxRetries)
                     {
