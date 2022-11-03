@@ -152,8 +152,8 @@ export class ApiRoutes {
 
   public static deviceRoutes = {
     get: {
-      getPrints: ApiRoutes.deviceEndpoint + "GetPrints",
-      getPrint: ApiRoutes.deviceEndpoint + "GetPrint"
+      getSmartDevices: ApiRoutes.deviceEndpoint + "GetSmartDevices",
+      getSmartDevice: ApiRoutes.deviceEndpoint + "GetSmartDevice"
     },
     post: {},
     update: {

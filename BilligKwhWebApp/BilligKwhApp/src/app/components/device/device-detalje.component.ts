@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { PrintDto } from "@apiModels/printDto";
+import { SmartDeviceDto } from "@apiModels/smartDeviceDto";
 import { DeviceService } from "@core/services/device.service";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { MenuItem, MessageService } from "primeng/api";
@@ -17,7 +17,7 @@ export class DeviceDetaljeComponent implements OnInit {
   items: MenuItem[] = [];
 
   activeItem: MenuItem;
-  public print?: PrintDto;
+  public print?: SmartDeviceDto;
 
   constructor(private activeRoute: ActivatedRoute, private deviceService: DeviceService, private cd: ChangeDetectorRef) {}
 
@@ -36,7 +36,7 @@ export class DeviceDetaljeComponent implements OnInit {
         untilDestroyed(this),
         take(1),
         switchMap(params => {
-          return this.deviceService.getPrint(+params["id"]);
+          return this.deviceService.getSmartDevice(+params["id"]);
         })
       )
       .subscribe(data => {

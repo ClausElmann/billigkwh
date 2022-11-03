@@ -7,10 +7,10 @@ import { BiLocalizationHelperService } from "@core/utility-services/bi-localizat
 import moment from "moment";
 import { TableColumnPrimeNg } from "@shared/interfaces-and-enums/TableColumnPrimeNg";
 import { DeviceService } from "@core/services/device.service";
-import { PrintDto } from "@apiModels/printDto";
+import { SmartDeviceDto } from "@apiModels/smartDeviceDto";
 import { ActivatedRoute, Router } from "@angular/router";
 
-export interface PrintDtoExt extends PrintDto {
+export interface SmartDeviceDtoExt extends SmartDeviceDto {
   dateForSort?: moment.Moment;
   date?: string;
 }
@@ -28,8 +28,8 @@ export interface TableColumnPrimeNgExt extends TableColumnPrimeNg {
 export class DeviceListComponent implements OnInit {
   public loading = true;
 
-  public elpriser: Array<PrintDto> = [];
-  public elpriser$: Observable<Array<PrintDto>>;
+  public elpriser: Array<SmartDeviceDto> = [];
+  public elpriser$: Observable<Array<SmartDeviceDto>>;
   private columns = new ReplaySubject<Array<TableColumnPrimeNgExt>>(1);
   public columns$ = this.columns.asObservable();
   private globalFilterFields = new ReplaySubject<Array<string>>(1);
@@ -70,7 +70,7 @@ export class DeviceListComponent implements OnInit {
     this.initColumns();
   }
 
-  editItem(item: PrintDto) {
+  editItem(item: SmartDeviceDto) {
     this.router.navigate([item.id, "edit"], { relativeTo: this.activeRoute });
   }
 
@@ -96,18 +96,18 @@ export class DeviceListComponent implements OnInit {
   private initColumns() {
     this.globalFilterFields.next(["printId", "date"]);
     this.columns.next([
-      { field: "lokation", header: "Lokation" },
-      { field: "printId", header: "PrintId" },
-      { field: "date", header: "SidsteKontakt", sortField: "dateForSort" }
+      { field: "location", header: "Lokation" },
+      { field: "uniqueidentifier", header: "Serie nr" },
+      { field: "date", header: "Sidste kontakt", sortField: "dateForSort" }
     ]);
   }
 
   private initializeElectricityPrices() {
-    this.elpriser$ = this.deviceService.getPrints().pipe(
-      tap((data: Array<PrintDtoExt>) => {
+    this.elpriser$ = this.deviceService.getSmartDevices().pipe(
+      tap((data: Array<SmartDeviceDtoExt>) => {
         data.forEach(element => {
-          element.date = this.localizor.localizeDateTime(element.sidsteKontaktDatoUtc);
-          element.dateForSort = moment(element.sidsteKontaktDatoUtc);
+          element.date = this.localizor.localizeDateTime(element.latestContactUtc);
+          element.dateForSort = moment(element.latestContactUtc);
         });
       }),
       untilDestroyed(this),

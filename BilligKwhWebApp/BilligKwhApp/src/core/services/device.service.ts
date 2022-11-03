@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { PrintDto } from "@apiModels/printDto";
+import { SmartDeviceDto } from "@apiModels/smartDeviceDto";
 import { ApiRoutes } from "@shared/classes/ApiRoutes";
 import { catchError, map, Observable } from "rxjs";
 
@@ -8,11 +8,11 @@ import { catchError, map, Observable } from "rxjs";
 export class DeviceService {
   constructor(private http: HttpClient) {}
 
-  public getPrints(countryId?: number, customerId?: number): Observable<PrintDto[]> {
+  public getSmartDevices(countryId?: number, customerId?: number): Observable<SmartDeviceDto[]> {
     const params: { [key: string]: string } = {};
 
     return this.http
-      .get<PrintDto[]>(ApiRoutes.deviceRoutes.get.getPrints, {
+      .get<SmartDeviceDto[]>(ApiRoutes.deviceRoutes.get.getSmartDevices, {
         params: params
       })
       .pipe(
@@ -22,16 +22,16 @@ export class DeviceService {
       );
   }
 
-  public getPrint(id: number): Observable<PrintDto> {
+  public getSmartDevice(id: number): Observable<SmartDeviceDto> {
     const params: { [key: string]: string } = {};
     params.id = id.toString();
 
-    return this.http.get<PrintDto>(ApiRoutes.deviceRoutes.get.getPrint, {
+    return this.http.get<SmartDeviceDto>(ApiRoutes.deviceRoutes.get.getSmartDevice, {
       params: params
     });
   }
 
-  public updatePrint(print: PrintDto) {
+  public updatePrint(print: SmartDeviceDto) {
     return this.http.post<number>(ApiRoutes.deviceRoutes.update.updatePrint, print).pipe(
       catchError(err => {
         throw err;

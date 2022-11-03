@@ -13,14 +13,14 @@
 
 export interface SmartDeviceDto { 
     id?: number;
-    smartDeviceId?: string | null;
-    kundeId?: number | null;
-    oprettetDatoUtc?: string;
-    sidsteKontaktDatoUtc?: string;
-    lokation?: string | null;
+    uniqueidentifier?: string | null;
+    customerId?: number | null;
+    createdUtc?: string;
+    latestContactUtc?: string;
+    location?: string | null;
     zoneId?: number;
     maxRate?: number;
-    slettet?: string | null;
-    kommentar?: string | null;
+    deleted?: string | null;
+    comment?: string | null;
 }
 

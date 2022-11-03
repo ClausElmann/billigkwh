@@ -11,7 +11,7 @@ import { UserService } from "@core/services/user.service";
 import { UserModel } from "@apiModels/UserModel";
 import { PrimeNgUtilities } from "@shared/variables-and-functions/primeNg-utilities";
 import { DeviceService } from "@core/services/device.service";
-import { PrintDto } from "@apiModels/printDto";
+import { SmartDeviceDto } from "@apiModels/smartDeviceDto";
 
 @UntilDestroy()
 @Component({
@@ -23,7 +23,7 @@ import { PrintDto } from "@apiModels/printDto";
   animations: [BiCustomAnimations.fadeInDown, BiCustomAnimations.fadeIn]
 })
 export class DeviceDetaljeEditComponent implements OnInit {
-  public print?: PrintDto;
+  public smartDevice?: SmartDeviceDto;
   public mainForm: FormGroup;
   public showFormErrorMessage: boolean;
   public pageTitle = "Enheds redigering";
@@ -78,12 +78,12 @@ export class DeviceDetaljeEditComponent implements OnInit {
         untilDestroyed(this),
         take(1),
         switchMap(params => {
-          return this.deviceService.getPrint(+params["id"]);
+          return this.deviceService.getSmartDevice(+params["id"]);
         })
       )
       .subscribe(data => {
         if (data) {
-          this.print = data;
+          this.smartDevice = data;
 
           // this.economicManglerDatoOpdatering = this.economicNotUpdatedToday();
 
@@ -103,12 +103,22 @@ export class DeviceDetaljeEditComponent implements OnInit {
 
   private initFormGroup() {
     this.mainForm = new FormGroup({
-      lokation: new FormControl(this.print.lokation)
+      location: new FormControl(this.smartDevice.location),
+      zoneId: new FormControl(this.smartDevice.zoneId),
+      maxRate: new FormControl(this.smartDevice.maxRate)
     });
   }
 
-  public get lokation() {
-    return this.mainForm.get("lokation");
+  public get location() {
+    return this.mainForm.get("location");
+  }
+
+  public get zoneId() {
+    return this.mainForm.get("location");
+  }
+
+  public get maxRate() {
+    return this.mainForm.get("location");
   }
 
   private checkAndValidateForm() {
@@ -142,7 +152,7 @@ export class DeviceDetaljeEditComponent implements OnInit {
   }
 
   deleteRecreate(): void {
-    if (this.print.slettet) {
+    if (this.smartDevice.deleted) {
       this.recreateItem();
     } else {
       this.deleteDialog = true;
@@ -150,9 +160,9 @@ export class DeviceDetaljeEditComponent implements OnInit {
   }
 
   recreateItem() {
-    this.print.slettet = null;
+    this.smartDevice.deleted = null;
 
-    this.deviceService.updatePrint(this.print).subscribe({
+    this.deviceService.updatePrint(this.smartDevice).subscribe({
       next: () => {
         this.messageService.add({
           severity: "success",
@@ -162,15 +172,15 @@ export class DeviceDetaljeEditComponent implements OnInit {
 
         this.mainForm.reset();
 
-        this.router.navigateByUrl("/", { skipLocationChange: true }).then(() => this.router.navigate(["/devices", this.print.id, "edit"]));
+        this.router.navigateByUrl("/", { skipLocationChange: true }).then(() => this.router.navigate(["/devices", this.smartDevice.id, "edit"]));
       },
       error: err => (this.errorMessage = err)
     });
   }
 
   confirmDelete() {
-    this.print.slettet = new Date().toString();
-    this.deviceService.updatePrint(this.print).subscribe({
+    this.smartDevice.deleted = new Date().toString();
+    this.deviceService.updatePrint(this.smartDevice).subscribe({
       next: () => {
         this.messageService.add({
           severity: "success",
@@ -189,9 +199,11 @@ export class DeviceDetaljeEditComponent implements OnInit {
   saveItem() {
     if (!this.checkAndValidateForm()) return;
 
-    this.print.lokation = this.lokation.value;
+    this.smartDevice.location = this.location.value;
+    this.smartDevice.zoneId = this.zoneId.value;
+    this.smartDevice.maxRate = this.maxRate.value;
 
-    this.deviceService.updatePrint(this.print).subscribe({
+    this.deviceService.updatePrint(this.smartDevice).subscribe({
       next: () => {
         this.messageService.add({
           severity: "success",
@@ -200,7 +212,7 @@ export class DeviceDetaljeEditComponent implements OnInit {
         });
 
         this.mainForm.reset();
-        this.router.navigateByUrl("/", { skipLocationChange: true }).then(() => this.router.navigate(["/devices", this.print.id, "edit"]));
+        this.router.navigateByUrl("/", { skipLocationChange: true }).then(() => this.router.navigate(["/devices", this.smartDevice.id, "edit"]));
       },
       error: err => (this.errorMessage = err)
     });

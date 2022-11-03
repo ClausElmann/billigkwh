@@ -26,24 +26,24 @@ namespace BilligKwhWebApp.Services.Arduino.Repository
         {
             using var connection = ConnectionFactory.GetOpenConnection();
             return connection.QueryFirstOrDefault<SmartDevice>(@"
-            SELECT * FROM [SmartDevice]
+            SELECT * FROM [SmartDevices]
 			WHERE SmartDeviceId = @SmartDeviceId", new { SmartDeviceId = SmartDeviceId });
         }
 
-        public IReadOnlyCollection<SmartDeviceDto> GetAllSmartDeviceDto(int kundeId)
+        public IReadOnlyCollection<SmartDeviceDto> GetAllSmartDeviceDto(int customerId)
         {
 
             using var connection = ConnectionFactory.GetOpenConnection();
             return connection.Query<SmartDeviceDto>(@"
             SELECT *
-            FROM [SmartDevice] WHERE KundeID = @KundeId", new { KundeId = kundeId }).ToList();
+            FROM [SmartDevices] WHERE CustomerId = @CustomerId", new { CustomerId = customerId }).ToList();
         }
 
         public SmartDeviceDto GetDtoById(int id)
         {
             using var connection = ConnectionFactory.GetOpenConnection();
             return connection.QueryFirstOrDefault<SmartDeviceDto>(@"
-            SELECT * FROM [SmartDevice] WHERE 
+            SELECT * FROM [SmartDevices] WHERE 
             Id = @Id", new { Id = id });
         }
     }

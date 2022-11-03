@@ -4,9 +4,21 @@
       <div class="card">
         <div class="p-fluid p-formgrid grid">
           <div class="field col-12 md:col-3">
-            <label for="lokation" class="block">Lokation</label>
-            <input formControlName="lokation" type="text" pInputText id="lokation" aria-describedby="lokation-help" />
-            <div *ngIf="lokation.errors && (lokation.dirty || lokation.touched)" class="p-error block"></div>
+            <label for="location" class="block">location</label>
+            <input formControlName="location" type="text" pInputText id="location" aria-describedby="location-help" />
+            <div *ngIf="location.errors && (location.dirty || location.touched)" class="p-error block"></div>
+          </div>
+
+          <div class="field col-12 md:col-3">
+            <label for="zoneId" class="block">zoneId</label>
+            <input formControlName="zoneId" type="text" pInputText id="zoneId" aria-describedby="zoneId-help" />
+            <div *ngIf="zoneId.errors && (zoneId.dirty || zoneId.touched)" class="p-error block"></div>
+          </div>
+
+          <div class="field col-12 md:col-3">
+            <label for="maxRate" class="block">maxRate</label>
+            <input formControlName="maxRate" type="text" pInputText id="maxRate" aria-describedby="maxRate-help" />
+            <div *ngIf="maxRate.errors && (maxRate.dirty || maxRate.touched)" class="p-error block"></div>
           </div>
 
           <div class="field">
