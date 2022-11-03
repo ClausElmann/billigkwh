@@ -16,6 +16,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using System.Globalization;
 using BilligKwhWebApp.Core.Toolbox;
+using BilligKwhWebApp.Services.Electricity.Dto;
 
 namespace BilligKwhWebApp.Services.Electricity
 {
@@ -163,27 +164,9 @@ namespace BilligKwhWebApp.Services.Electricity
 
         }
 
-
-
-        //public Print GetPrintById(string printId)
-        //{
-        //    return _arduinoRepository.GetPrintById(printId);
-        //}
-
-        //public void Update(Print print)
-        //{
-        //    if (print != null)
-        //        _arduinoRepository.Update(print);
-        //    else
-        //    {
-        //        _logger.Warning("print is NULL in Update!", null, "ArduinoService");
-        //    }
-        //}
-
-        //public void Insert(Print print)
-        //{
-        //    _arduinoRepository.Insert(print);
-        //}
-
+        public IReadOnlyCollection<ScheduleDto> GetSchedulesForPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)
+        {
+            return _electricityRepository.GetSchedulesForPeriod(deviceId, fromDateUtc, toDateUtc); 
+        }
     }
 }

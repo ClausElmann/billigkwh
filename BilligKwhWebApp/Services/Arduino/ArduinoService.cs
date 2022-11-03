@@ -3,8 +3,8 @@ using BilligKwhWebApp.Services.Customers;
 using BilligKwhWebApp.Services.Arduino;
 using BilligKwhWebApp.Services.Arduino.Repository;
 using System.Collections.Generic;
-using BilligKwhWebApp.Services.Arduino.Dto;
 using BilligKwhWebApp.Services.Arduino.Domain;
+using BilligKwhWebApp.Services.Electricity.Dto;
 
 namespace BilligKwhWebApp.Services
 {
@@ -20,34 +20,34 @@ namespace BilligKwhWebApp.Services
             _arduinoRepository = arduinoRepository;
             _customerService = customerService;
         }
-        public Print GetPrintById(string printId)
+        public SmartDevice GetSmartDeviceById(string SmartDeviceId)
         {
-            return _arduinoRepository.GetPrintById(printId);
+            return _arduinoRepository.GetSmartDeviceById(SmartDeviceId);
         }
 
-        public void Update(Print print)
+        public void Update(SmartDevice smartDevice)
         {
-            if (print != null)
+            if (smartDevice != null)
             {
-                _arduinoRepository.Update(print);
+                _arduinoRepository.Update(smartDevice);
             }
             else
             {
-                _logger.Warning("print is NULL in Update!", null, "ArduinoService");
+                _logger.Warning("SmartDevice is NULL in Update!", null, "ArduinoService");
             }
         }
 
-        public void Insert(Print print)
+        public void Insert(SmartDevice SmartDevice)
         {
-            _arduinoRepository.Insert(print);
+            _arduinoRepository.Insert(SmartDevice);
         }
 
-        public IReadOnlyCollection<PrintDto> GetAllPrintDto(int kundeId)
+        public IReadOnlyCollection<SmartDeviceDto> GetAllSmartDeviceDto(int kundeId)
         {
-            return _arduinoRepository.GetAllPrintDto(kundeId);
+            return _arduinoRepository.GetAllSmartDeviceDto(kundeId);
         }
 
-        public PrintDto GetDtoById(int id)
+        public SmartDeviceDto GetSmartDeviceDtoById(int id)
         {
             return _arduinoRepository.GetDtoById(id);
         }

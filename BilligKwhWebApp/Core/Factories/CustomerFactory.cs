@@ -30,7 +30,7 @@ namespace BilligKwhWebApp.Core.Factories
                 CountryId = entity.CountryId,
                 CompanyRegistrationId = entity.CompanyRegistrationId,
                 TimeZoneId = entity.TimeZoneId,
-                DateCreatedUtc = entity.DateCreatedUtc,
+                DateCreatedUtc = entity.DateCreatedUtc, 
             };
         }
 

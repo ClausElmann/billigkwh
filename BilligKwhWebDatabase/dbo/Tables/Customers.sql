@@ -12,9 +12,10 @@
     [TimeZoneId]            NVARCHAR (100)   CONSTRAINT [DF_Customers_TimeZoneId] DEFAULT ('Romance Standard Time') NOT NULL,
     [LanguageId]            INT              CONSTRAINT [DF_Customers_LanguageId] DEFAULT ((1)) NOT NULL,
     [CompanyRegistrationId] NVARCHAR (50)    CONSTRAINT [DF_Customers_CompanyRegistrationId] DEFAULT ('') NOT NULL,
-    [LastEditedUtc]         DATETIME         CONSTRAINT [DF_Customers_LastEditedUtc] DEFAULT (getutcdate()) NOT NULL,
     CONSTRAINT [PK__User_Cus__3214EC078855EB1D] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON)
 );
+
+
 
 
 

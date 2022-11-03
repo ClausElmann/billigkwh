@@ -5,6 +5,8 @@ using System.Linq;
 using System;
 using BilligKwhWebApp.Core.Dto;
 using Z.Dapper.Plus;
+using BilligKwhWebApp.Services.Electricity.Dto;
+using FluentFTP;
 
 namespace BilligKwhWebApp.Services.Electricity.Repository
 {
@@ -191,6 +193,13 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
         {
             using var connection = ConnectionFactory.GetOpenConnection();
             connection.BulkInsert(consumption);
+        }
+
+        public IReadOnlyCollection<ScheduleDto> GetSchedulesForPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)
+        {
+            using var connection = ConnectionFactory.GetOpenConnection();
+            return connection.Query<ScheduleDto>(@"SELECT * FROM [Schedule] WHERE DeviceId = @DeviceId AND [Date] between @FromDateUtc and dateadd(dy,1, @ToDateUtc)",
+                new { CustomerId = deviceId, FromDateUtc = fromDateUtc, ToDateUtc = toDateUtc }).ToList();
         }
     }
 }

@@ -6,7 +6,7 @@
     [Administrator]                    BIT              NOT NULL,
     [SystemAdministrator]              BIT              CONSTRAINT [DF_Users_EnviTronicSysAdmin] DEFAULT ((0)) NOT NULL,
     [Name]                             NVARCHAR (500)   NOT NULL,
-    [Phone]                            NVARCHAR (50)    NULL DEFAULT '',
+    [Phone]                            NVARCHAR (50)    NULL,
     [NoLogin]                          BIT              CONSTRAINT [DF_Users_LoginUser] DEFAULT ((0)) NOT NULL,
     [LanguageId]                       INT              CONSTRAINT [DF_Users_SprogID] DEFAULT ((1)) NOT NULL,
     [CountryId]                        INT              CONSTRAINT [DF_Users_LandID] DEFAULT ((1)) NOT NULL,
@@ -26,6 +26,8 @@
     CONSTRAINT [PK_Users1] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (FILLFACTOR = 90),
     CONSTRAINT [FK_Users_Customers] FOREIGN KEY ([CustomerId]) REFERENCES [dbo].[Customers] ([Id])
 );
+
+
 
 
 

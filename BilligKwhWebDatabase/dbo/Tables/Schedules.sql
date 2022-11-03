@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[Schedule] (
+﻿CREATE TABLE [dbo].[Schedules] (
     [Id]             INT      IDENTITY (1, 1) NOT NULL,
     [Date]           DATE     NOT NULL,
     [DeviceId]       INT      NOT NULL,

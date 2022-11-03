@@ -4,17 +4,12 @@ using System;
 using Microsoft.AspNetCore.Http;
 using BilligKwhWebApp.Core.Interfaces;
 using BilligKwhWebApp.Services.Interfaces;
-using BilligKwhWebApp.Models;
 using BilligKwhWebApp.Services.Arduino;
-using BilligKwhWebApp.Core.Domain;
 using BilligKwhWebApp.Services.Electricity;
-using System.Linq;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using BilligKwhWebApp.Core;
-using BilligKwhWebApp.Services;
 using BilligKwhWebApp.Infrastructure.DataTransferObjects.Common;
-using BilligKwhWebApp.Services.Arduino.Dto;
+using BilligKwhWebApp.Services.Electricity.Dto;
 
 namespace BilligKwhWebApp.Controllers
 {
@@ -32,26 +27,26 @@ namespace BilligKwhWebApp.Controllers
         }
 
         [HttpGet, Authorize(UserRolePermissionProvider.Bearer)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PrintDto>))]
-        public IActionResult GetPrints(int? countryId, int? customerId)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<SmartDeviceDto>))]
+        public IActionResult GetSmartDevices(int? countryId, int? customerId)
         {
             customerId ??= WorkContext.CustomerId;
 
-            var prints = _arduinoService.GetAllPrintDto((int)customerId);
+            var smartDevices = _arduinoService.GetAllSmartDeviceDto((int)customerId);
 
-            if (prints != null)
+            if (smartDevices != null)
             {
                 //if (countryId.HasValue)
-                //    prints = prints.Where(c => c.c.LandID == countryId.Value).ToList();
+                //    SmartDevices = SmartDevices.Where(c => c.c.LandID == countryId.Value).ToList();
 
                 //if (customerId.HasValue)
-                //    prints = prints.Where(c => c.KundeID == customerId.Value).ToList();
+                //    SmartDevices = SmartDevices.Where(c => c.KundeID == customerId.Value).ToList();
 
-                return Ok(prints);
+                return Ok(smartDevices);
             }
             else
             {
-                return Ok(new List<PrintDto>());
+                return Ok(new List<SmartDeviceDto>());
             }
         }
 
@@ -59,15 +54,29 @@ namespace BilligKwhWebApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDto))]
         [ProducesDefaultResponseType]
-        public ActionResult<PrintDto> GetPrint(int id)
+        public ActionResult<SmartDeviceDto> GetSmartDevice(int id)
         {
-            PrintDto dto = _arduinoService.GetDtoById(id);
+            SmartDeviceDto dto = _arduinoService.GetSmartDeviceDtoById(id);
 
-            if (dto == null) return BadRequest(new { ErrorMessage = "Print not found", WorkContext = WorkContext });
+            if (dto == null) return BadRequest(new { ErrorMessage = "SmartDevice not found", WorkContext = WorkContext });
 
             return Ok(dto);
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ScheduleDto>))]
+        public IActionResult GetSchedulesForPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)
+        {
+            var schedules = _electricityService.GetSchedulesForPeriod(deviceId, fromDateUtc, toDateUtc);
 
+            if (schedules != null)
+            {
+                return Ok(schedules);
+            }
+            else
+            {
+                return Ok(new List<ScheduleDto>());
+            }
+        }
     }
 }

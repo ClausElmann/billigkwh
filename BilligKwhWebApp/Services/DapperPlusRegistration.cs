@@ -70,7 +70,7 @@ namespace BilligKwhWebApp.Services
         private static void SetupMiscTables()
         {
             DapperPlusManager.Entity<ElectricityPrice>().Table("dbo.ElectricityPrice").Identity(x => x.Id).Key(k => k.HourDK).BatchTimeout(120 * 60);
-            DapperPlusManager.Entity<Print>().Table("dbo.Print").Identity(x => x.Id);
+            DapperPlusManager.Entity<SmartDevice>().Table("dbo.SmartDevice").Identity(x => x.Id);
             DapperPlusManager.Entity<Recipe>().Table("dbo.Recipe").Identity(x => x.Id);
             DapperPlusManager.Entity<Schedule>().Table("dbo.Schedule").Identity(x => x.Id).Key(k => new
             {

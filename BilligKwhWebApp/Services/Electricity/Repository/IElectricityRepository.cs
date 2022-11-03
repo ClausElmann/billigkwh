@@ -1,4 +1,5 @@
 ﻿using BilligKwhWebApp.Core.Domain;
+using BilligKwhWebApp.Services.Electricity.Dto;
 using System;
 using System.Collections.Generic;
 
@@ -11,7 +12,9 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
         IReadOnlyCollection<Recipe> GetRecipes();
         IReadOnlyCollection<Schedule> GetSchedulesForDate(DateTime date, int deviceId);
 
-        //Print GetPrintById(string printId);
+        IReadOnlyCollection<ScheduleDto> GetSchedulesForPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc);
+
+        //SmartDevice GetSmartDeviceById(string SmartDeviceId);
         Consumption GetConsumptionByIdAndDate(DateTime date, int deviceId);
         void UpdateConsumption(Consumption consumption);
         void InsertConsumption(Consumption consumption);

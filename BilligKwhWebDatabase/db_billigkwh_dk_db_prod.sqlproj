@@ -89,10 +89,10 @@
     <Build Include="dbo\Tables\Users.sql" />
     <Build Include="dbo\Tables\Languages.sql" />
     <Build Include="dbo\Tables\Customers.sql" />
-    <Build Include="dbo\Tables\Schedule.sql" />
     <Build Include="dbo\Tables\Recipe.sql" />
-    <Build Include="dbo\Tables\Print.sql" />
     <Build Include="dbo\Tables\ElectricityPrice.sql" />
     <Build Include="dbo\Tables\Consumption.sql" />
+    <Build Include="dbo\Tables\SmartDevices.sql" />
+    <Build Include="dbo\Tables\Schedules.sql" />
   </ItemGroup>
 </Project>

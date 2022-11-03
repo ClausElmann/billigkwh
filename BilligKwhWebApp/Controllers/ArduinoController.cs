@@ -31,35 +31,37 @@ namespace BilligKwhWebApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BilligKwhModel))]
         public IActionResult GetBilligKwhModel(string deviceId, string consumption)
         {
-            var print = _arduinoService.GetPrintById(deviceId);
+            var smartDevice = _arduinoService.GetSmartDeviceById(deviceId);
 
-            if (print == null)
+            if (smartDevice == null)
             {
-                print = new Print()
+                smartDevice = new SmartDevice()
                 {
-                    PrintId = deviceId,
-                    OprettetDatoUtc = DateTime.UtcNow,
-                    SidsteKontaktDatoUtc = DateTime.UtcNow,
-                    Kommentar = "",
-                    Lokation = "",
+                    Uniqueidentifier = deviceId,
+                    CreatedUtc = DateTime.UtcNow,
+                    LatestContactUtc = DateTime.UtcNow,
+                    Comment = "",
+                    Location = "",
+                    ZoneId = 1,
+                    MaxRate = 2,
                 };
-                _arduinoService.Insert(print);
+                _arduinoService.Insert(smartDevice);
             }
             else
             {
-                print.SidsteKontaktDatoUtc = DateTime.UtcNow;
-                _arduinoService.Update(print);
+                smartDevice.LatestContactUtc = DateTime.UtcNow;
+                _arduinoService.Update(smartDevice);
 
                 if (!string.IsNullOrEmpty(consumption))
                 {
                     var numbers = consumption?.Split(',')?.Select(long.Parse)?.ToList();
-                    _electricityService.UpdateConsumption(print.Id, numbers);
+                    _electricityService.UpdateConsumption(smartDevice.Id, numbers);
                 }
             }
 
             DateTime danish = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Romance Standard Time");
 
-            var schedules = _electricityService.GetSchedulesForDate(danish.Date, print.Id);
+            var schedules = _electricityService.GetSchedulesForDate(danish.Date, smartDevice.Id);
 
             if (!schedules.Any())
                 return NotFound("Schedules not found"); ;
@@ -121,18 +123,18 @@ namespace BilligKwhWebApp.Controllers
 
         //[HttpPost]
         //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Guid))]
-        //public IActionResult OpretPrint()
+        //public IActionResult OpretSmartDevice()
         //{
-        //    Print entity = new()
+        //    SmartDevice entity = new()
         //    {
-        //        PrintId = Guid.NewGuid(),
+        //        SmartDeviceId = Guid.NewGuid(),
         //        OprettetDatoUtc = DateTime.UtcNow,
         //        SidsteKontaktDatoUtc = DateTime.UtcNow,
         //    };
 
         //    _arduinoService.Insert(entity);
 
-        //    return Ok(entity.PrintId);
+        //    return Ok(entity.SmartDeviceId);
         //}
 
         [HttpGet]

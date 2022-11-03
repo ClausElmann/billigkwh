@@ -2,48 +2,48 @@
 using System.Collections.Generic;
 using System.Linq;
 using Z.Dapper.Plus;
-using BilligKwhWebApp.Services.Arduino.Dto;
 using BilligKwhWebApp.Services.Arduino.Domain;
+using BilligKwhWebApp.Services.Electricity.Dto;
 
 namespace BilligKwhWebApp.Services.Arduino.Repository
 {
     public class ArduinoRepository : IArduinoRepository
     {
 
-        public void Update(Print print)
+        public void Update(SmartDevice SmartDevice)
         {
             using var connection = ConnectionFactory.GetOpenConnection();
-            connection.BulkUpdate(print);
+            connection.BulkUpdate(SmartDevice);
         }
 
-        public void Insert(Print print)
+        public void Insert(SmartDevice SmartDevice)
         {
             using var connection = ConnectionFactory.GetOpenConnection();
-            connection.BulkInsert(print);
+            connection.BulkInsert(SmartDevice);
         }
 
-        public Print GetPrintById(string printId)
+        public SmartDevice GetSmartDeviceById(string SmartDeviceId)
         {
             using var connection = ConnectionFactory.GetOpenConnection();
-            return connection.QueryFirstOrDefault<Print>(@"
-            SELECT * FROM [Print]
-			WHERE PrintId = @PrintId", new { PrintId = printId });
+            return connection.QueryFirstOrDefault<SmartDevice>(@"
+            SELECT * FROM [SmartDevice]
+			WHERE SmartDeviceId = @SmartDeviceId", new { SmartDeviceId = SmartDeviceId });
         }
 
-        public IReadOnlyCollection<PrintDto> GetAllPrintDto(int kundeId)
+        public IReadOnlyCollection<SmartDeviceDto> GetAllSmartDeviceDto(int kundeId)
         {
 
             using var connection = ConnectionFactory.GetOpenConnection();
-            return connection.Query<PrintDto>(@"
+            return connection.Query<SmartDeviceDto>(@"
             SELECT *
-            FROM [Print] WHERE KundeID = @KundeId", new { KundeId = kundeId }).ToList();
+            FROM [SmartDevice] WHERE KundeID = @KundeId", new { KundeId = kundeId }).ToList();
         }
 
-        public PrintDto GetDtoById(int id)
+        public SmartDeviceDto GetDtoById(int id)
         {
             using var connection = ConnectionFactory.GetOpenConnection();
-            return connection.QueryFirstOrDefault<PrintDto>(@"
-            SELECT * FROM [Print] WHERE 
+            return connection.QueryFirstOrDefault<SmartDeviceDto>(@"
+            SELECT * FROM [SmartDevice] WHERE 
             Id = @Id", new { Id = id });
         }
     }
