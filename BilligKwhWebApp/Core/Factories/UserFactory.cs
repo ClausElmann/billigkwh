@@ -52,45 +52,6 @@ namespace BilligKwhWebApp.Core.Factories
             return model;
         }
 
-
-        //public Bruger InitForCreate(string firstName, string lastName, Kunde customer, string brugernavn)
-        //{
-        //    if (customer == null) return null;
-        //    var user = new Bruger
-        //    {
-        //        Adgangskode = "",
-        //        BrugernavnUtfCode = _authenticationService.BeregnBrugernavnHashUtfCode(brugernavn),
-        //        BrugernavnUnicode = _authenticationService.BeregnBrugernavnHashUnicode(brugernavn),
-        //        VærtKundeID = customer.Id,
-        //        AktivKundeID = customer.Id,
-        //        ErAdministrator = true,
-        //        SystemAdministrator = false,
-        //        KundeAdministrator = false,
-        //        Fornavn = firstName,
-        //        Efternavn = lastName,
-        //        Telefon = "",
-        //        Mobil = "",
-        //        NoLogin = false,
-        //        SprogID = customer.LanguageId != 0 ? customer.LanguageId : CountryConstants.DanishLanguageId,
-        //        SidstRettet = DateTime.UtcNow,
-        //        SidstRettetAfBrugerID = -1,
-        //        Slettet = false,
-        //        StandardBedriftID = 0,
-        //        SecurityStamp = "",
-        //        PasswordHash = "",
-        //        PortalAdministrator = false,
-        //        LandID = customer.LandID != 0 ? customer.LandID : CountryConstants.DanishCountryId,
-        //        Password = "",
-        //        PasswordSalt = "",
-        //        FailedLoginCount = 0,
-        //        IsLockedOut = false,
-        //        TidzoneId = customer.TidzoneId ?? "Romance Standard Time"
-        //    };
-
-        //    return user;
-        //}
-
-
         public User CreateUserEntity(UserEditModel model, Customer customer)
         {
             if (model is null) throw new ArgumentNullException(nameof(model));

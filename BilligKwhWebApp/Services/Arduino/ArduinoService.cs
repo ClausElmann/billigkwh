@@ -42,9 +42,9 @@ namespace BilligKwhWebApp.Services
             _arduinoRepository.Insert(SmartDevice);
         }
 
-        public IReadOnlyCollection<SmartDeviceDto> GetAllSmartDeviceDto(int kundeId)
+        public IReadOnlyCollection<SmartDeviceDto> GetAllSmartDeviceDto(int customerId)
         {
-            return _arduinoRepository.GetAllSmartDeviceDto(kundeId);
+            return _arduinoRepository.GetAllSmartDeviceDto(customerId);
         }
 
         public SmartDeviceDto GetSmartDeviceDtoById(int id)

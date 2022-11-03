@@ -56,7 +56,7 @@ namespace Helper
 
             //}
 
-            List<string> list = new() { "slettet", "id", "sidstrettet", "sidstrettetafbrugerid", "objektguid", "kundeid" };
+            List<string> list = new() { "deleted", "id", "lasteditedutc", "lasteditedby", "objektguid", "customerId" };
 
             return listOfProperties.Where(w => !list.Contains(w.Name.ToLower())).ToList();
         }

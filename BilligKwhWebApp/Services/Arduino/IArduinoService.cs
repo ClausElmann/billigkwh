@@ -9,7 +9,7 @@ namespace BilligKwhWebApp.Services.Arduino
         SmartDevice GetSmartDeviceById(string id);
         void Update(SmartDevice smartDevice);
         void Insert(SmartDevice smartDevice);
-        IReadOnlyCollection<SmartDeviceDto> GetAllSmartDeviceDto(int kundeId);
+        IReadOnlyCollection<SmartDeviceDto> GetAllSmartDeviceDto(int customerId);
         SmartDeviceDto GetSmartDeviceDtoById(int id);
     }
 }

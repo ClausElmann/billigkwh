@@ -40,7 +40,7 @@ namespace BilligKwhWebApp.Controllers
                 //    SmartDevices = SmartDevices.Where(c => c.c.LandID == countryId.Value).ToList();
 
                 //if (customerId.HasValue)
-                //    SmartDevices = SmartDevices.Where(c => c.KundeID == customerId.Value).ToList();
+                //    SmartDevices = SmartDevices.Where(c => c.CustomerId == customerId.Value).ToList();
 
                 return Ok(smartDevices);
             }

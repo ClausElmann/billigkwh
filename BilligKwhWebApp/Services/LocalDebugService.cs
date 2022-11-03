@@ -47,7 +47,7 @@ namespace BilligKwhWebApp.Services
             //            ElTavleID = f.ElTavleID,
             //            ElTavleSektionID = f.ElTavleSektionID,
             //            KomponentID = f.KomponentID,
-            //            KundeID = f.KundeID,
+            //            CustomerId = f.CustomerId,
             //            Placering = placering,
             //            Navn = "",
             //            Line = 1

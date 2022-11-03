@@ -203,43 +203,5 @@ namespace BilligKwhWebApp.Controllers
                 _emailService.SendMail(item);
             }
         }
-
-        //[HttpPost]
-        //public async Task<ActionResult<int>> CreateOrUpdateEconomicCustomer(int kundeId)
-        //{
-        //    try
-        //    {
-        //        var economicId = await _customerService.CreateOrUpdateEconomicCustomer(kundeId).ConfigureAwait(false);
-        //        return Ok(economicId);
-        //    }
-        //    catch (EconomicException ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
-
-
-
-        //// Public Api
-        ///// <summary>
-        ///// Get customer by either customer ID or the public GUID id. If no id is provided, current customer is returned.
-        ///// </summary>
-        //[HttpPost]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDto))]
-        //[ProducesDefaultResponseType]
-        //public async Task<IActionResult> CreateInEconomic([FromBody] CustomerModel model)
-        //{
-        //    Kunde customer = _customerService.Get(model.Id);
-
-        //  //  var cust = await _economicClient.CreateCustomer(model).ConfigureAwait(false);
-
-        //    var economicInvoiceDraft = await _economicHttpClient.CreateInvoice(model).ConfigureAwait(false);
-
-
-        //    return Ok(model);
-        //}
-
-
     }
 }
