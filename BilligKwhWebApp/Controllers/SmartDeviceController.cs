@@ -75,12 +75,28 @@ namespace BilligKwhWebApp.Controllers
 
             var entity = _arduinoService.GetSmartDeviceById(model.Id);
 
+            bool recalculate = false;
+
             if (entity != null)
             {
+                if(entity.MaxRate!=model.MaxRate) recalculate = true;
                 entity.Location = model.Location;
                 entity.ZoneId = model.ZoneId;
                 entity.MaxRate = model.MaxRate;
                 _arduinoService.Update(entity);
+
+                if (recalculate) 
+                {
+                    DateTime danish = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Romance Standard Time");
+
+                    var elpriser = _electricityService.GetElectricityPriceForDate(danish.Date);
+
+                    //TODO GENBEGEN IKKE ALLE!!!!!!!!!!!!!!!!!!
+                    var devicesForRecipes = _electricityService.GetSmartDeviceForRecipes();
+
+                    _ = _electricityService.Calculate(danish, elpriser, devicesForRecipes);
+                }
+
                 return Ok(entity.Id);
             }
             return BadRequest(new { ErrorMessage = "SmartDevice not found", Model = entity });

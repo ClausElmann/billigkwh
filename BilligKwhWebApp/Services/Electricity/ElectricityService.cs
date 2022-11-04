@@ -73,9 +73,9 @@ namespace BilligKwhWebApp.Services.Electricity
 
             var elpriser = _electricityRepository.GetElectricityPriceForDate(danish.Date);
 
-            var recipes = _electricityRepository.GetRecipes();
+            var devicesForRecipes = _electricityRepository.GetSmartDeviceForRecipes();
 
-            var result = _electricityRepository.Calculate(danish, elpriser, recipes);
+            var result = _electricityRepository.Calculate(danish, elpriser, devicesForRecipes);
 
             _baseRepository.BulkMerge(result);
 
@@ -161,7 +161,22 @@ namespace BilligKwhWebApp.Services.Electricity
 
         public IReadOnlyCollection<ScheduleDto> GetSchedulesForPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)
         {
-            return _electricityRepository.GetSchedulesForPeriod(deviceId, fromDateUtc, toDateUtc); 
+            return _electricityRepository.GetSchedulesForPeriod(deviceId, fromDateUtc, toDateUtc);
+        }
+
+        public IReadOnlyCollection<Schedule> Calculate(DateTime danish, IReadOnlyCollection<ElectricityPrice> elpriser, IReadOnlyCollection<SmartDevice> devices)
+        {
+            return _electricityRepository.Calculate(danish, elpriser, devices);
+        }
+
+        public IReadOnlyCollection<SmartDevice> GetSmartDeviceForRecipes()
+        {
+            return _electricityRepository.GetSmartDeviceForRecipes();
+        }
+
+        public IReadOnlyCollection<ElectricityPrice> GetElectricityPriceForDate(DateTime date)
+        {
+            return _electricityRepository.GetElectricityPriceForDate(date);
         }
     }
 }

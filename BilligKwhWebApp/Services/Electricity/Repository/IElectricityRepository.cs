@@ -7,9 +7,12 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
 {
     public interface IElectricityRepository
     {
-        IReadOnlyCollection<Schedule> Calculate(DateTime danish, IReadOnlyCollection<ElectricityPrice> elpriser, IReadOnlyCollection<Recipe> recipes);
+        IReadOnlyCollection<Schedule> Calculate(DateTime danish, IReadOnlyCollection<ElectricityPrice> elpriser, IReadOnlyCollection<SmartDevice> devices);
         IReadOnlyCollection<ElectricityPrice> GetElectricityPriceForDate(DateTime date);
-        IReadOnlyCollection<Recipe> GetRecipes();
+
+        IReadOnlyCollection<SmartDevice> GetSmartDeviceForRecipes();
+
+        //IReadOnlyCollection<Recipe> GetRecipes();
         IReadOnlyCollection<Schedule> GetSchedulesForDate(DateTime date, int deviceId);
 
         IReadOnlyCollection<ScheduleDto> GetSchedulesForPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc);

@@ -20,11 +20,11 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
             WHERE HourDK >= @Date", new { Date = date.Date }).ToList();
         }
 
-        public IReadOnlyCollection<Recipe> GetRecipes()
+        public IReadOnlyCollection<SmartDevice> GetSmartDeviceForRecipes()
         {
             using var connection = ConnectionFactory.GetOpenConnection();
-            return connection.Query<Recipe>(@"
-                     SELECT * FROM [Recipes]").ToList();
+            return connection.Query<SmartDevice>(@"
+                     SELECT * FROM [SmartDevices] WHERE [Deleted] IS NULL AND [CustomerId] IS NOT NULL").ToList();
         }
 
         public IReadOnlyCollection<Schedule> GetSchedulesForDate(DateTime date, int deviceId)
@@ -35,18 +35,18 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
             WHERE [Date] >= @Date AND DeviceId = @DeviceId order by [Date]", new { date.Date, DeviceId = deviceId }).ToList();
         }
 
-        public IReadOnlyCollection<Schedule> Calculate(DateTime danish, IReadOnlyCollection<ElectricityPrice> elpriser, IReadOnlyCollection<Recipe> recipes)
+        public IReadOnlyCollection<Schedule> Calculate(DateTime danish, IReadOnlyCollection<ElectricityPrice> elpriser, IReadOnlyCollection<SmartDevice> devices)
         {
             DateTime timeUtc = DateTime.UtcNow;
 
             var today = danish.Date;
             var tomorrow = danish.AddDays(1).Date;
 
-            var dk1SchedulesToday = from f in recipes.Where(w => w.ZoneId == 1)
+            var dk1SchedulesToday = from f in devices.Where(w => w.ZoneId == 1)
                                     select new Schedule()
                                     {
                                         Date = today,
-                                        DeviceId = f.DeviceId,
+                                        DeviceId = f.Id,
                                         LastUpdatedUtc = timeUtc,
                                         H00 = elpriser.Where(v => v.HourDK.Date == today && v.HourDKNo == 0 && v.Dk1 <= f.MaxRate).Any(),
                                         H01 = elpriser.Where(v => v.HourDK.Date == today && v.HourDKNo == 1 && v.Dk1 <= f.MaxRate).Any(),
@@ -74,11 +74,11 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
                                         H23 = elpriser.Where(v => v.HourDK.Date == today && v.HourDKNo == 23 && v.Dk1 <= f.MaxRate).Any(),
                                     };
 
-            var dk1SchedulesTomorrow = from f in recipes.Where(w => w.ZoneId == 1)
+            var dk1SchedulesTomorrow = from f in devices.Where(w => w.ZoneId == 1)
                                        select new Schedule()
                                        {
                                            Date = tomorrow,
-                                           DeviceId = f.DeviceId,
+                                           DeviceId = f.Id,
                                            LastUpdatedUtc = timeUtc,
                                            H00 = elpriser.Where(v => v.HourDK.Date == tomorrow && v.HourDKNo == 0 && v.Dk1 <= f.MaxRate).Any(),
                                            H01 = elpriser.Where(v => v.HourDK.Date == tomorrow && v.HourDKNo == 1 && v.Dk1 <= f.MaxRate).Any(),
@@ -106,11 +106,11 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
                                            H23 = elpriser.Where(v => v.HourDK.Date == tomorrow && v.HourDKNo == 23 && v.Dk1 <= f.MaxRate).Any(),
                                        };
 
-            var dk2SchedulesToday = from f in recipes.Where(w => w.ZoneId == 2)
+            var dk2SchedulesToday = from f in devices.Where(w => w.ZoneId == 2)
                                     select new Schedule()
                                     {
                                         Date = today,
-                                        DeviceId = f.DeviceId,
+                                        DeviceId = f.Id,
                                         LastUpdatedUtc = timeUtc,
                                         H00 = elpriser.Where(v => v.HourDK.Date == today && v.HourDKNo == 0 && v.Dk2 <= f.MaxRate).Any(),
                                         H01 = elpriser.Where(v => v.HourDK.Date == today && v.HourDKNo == 1 && v.Dk2 <= f.MaxRate).Any(),
@@ -138,11 +138,11 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
                                         H23 = elpriser.Where(v => v.HourDK.Date == today && v.HourDKNo == 23 && v.Dk2 <= f.MaxRate).Any(),
                                     };
 
-            var dk2SchedulesTomorrow = from f in recipes.Where(w => w.ZoneId == 2)
+            var dk2SchedulesTomorrow = from f in devices.Where(w => w.ZoneId == 2)
                                        select new Schedule()
                                        {
                                            Date = tomorrow,
-                                           DeviceId = f.DeviceId,
+                                           DeviceId = f.Id,
                                            LastUpdatedUtc = timeUtc,
                                            H00 = elpriser.Where(v => v.HourDK.Date == tomorrow && v.HourDKNo == 0 && v.Dk2 <= f.MaxRate).Any(),
                                            H01 = elpriser.Where(v => v.HourDK.Date == tomorrow && v.HourDKNo == 1 && v.Dk2 <= f.MaxRate).Any(),
