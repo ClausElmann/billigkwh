@@ -1,13 +1,14 @@
-﻿using BilligKwhWebApp.Services.Arduino.Domain;
+﻿using BilligKwhWebApp.Core.Domain;
 using BilligKwhWebApp.Services.Electricity.Dto;
 using System.Collections.Generic;
 
-namespace BilligKwhWebApp.Services.Arduino.Repository
+namespace BilligKwhWebApp.Services.SmartDevices.Repository
 {
-    public interface IArduinoRepository
+    public interface ISmartDeviceRepository
     {
         SmartDeviceDto GetDtoById(int id);
-        SmartDevice GetSmartDeviceById(string SmartDeviceId);
+        SmartDevice GetSmartDeviceById(int id);
+        SmartDevice GetSmartDeviceByUniqueidentifier(string uniqueidentifier);
         void Update(SmartDevice SmartDevice);
         void Insert(SmartDevice SmartDevice);
         IReadOnlyCollection<SmartDeviceDto> GetAllSmartDeviceDto(int customerId);

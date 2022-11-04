@@ -1,39 +1,36 @@
 ﻿using BilligKwhWebApp.Services.Interfaces;
 using BilligKwhWebApp.Services.Customers;
-using BilligKwhWebApp.Services.Arduino;
-using BilligKwhWebApp.Services.Arduino.Repository;
 using System.Collections.Generic;
-using BilligKwhWebApp.Services.Arduino.Domain;
 using BilligKwhWebApp.Services.Electricity.Dto;
+using BilligKwhWebApp.Services.SmartDevices.Repository;
+using BilligKwhWebApp.Core.Domain;
 
-namespace BilligKwhWebApp.Services
+namespace BilligKwhWebApp.Services.SmartDevices
 {
-    public class ArduinoService : IArduinoService
+    public class SmartDeviceService : ISmartDeviceService
     {
         private readonly ISystemLogger _logger;
-        private readonly IArduinoRepository _arduinoRepository;
+        private readonly ISmartDeviceRepository _arduinoRepository;
         private readonly ICustomerService _customerService;
 
-        public ArduinoService(ISystemLogger logger, IArduinoRepository arduinoRepository, ICustomerService customerService)
+        public SmartDeviceService(ISystemLogger logger, ISmartDeviceRepository arduinoRepository, ICustomerService customerService)
         {
             _logger = logger;
             _arduinoRepository = arduinoRepository;
             _customerService = customerService;
         }
-        public SmartDevice GetSmartDeviceById(string SmartDeviceId)
+        public SmartDevice GetSmartDeviceById(int id)
         {
-            return _arduinoRepository.GetSmartDeviceById(SmartDeviceId);
+            return _arduinoRepository.GetSmartDeviceById(id);
         }
 
         public void Update(SmartDevice smartDevice)
         {
             if (smartDevice != null)
-            {
                 _arduinoRepository.Update(smartDevice);
-            }
             else
             {
-                _logger.Warning("SmartDevice is NULL in Update!", null, "ArduinoService");
+                _logger.Warning("SmartDevice is NULL in Update!", null, "SmartDeviceService");
             }
         }
 
@@ -50,6 +47,11 @@ namespace BilligKwhWebApp.Services
         public SmartDeviceDto GetSmartDeviceDtoById(int id)
         {
             return _arduinoRepository.GetDtoById(id);
+        }
+
+        public SmartDevice GetSmartDeviceByUniqueidentifier(string uniqueidentifier)
+        {
+            return _arduinoRepository.GetSmartDeviceByUniqueidentifier(uniqueidentifier);
         }
     }
 }

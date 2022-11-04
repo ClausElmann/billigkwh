@@ -193,6 +193,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Properties\PublishProfiles\" />
+	  <Folder Include="Services\SmartDevices\Domain\" />
 	  <Folder Include="Static_Files\images\svg\" />
 	</ItemGroup>
 

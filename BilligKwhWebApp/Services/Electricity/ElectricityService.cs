@@ -1,21 +1,16 @@
 ﻿using BilligKwhWebApp.Core.Domain;
 using BilligKwhWebApp.Services.Interfaces;
 using BilligKwhWebApp.Services.Customers;
-using BilligKwhWebApp.Services.Arduino;
-using BilligKwhWebApp.Services.Arduino.Repository;
 using BilligKwhWebApp.Services.Electricity.Repository;
 using System.Collections.Generic;
 using System;
 using BilligKwhWebApp.Core.Interfaces;
 using BilligKwhWebApp.Jobs.ElectricityPrices;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
 using System.Globalization;
-using BilligKwhWebApp.Core.Toolbox;
 using BilligKwhWebApp.Services.Electricity.Dto;
 
 namespace BilligKwhWebApp.Services.Electricity

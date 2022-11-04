@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Http;
 using BilligKwhWebApp.Core.Interfaces;
 using BilligKwhWebApp.Services.Interfaces;
 using BilligKwhWebApp.Models;
-using BilligKwhWebApp.Services.Arduino;
 using BilligKwhWebApp.Services.Electricity;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BilligKwhWebApp.Services.Arduino.Domain;
+using BilligKwhWebApp.Core.Domain;
+using BilligKwhWebApp.Services.SmartDevices;
 
 namespace BilligKwhWebApp.Controllers
 {
@@ -18,12 +18,12 @@ namespace BilligKwhWebApp.Controllers
     [Route("api/[controller]/[action]")]
     public class ArduinoController : BaseController
     {
-        private readonly IArduinoService _arduinoService;
+        private readonly ISmartDeviceService _smartDeviceService;
         private readonly IElectricityService _electricityService;
 
-        public ArduinoController(ISystemLogger logger, IWorkContext workContext, IPermissionService permissionService, IArduinoService arduinoService, IElectricityService electricityService) : base(logger, workContext, permissionService)
+        public ArduinoController(ISystemLogger logger, IWorkContext workContext, IPermissionService permissionService, ISmartDeviceService smartDeviceService, IElectricityService electricityService) : base(logger, workContext, permissionService)
         {
-            _arduinoService = arduinoService;
+            _smartDeviceService = smartDeviceService;
             _electricityService = electricityService;
         }
 
@@ -31,7 +31,7 @@ namespace BilligKwhWebApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BilligKwhModel))]
         public IActionResult GetBilligKwhModel(string deviceId, string consumption)
         {
-            var smartDevice = _arduinoService.GetSmartDeviceById(deviceId);
+            var smartDevice = _smartDeviceService.GetSmartDeviceByUniqueidentifier(deviceId);
 
             if (smartDevice == null)
             {
@@ -45,12 +45,12 @@ namespace BilligKwhWebApp.Controllers
                     ZoneId = 1,
                     MaxRate = 2,
                 };
-                _arduinoService.Insert(smartDevice);
+                _smartDeviceService.Insert(smartDevice);
             }
             else
             {
                 smartDevice.LatestContactUtc = DateTime.UtcNow;
-                _arduinoService.Update(smartDevice);
+                _smartDeviceService.Update(smartDevice);
 
                 if (!string.IsNullOrEmpty(consumption))
                 {
@@ -64,7 +64,26 @@ namespace BilligKwhWebApp.Controllers
             var schedules = _electricityService.GetSchedulesForDate(danish.Date, smartDevice.Id);
 
             if (!schedules.Any())
-                return NotFound("Schedules not found"); ;
+            {
+                var now = DateTime.Now;
+
+                long[] emptyRecipe = { 220101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+                var emptyModel = new BilligKwhModel()
+                {
+                    Year = int.Parse(now.ToString("yy")),
+                    Month = now.Month,
+                    Day = now.Day,
+                    Hour = now.Hour,
+                    Minute = now.Minute,
+                    Second = now.Second,
+                    Recipe = emptyRecipe.ToArray(),
+                    DeviceID = deviceId
+                };
+
+                return Ok(emptyModel);
+            }
+            //    return NotFound("Schedules not found"); ;
 
             List<long> list = new();
 
@@ -99,8 +118,6 @@ namespace BilligKwhWebApp.Controllers
                 list.Add(item.H22 ? 1 : 0);
                 list.Add(item.H23 ? 1 : 0);
             }
-
-
             //long[] myNum = { 221020, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 221021, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, };
             //long[] myNum1 = { 221020, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 221021, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
 
@@ -121,22 +138,6 @@ namespace BilligKwhWebApp.Controllers
             return Ok(model);
         }
 
-        //[HttpPost]
-        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Guid))]
-        //public IActionResult OpretSmartDevice()
-        //{
-        //    SmartDevice entity = new()
-        //    {
-        //        SmartDeviceId = Guid.NewGuid(),
-        //        OprettetDatoUtc = DateTime.UtcNow,
-        //        SidsteKontaktDatoUtc = DateTime.UtcNow,
-        //    };
-
-        //    _arduinoService.Insert(entity);
-
-        //    return Ok(entity.SmartDeviceId);
-        //}
-
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> UpdateElectricityPrices()
@@ -144,11 +145,5 @@ namespace BilligKwhWebApp.Controllers
             await _electricityService.UpdateElectricityPrices();
             return Ok();
         }
-
-
-
-
-
-
     }
 }

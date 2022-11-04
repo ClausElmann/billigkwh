@@ -1,7 +1,6 @@
-﻿using BilligKwhWebApp.Core.Domain;
-using System;
+﻿using System;
 
-namespace BilligKwhWebApp.Services.Arduino.Domain
+namespace BilligKwhWebApp.Core.Domain
 {
     public class SmartDevice : BaseEntity
     {

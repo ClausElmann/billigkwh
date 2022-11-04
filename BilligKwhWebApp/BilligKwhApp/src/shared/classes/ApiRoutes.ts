@@ -16,7 +16,7 @@ export class ApiRoutes {
 
   private static eltavleEndpoint = ApiRoutes.api + "Eltavle/";
 
-  private static deviceEndpoint = ApiRoutes.api + "Device/";
+  private static deviceEndpoint = ApiRoutes.api + "SmartDevice/";
 
   /**
    * Api endpoints for user
@@ -150,14 +150,14 @@ export class ApiRoutes {
     sendFakturaMail: ApiRoutes.eltavleEndpoint + "SendFakturaMail"
   };
 
-  public static deviceRoutes = {
+  public static smartDeviceRoutes = {
     get: {
       getSmartDevices: ApiRoutes.deviceEndpoint + "GetSmartDevices",
       getSmartDevice: ApiRoutes.deviceEndpoint + "GetSmartDevice"
     },
     post: {},
     update: {
-      updatePrint: ApiRoutes.deviceEndpoint + "UpdatePrint"
+      updateSmartDevice: ApiRoutes.deviceEndpoint + "UpdateSmartDevice"
     },
     delete: {}
   };

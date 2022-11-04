@@ -37,10 +37,10 @@ using BilligKwhWebApp.Core.Factories;
 using BilligKwhWebApp.Tools.Url;
 using BilligKwhWebApp.Services.Customers.Repository;
 using BilligKwhWebApp.Services.Customers;
-using BilligKwhWebApp.Services.Arduino.Repository;
-using BilligKwhWebApp.Services.Arduino;
 using BilligKwhWebApp.Services.Electricity.Repository;
 using BilligKwhWebApp.Services.Electricity;
+using BilligKwhWebApp.Services.SmartDevices;
+using BilligKwhWebApp.Services.SmartDevices.Repository;
 
 namespace BilligKwhWebApp
 {
@@ -254,7 +254,7 @@ namespace BilligKwhWebApp
             app.UseRequestLocalization();
 
             app.UseWhen(context => !context.Request.Path.StartsWithSegments("/Api/Arduino", StringComparison.OrdinalIgnoreCase),
-                           builder => builder.UseHttpsRedirection());
+                                     builder => builder.UseHttpsRedirection());
 
             app.UseStaticFiles(new StaticFileOptions()
             {
@@ -368,8 +368,8 @@ namespace BilligKwhWebApp
             services.AddScoped<IRootFolderService, RootFolderService>();
             services.AddScoped<IIconService, IconService>();
 
-            services.AddScoped<IArduinoRepository, ArduinoRepository>();
-            services.AddScoped<IArduinoService, ArduinoService>();
+            services.AddScoped<ISmartDeviceRepository, SmartDeviceRepository>();
+            services.AddScoped<ISmartDeviceService, SmartDeviceService>();
 
             services.AddScoped<IElectricityRepository, ElectricityRepository>();
             services.AddScoped<IElectricityService, ElectricityService>();

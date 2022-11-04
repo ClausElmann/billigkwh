@@ -10,15 +10,20 @@
           </div>
 
           <div class="field col-12 md:col-3">
-            <label for="zoneId" class="block">zoneId</label>
-            <input formControlName="zoneId" type="text" pInputText id="zoneId" aria-describedby="zoneId-help" />
-            <div *ngIf="zoneId.errors && (zoneId.dirty || zoneId.touched)" class="p-error block"></div>
+            <label for="zoneId" class="block">Land</label>
+            <p-dropdown id="zoneId" formControlName="zoneId" [options]="zones" [autoDisplayFirst]="false" aria-describedby="zoneId-help"></p-dropdown>
+            <div *ngIf="zoneId.errors && (zoneId.dirty || zoneId.touched)" class="p-error block">
+              <div *ngIf="zoneId.errors?.required">Påkrævet</div>
+            </div>
           </div>
 
-          <div class="field col-12 md:col-3">
-            <label for="maxRate" class="block">maxRate</label>
-            <input formControlName="maxRate" type="text" pInputText id="maxRate" aria-describedby="maxRate-help" />
-            <div *ngIf="maxRate.errors && (maxRate.dirty || maxRate.touched)" class="p-error block"></div>
+          <div class="field col-12 md:col-6">
+            <label for="maxRate" class="block">Max pris (0.0 - 10.0)</label>
+            <input formControlName="maxRate" type="text" maxlength="200" pInputText id="maxRate" aria-describedby="maxRate-help" />
+            <div *ngIf="maxRate.errors && (maxRate.dirty || maxRate.touched)" class="p-error block">
+              <div *ngIf="maxRate.errors?.required">Påkrævet</div>
+              <div *ngIf="maxRate.errors?.range">Max pris skal værre imellem 0,0 kr og 10,0</div>
+            </div>
           </div>
 
           <div class="field">

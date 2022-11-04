@@ -6,7 +6,7 @@ import { finalize, map, Observable, ReplaySubject, tap } from "rxjs";
 import { BiLocalizationHelperService } from "@core/utility-services/bi-localization-helper.service";
 import moment from "moment";
 import { TableColumnPrimeNg } from "@shared/interfaces-and-enums/TableColumnPrimeNg";
-import { DeviceService } from "@core/services/device.service";
+import { SmartDeviceService } from "@core/services/smartdevice.service";
 import { SmartDeviceDto } from "@apiModels/smartDeviceDto";
 import { ActivatedRoute, Router } from "@angular/router";
 
@@ -57,7 +57,7 @@ export class DeviceListComponent implements OnInit {
 
   text: string;
 
-  constructor(private deviceService: DeviceService, private activeRoute: ActivatedRoute, private router: Router, private localizor: BiLocalizationHelperService) {}
+  constructor(private deviceService: SmartDeviceService, private activeRoute: ActivatedRoute, private router: Router, private localizor: BiLocalizationHelperService) {}
 
   ngOnInit() {
     this.text = "<h2>Vælg en device i listen for at se indholdet</h2>";

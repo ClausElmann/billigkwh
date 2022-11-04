@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[Consumption] (
+﻿CREATE TABLE [dbo].[Consumptions] (
     [Id]             INT      IDENTITY (1, 1) NOT NULL,
     [Date]           DATE     NOT NULL,
     [DeviceId]       INT      NOT NULL,
@@ -27,6 +27,6 @@
     [H21]            BigInt      NOT NULL,
     [H22]            BigInt      NOT NULL,
     [H23]            BigInt      NOT NULL,
-    CONSTRAINT [PK_Consumption] PRIMARY KEY CLUSTERED ([Id] ASC)
+    CONSTRAINT [PK_Consumptions] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

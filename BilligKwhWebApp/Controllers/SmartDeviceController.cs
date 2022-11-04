@@ -4,23 +4,23 @@ using System;
 using Microsoft.AspNetCore.Http;
 using BilligKwhWebApp.Core.Interfaces;
 using BilligKwhWebApp.Services.Interfaces;
-using BilligKwhWebApp.Services.Arduino;
 using BilligKwhWebApp.Services.Electricity;
 using System.Collections.Generic;
 using BilligKwhWebApp.Core;
 using BilligKwhWebApp.Infrastructure.DataTransferObjects.Common;
 using BilligKwhWebApp.Services.Electricity.Dto;
+using BilligKwhWebApp.Services.SmartDevices;
 
 namespace BilligKwhWebApp.Controllers
 {
     [Authorize(UserRolePermissionProvider.Bearer)]
     [Route("api/[controller]/[action]")]
-    public class DeviceController : BaseController
+    public class SmartDeviceController : BaseController
     {
-        private readonly IArduinoService _arduinoService;
+        private readonly ISmartDeviceService _arduinoService;
         private readonly IElectricityService _electricityService;
 
-        public DeviceController(ISystemLogger logger, IWorkContext workContext, IPermissionService permissionService, IArduinoService arduinoService, IElectricityService electricityService) : base(logger, workContext, permissionService)
+        public SmartDeviceController(ISystemLogger logger, IWorkContext workContext, IPermissionService permissionService, ISmartDeviceService arduinoService, IElectricityService electricityService) : base(logger, workContext, permissionService)
         {
             _arduinoService = arduinoService;
             _electricityService = electricityService;
@@ -62,6 +62,30 @@ namespace BilligKwhWebApp.Controllers
 
             return Ok(dto);
         }
+
+
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDto))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorDto))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult UpdateSmartDevice([FromBody] SmartDeviceDto model)
+        {
+            if (model == null) return BadRequest("Model is null");
+
+            var entity = _arduinoService.GetSmartDeviceById(model.Id);
+
+            if (entity != null)
+            {
+                entity.Location = model.Location;
+                entity.ZoneId = model.ZoneId;
+                entity.MaxRate = model.MaxRate;
+                _arduinoService.Update(entity);
+                return Ok(entity.Id);
+            }
+            return BadRequest(new { ErrorMessage = "SmartDevice not found", Model = entity });
+        }
+
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ScheduleDto>))]

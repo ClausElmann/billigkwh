@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { SmartDeviceDto } from "@apiModels/smartDeviceDto";
-import { DeviceService } from "@core/services/device.service";
+import { SmartDeviceService } from "@core/services/smartdevice.service";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { MenuItem, MessageService } from "primeng/api";
 import { switchMap, take } from "rxjs";
@@ -19,7 +19,7 @@ export class DeviceDetaljeComponent implements OnInit {
   activeItem: MenuItem;
   public print?: SmartDeviceDto;
 
-  constructor(private activeRoute: ActivatedRoute, private deviceService: DeviceService, private cd: ChangeDetectorRef) {}
+  constructor(private activeRoute: ActivatedRoute, private deviceService: SmartDeviceService, private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.items = [

@@ -1,6 +1,5 @@
 ﻿using Z.Dapper.Plus;
 using BilligKwhWebApp.Core.Domain;
-using BilligKwhWebApp.Services.Arduino.Domain;
 
 namespace BilligKwhWebApp.Services
 {
@@ -69,16 +68,16 @@ namespace BilligKwhWebApp.Services
         }
         private static void SetupMiscTables()
         {
-            DapperPlusManager.Entity<ElectricityPrice>().Table("dbo.ElectricityPrice").Identity(x => x.Id).Key(k => k.HourDK).BatchTimeout(120 * 60);
-            DapperPlusManager.Entity<SmartDevice>().Table("dbo.SmartDevice").Identity(x => x.Id);
-            DapperPlusManager.Entity<Recipe>().Table("dbo.Recipe").Identity(x => x.Id);
-            DapperPlusManager.Entity<Schedule>().Table("dbo.Schedule").Identity(x => x.Id).Key(k => new
+            DapperPlusManager.Entity<ElectricityPrice>().Table("dbo.ElectricityPrices").Identity(x => x.Id).Key(k => k.HourDK).BatchTimeout(120 * 60);
+            DapperPlusManager.Entity<SmartDevice>().Table("dbo.SmartDevices").Identity(x => x.Id);
+            DapperPlusManager.Entity<Recipe>().Table("dbo.Recipes").Identity(x => x.Id);
+            DapperPlusManager.Entity<Schedule>().Table("dbo.Schedules").Identity(x => x.Id).Key(k => new
             {
                 k.DeviceId,
                 k.Date
             }).BatchTimeout(120 * 60);
 
-            DapperPlusManager.Entity<Consumption>().Table("dbo.Consumption").Identity(x => x.Id).Key(k => new
+            DapperPlusManager.Entity<Consumption>().Table("dbo.Consumptions").Identity(x => x.Id).Key(k => new
             {
                 k.DeviceId,
                 k.Date

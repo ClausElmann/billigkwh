@@ -5,14 +5,14 @@ import { ApiRoutes } from "@shared/classes/ApiRoutes";
 import { catchError, map, Observable } from "rxjs";
 
 @Injectable()
-export class DeviceService {
+export class SmartDeviceService {
   constructor(private http: HttpClient) {}
 
   public getSmartDevices(countryId?: number, customerId?: number): Observable<SmartDeviceDto[]> {
     const params: { [key: string]: string } = {};
 
     return this.http
-      .get<SmartDeviceDto[]>(ApiRoutes.deviceRoutes.get.getSmartDevices, {
+      .get<SmartDeviceDto[]>(ApiRoutes.smartDeviceRoutes.get.getSmartDevices, {
         params: params
       })
       .pipe(
@@ -26,13 +26,13 @@ export class DeviceService {
     const params: { [key: string]: string } = {};
     params.id = id.toString();
 
-    return this.http.get<SmartDeviceDto>(ApiRoutes.deviceRoutes.get.getSmartDevice, {
+    return this.http.get<SmartDeviceDto>(ApiRoutes.smartDeviceRoutes.get.getSmartDevice, {
       params: params
     });
   }
 
-  public updatePrint(print: SmartDeviceDto) {
-    return this.http.post<number>(ApiRoutes.deviceRoutes.update.updatePrint, print).pipe(
+  public updateSmartDevice(print: SmartDeviceDto) {
+    return this.http.post<number>(ApiRoutes.smartDeviceRoutes.update.updateSmartDevice, print).pipe(
       catchError(err => {
         throw err;
       })

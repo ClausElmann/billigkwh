@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Z.Dapper.Plus;
-using BilligKwhWebApp.Services.Arduino.Domain;
 using BilligKwhWebApp.Services.Electricity.Dto;
+using BilligKwhWebApp.Core.Domain;
 
-namespace BilligKwhWebApp.Services.Arduino.Repository
+namespace BilligKwhWebApp.Services.SmartDevices.Repository
 {
-    public class ArduinoRepository : IArduinoRepository
+    public class SmartDeviceRepository : ISmartDeviceRepository
     {
 
         public void Update(SmartDevice SmartDevice)
@@ -22,12 +22,20 @@ namespace BilligKwhWebApp.Services.Arduino.Repository
             connection.BulkInsert(SmartDevice);
         }
 
-        public SmartDevice GetSmartDeviceById(string SmartDeviceId)
+        public SmartDevice GetSmartDeviceByUniqueidentifier(string uniqueidentifier)
         {
             using var connection = ConnectionFactory.GetOpenConnection();
             return connection.QueryFirstOrDefault<SmartDevice>(@"
             SELECT * FROM [SmartDevices]
-			WHERE SmartDeviceId = @SmartDeviceId", new { SmartDeviceId = SmartDeviceId });
+			WHERE Uniqueidentifier = @uniqueidentifier", new { uniqueidentifier });
+        }
+
+        public SmartDevice GetSmartDeviceById(int id)
+        {
+            using var connection = ConnectionFactory.GetOpenConnection();
+            return connection.QueryFirstOrDefault<SmartDevice>(@"
+            SELECT * FROM [SmartDevices]
+			WHERE Id = @Id", new { id });
         }
 
         public IReadOnlyCollection<SmartDeviceDto> GetAllSmartDeviceDto(int customerId)

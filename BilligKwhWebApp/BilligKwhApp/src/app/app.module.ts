@@ -163,7 +163,7 @@ import { SuperAdminCustomerModule } from "./components/superadmin/customer/super
 import { EltavleService } from "@core/services/eltavle.service";
 import { DoorModule } from "./components/door-configurator/door.module";
 import { CircuitModule } from "./components/circuit-configurator/circuit.module";
-import { DeviceService } from "@core/services/device.service";
+import { SmartDeviceService } from "@core/services/smartdevice.service";
 
 /**
  * Custom translations loader that gets the translations from backend.
@@ -356,7 +356,7 @@ export class ElHttpTranslateLoader implements TranslateLoader {
     MessageService,
     ConfirmationService,
     EltavleService,
-    DeviceService,
+    SmartDeviceService,
     {
       provide: APP_INITIALIZER,
       useFactory: billigkwhAppInitializer,

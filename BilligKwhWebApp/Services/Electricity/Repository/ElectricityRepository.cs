@@ -16,7 +16,7 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
         {
             using var connection = ConnectionFactory.GetOpenConnection();
             return connection.Query<ElectricityPrice>(@"
-                     SELECT * FROM [ElectricityPrice]
+                     SELECT * FROM [ElectricityPrices]
             WHERE HourDK >= @Date", new { Date = date.Date }).ToList();
         }
 
@@ -24,14 +24,14 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
         {
             using var connection = ConnectionFactory.GetOpenConnection();
             return connection.Query<Recipe>(@"
-                     SELECT * FROM [Recipe]").ToList();
+                     SELECT * FROM [Recipes]").ToList();
         }
 
         public IReadOnlyCollection<Schedule> GetSchedulesForDate(DateTime date, int deviceId)
         {
             using var connection = ConnectionFactory.GetOpenConnection();
             return connection.Query<Schedule>(@"
-                     SELECT * FROM [Schedule]
+                     SELECT * FROM [Schedules]
             WHERE [Date] >= @Date AND DeviceId = @DeviceId order by [Date]", new { date.Date, DeviceId = deviceId }).ToList();
         }
 
@@ -179,7 +179,7 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
         {
             using var connection = ConnectionFactory.GetOpenConnection();
             return connection.QueryFirstOrDefault<Consumption>(@"
-            SELECT top 1 * FROM Consumption WHERE 
+            SELECT top 1 * FROM Consumptions WHERE 
             DeviceId = @DeviceId AND Date = @Date", new { Date = date, DeviceId = deviceId });
         }
 
@@ -198,7 +198,7 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
         public IReadOnlyCollection<ScheduleDto> GetSchedulesForPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)
         {
             using var connection = ConnectionFactory.GetOpenConnection();
-            return connection.Query<ScheduleDto>(@"SELECT * FROM [Schedule] WHERE DeviceId = @DeviceId AND [Date] between @FromDateUtc and dateadd(dy,1, @ToDateUtc)",
+            return connection.Query<ScheduleDto>(@"SELECT * FROM [Schedules] WHERE DeviceId = @DeviceId AND [Date] between @FromDateUtc and dateadd(dy,1, @ToDateUtc)",
                 new { CustomerId = deviceId, FromDateUtc = fromDateUtc, ToDateUtc = toDateUtc }).ToList();
         }
     }

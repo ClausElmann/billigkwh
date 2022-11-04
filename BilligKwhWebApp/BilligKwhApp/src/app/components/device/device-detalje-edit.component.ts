@@ -10,7 +10,7 @@ import { CustomerModel } from "@apiModels/customerModel";
 import { UserService } from "@core/services/user.service";
 import { UserModel } from "@apiModels/UserModel";
 import { PrimeNgUtilities } from "@shared/variables-and-functions/primeNg-utilities";
-import { DeviceService } from "@core/services/device.service";
+import { SmartDeviceService } from "@core/services/smartdevice.service";
 import { SmartDeviceDto } from "@apiModels/smartDeviceDto";
 
 @UntilDestroy()
@@ -42,12 +42,6 @@ export class DeviceDetaljeEditComponent implements OnInit {
   public exportCSV = PrimeNgUtilities.exportCSV;
 
   deleteDialog = false;
-  takForBestillingDialog = false;
-  viHarNuSendtDinTavleDialog = false;
-  bookInvoiceDialog = false;
-  sendFakturaMailDialog = false;
-  economicManglerDatoOpdatering = false;
-
   flytKundeDialog = false;
 
   public src: Blob;
@@ -56,7 +50,10 @@ export class DeviceDetaljeEditComponent implements OnInit {
   public displayPdfDialog: boolean;
   public displayVarmeTabDialog: boolean;
 
-  varmeberegning: string;
+  public zones: Array<SelectItem> = [
+    { value: 1, label: "DK1" },
+    { value: 2, label: "DK2" }
+  ];
 
   @HostBinding("@fadeInDown") get fadeInHost() {
     return true;
@@ -65,7 +62,7 @@ export class DeviceDetaljeEditComponent implements OnInit {
   constructor(
     private activeRoute: ActivatedRoute,
     private router: Router,
-    private deviceService: DeviceService,
+    private deviceService: SmartDeviceService,
     private cd: ChangeDetectorRef,
     private messageService: MessageService,
     private userService: UserService,
@@ -114,11 +111,11 @@ export class DeviceDetaljeEditComponent implements OnInit {
   }
 
   public get zoneId() {
-    return this.mainForm.get("location");
+    return this.mainForm.get("zoneId");
   }
 
   public get maxRate() {
-    return this.mainForm.get("location");
+    return this.mainForm.get("maxRate");
   }
 
   private checkAndValidateForm() {
@@ -162,7 +159,7 @@ export class DeviceDetaljeEditComponent implements OnInit {
   recreateItem() {
     this.smartDevice.deleted = null;
 
-    this.deviceService.updatePrint(this.smartDevice).subscribe({
+    this.deviceService.updateSmartDevice(this.smartDevice).subscribe({
       next: () => {
         this.messageService.add({
           severity: "success",
@@ -180,7 +177,7 @@ export class DeviceDetaljeEditComponent implements OnInit {
 
   confirmDelete() {
     this.smartDevice.deleted = new Date().toString();
-    this.deviceService.updatePrint(this.smartDevice).subscribe({
+    this.deviceService.updateSmartDevice(this.smartDevice).subscribe({
       next: () => {
         this.messageService.add({
           severity: "success",
@@ -198,12 +195,12 @@ export class DeviceDetaljeEditComponent implements OnInit {
 
   saveItem() {
     if (!this.checkAndValidateForm()) return;
-
+    debugger;
     this.smartDevice.location = this.location.value;
     this.smartDevice.zoneId = this.zoneId.value;
-    this.smartDevice.maxRate = this.maxRate.value;
+    this.smartDevice.maxRate = +this.maxRate.value;
 
-    this.deviceService.updatePrint(this.smartDevice).subscribe({
+    this.deviceService.updateSmartDevice(this.smartDevice).subscribe({
       next: () => {
         this.messageService.add({
           severity: "success",
