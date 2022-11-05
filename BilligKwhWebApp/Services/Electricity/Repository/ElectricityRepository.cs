@@ -12,7 +12,7 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
 {
     public class ElectricityRepository : IElectricityRepository
     {
-        public IReadOnlyCollection<ElectricityPrice> GetElectricityPriceForDate(DateTime date)
+        public IReadOnlyCollection<ElectricityPrice> GetElectricityPricesForDate(DateTime date)
         {
             using var connection = ConnectionFactory.GetOpenConnection();
             return connection.Query<ElectricityPrice>(@"
@@ -198,8 +198,16 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
         public IReadOnlyCollection<ScheduleDto> GetSchedulesForPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)
         {
             using var connection = ConnectionFactory.GetOpenConnection();
-            return connection.Query<ScheduleDto>(@"SELECT * FROM [Schedules] WHERE DeviceId = @DeviceId AND [Date] between @FromDateUtc and dateadd(dy,1, @ToDateUtc)",
-                new { CustomerId = deviceId, FromDateUtc = fromDateUtc, ToDateUtc = toDateUtc }).ToList();
+            return connection.Query<ScheduleDto>(@"SELECT * FROM [Schedules] WHERE DeviceId = @DeviceId AND [Date] >= @FromDateUtc AND [Date] <= @ToDateUtc",
+                new { DeviceId = deviceId, FromDateUtc = fromDateUtc, ToDateUtc = toDateUtc }).ToList();
+        }
+
+        public IReadOnlyCollection<ElectricityPrice> GetElectricityPricesForPeriod(DateTime fromDateUtc, DateTime toDateUtc)
+        {
+            using var connection = ConnectionFactory.GetOpenConnection();
+            return connection.Query<ElectricityPrice>(@"
+                     SELECT * FROM [ElectricityPrices]
+            WHERE HourDK >= @FromDateUtc AND HourDK <= @ToDateUtc", new { FromDateUtc = fromDateUtc, ToDateUtc = toDateUtc }).ToList();
         }
     }
 }

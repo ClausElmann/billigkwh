@@ -158,14 +158,14 @@
             </div>
           </div> -->
 
-          <div class="field col-12">
+          <!-- <div class="field col-12">
             <div class="field">
               <button pButton pRipple class="p-button-outlined p-button-secondary" type="button" label="Test form for validation in console" (click)="getFormValidationErrors()"></button>
             </div>
             <br />Dirty: {{ mainForm.dirty }} <br />Touched: {{ mainForm.touched }} <br />Valid: {{ mainForm.valid }} <br />Values:
             {{ mainForm.value | json }}
             <p class="field-error" [@fadeIn] *ngIf="showFormErrorMessage" translate>errorMessages.OneOrMoreFieldsMissing</p>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -203,3 +203,33 @@
 
   <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
 </form>
+
+<!-- <div ngIf="schedules$ | async"></div> -->
+Schedules: (kommer kl 13 hver dag)
+<ng-container *ngFor="let item of schedules$ | async">
+  <div>{{ item.date | date: "dd/MM/yyyy" }}</div>
+  <div [ngClass]="item.h00 ? runningCss : 'notrunning'">Kl. 00 - {{ item.p00 }} kr.</div>
+  <div [ngClass]="item.h01 ? runningCss : 'notrunning'">Kl. 01 - {{ item.p01 }} kr.</div>
+  <div [ngClass]="item.h02 ? runningCss : 'notrunning'">Kl. 02 - {{ item.p02 }} kr.</div>
+  <div [ngClass]="item.h03 ? runningCss : 'notrunning'">Kl. 03 - {{ item.p03 }} kr.</div>
+  <div [ngClass]="item.h04 ? runningCss : 'notrunning'">Kl. 04 - {{ item.p04 }} kr.</div>
+  <div [ngClass]="item.h05 ? runningCss : 'notrunning'">Kl. 05 - {{ item.p05 }} kr.</div>
+  <div [ngClass]="item.h06 ? runningCss : 'notrunning'">Kl. 06 - {{ item.p06 }} kr.</div>
+  <div [ngClass]="item.h07 ? runningCss : 'notrunning'">Kl. 07 - {{ item.p07 }} kr.</div>
+  <div [ngClass]="item.h08 ? runningCss : 'notrunning'">Kl. 08 - {{ item.p08 }} kr.</div>
+  <div [ngClass]="item.h09 ? runningCss : 'notrunning'">Kl. 09 - {{ item.p09 }} kr.</div>
+  <div [ngClass]="item.h10 ? runningCss : 'notrunning'">Kl. 10 - {{ item.p10 }} kr.</div>
+  <div [ngClass]="item.h11 ? runningCss : 'notrunning'">Kl. 11 - {{ item.p11 }} kr.</div>
+  <div [ngClass]="item.h12 ? runningCss : 'notrunning'">Kl. 12 - {{ item.p12 }} kr.</div>
+  <div [ngClass]="item.h13 ? runningCss : 'notrunning'">Kl. 13 - {{ item.p13 }} kr.</div>
+  <div [ngClass]="item.h14 ? runningCss : 'notrunning'">Kl. 14 - {{ item.p14 }} kr.</div>
+  <div [ngClass]="item.h15 ? runningCss : 'notrunning'">Kl. 15 - {{ item.p15 }} kr.</div>
+  <div [ngClass]="item.h16 ? runningCss : 'notrunning'">Kl. 16 - {{ item.p16 }} kr.</div>
+  <div [ngClass]="item.h17 ? runningCss : 'notrunning'">Kl. 17 - {{ item.p17 }} kr.</div>
+  <div [ngClass]="item.h18 ? runningCss : 'notrunning'">Kl. 18 - {{ item.p18 }} kr.</div>
+  <div [ngClass]="item.h19 ? runningCss : 'notrunning'">Kl. 19 - {{ item.p19 }} kr.</div>
+  <div [ngClass]="item.h20 ? runningCss : 'notrunning'">Kl. 20 - {{ item.p20 }} kr.</div>
+  <div [ngClass]="item.h21 ? runningCss : 'notrunning'">Kl. 21 - {{ item.p21 }} kr.</div>
+  <div [ngClass]="item.h22 ? runningCss : 'notrunning'">Kl. 22 - {{ item.p22 }} kr.</div>
+  <div [ngClass]="item.h23 ? runningCss : 'notrunning'">Kl. 23 - {{ item.p23 }} kr.</div>
+</ng-container>

@@ -319,7 +319,7 @@ namespace BilligKwhWebApp.Services
             var param = new { FromDateUtc = fromDate, ToDateUtc = toDate };
 
             var sql = @"SELECT * 
-                      FROM ElectricityPrice  
+                      FROM [ElectricityPrices]
                       WHERE [HourUTC] between @FromDateUtc and dateadd(dy,1, @ToDateUtc)";
 
             return _baseRepository.Query<ElectricityPriceModel>(sql, param).ToList();

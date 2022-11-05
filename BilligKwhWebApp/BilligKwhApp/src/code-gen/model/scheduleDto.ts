@@ -38,5 +38,29 @@ export interface ScheduleDto {
     h21?: boolean;
     h22?: boolean;
     h23?: boolean;
+    p00?: number;
+    p01?: number;
+    p02?: number;
+    p03?: number;
+    p04?: number;
+    p05?: number;
+    p06?: number;
+    p07?: number;
+    p08?: number;
+    p09?: number;
+    p10?: number;
+    p11?: number;
+    p12?: number;
+    p13?: number;
+    p14?: number;
+    p15?: number;
+    p16?: number;
+    p17?: number;
+    p18?: number;
+    p19?: number;
+    p20?: number;
+    p21?: number;
+    p22?: number;
+    p23?: number;
 }
 

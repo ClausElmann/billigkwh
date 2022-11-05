@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, HostBinding, ChangeDetectionStrategy } from "@angular/core";
 import { FormGroup, FormControl, ValidationErrors } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { switchMap, take } from "rxjs/operators";
+import { finalize, switchMap, take, tap } from "rxjs/operators";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { ConfirmationService, MessageService, SelectItem } from "primeng/api";
 import { BiCustomAnimations } from "@shared/classes/BICustomAnimations";
@@ -12,6 +12,15 @@ import { UserModel } from "@apiModels/UserModel";
 import { PrimeNgUtilities } from "@shared/variables-and-functions/primeNg-utilities";
 import { SmartDeviceService } from "@core/services/smartdevice.service";
 import { SmartDeviceDto } from "@apiModels/smartDeviceDto";
+import { Observable } from "rxjs";
+import { ScheduleDto } from "@apiModels/scheduleDto";
+import moment from "moment";
+import { BiLocalizationHelperService } from "@core/utility-services/bi-localization-helper.service";
+
+export interface ScheduleDtoExt extends ScheduleDto {
+  dateForSort?: moment.Moment;
+  date?: string;
+}
 
 @UntilDestroy()
 @Component({
@@ -50,6 +59,11 @@ export class DeviceDetaljeEditComponent implements OnInit {
   public displayPdfDialog: boolean;
   public displayVarmeTabDialog: boolean;
 
+  public runningCss = "running";
+
+  public schedules: Array<ScheduleDtoExt> = [];
+  public schedules$: Observable<Array<ScheduleDtoExt>>;
+
   public zones: Array<SelectItem> = [
     { value: 1, label: "DK1" },
     { value: 2, label: "DK2" }
@@ -66,7 +80,8 @@ export class DeviceDetaljeEditComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private messageService: MessageService,
     private userService: UserService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private localizor: BiLocalizationHelperService
   ) {}
 
   ngOnInit() {
@@ -81,7 +96,7 @@ export class DeviceDetaljeEditComponent implements OnInit {
       .subscribe(data => {
         if (data) {
           this.smartDevice = data;
-
+          this.initializeElectricityPrices();
           // this.economicManglerDatoOpdatering = this.economicNotUpdatedToday();
 
           //if (this.print.slettet == true) this.deleteOrRecreate = "Genskab";
@@ -96,6 +111,21 @@ export class DeviceDetaljeEditComponent implements OnInit {
           //   });
         }
       });
+  }
+
+  private initializeElectricityPrices() {
+    this.schedules$ = this.deviceService.getSmagetSchedulesForToday(this.smartDevice.id).pipe(
+      tap((data: Array<ScheduleDto>) => {
+        data.forEach(element => {
+          //  element.date = this.localizor.localizeDateTime(element.latestContactUtc);
+          //  element.dateForSort = moment(element.latestContactUtc);
+        });
+      }),
+      untilDestroyed(this),
+      finalize(() => {
+        this.loading = false;
+      })
+    );
   }
 
   private initFormGroup() {

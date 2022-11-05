@@ -153,7 +153,8 @@ export class ApiRoutes {
   public static smartDeviceRoutes = {
     get: {
       getSmartDevices: ApiRoutes.deviceEndpoint + "GetSmartDevices",
-      getSmartDevice: ApiRoutes.deviceEndpoint + "GetSmartDevice"
+      getSmartDevice: ApiRoutes.deviceEndpoint + "GetSmartDevice",
+      getSchedulesForToday: ApiRoutes.deviceEndpoint + "GetSchedulesForToday"
     },
     post: {},
     update: {

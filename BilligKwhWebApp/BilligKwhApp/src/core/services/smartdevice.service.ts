@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { ScheduleDto } from "@apiModels/scheduleDto";
 import { SmartDeviceDto } from "@apiModels/smartDeviceDto";
 import { ApiRoutes } from "@shared/classes/ApiRoutes";
 import { catchError, map, Observable } from "rxjs";
@@ -37,5 +38,20 @@ export class SmartDeviceService {
         throw err;
       })
     );
+  }
+
+  public getSmagetSchedulesForToday(id: number): Observable<ScheduleDto[]> {
+    const params: { [key: string]: string } = {};
+    params.deviceId = id.toString();
+
+    return this.http
+      .get<ScheduleDto[]>(ApiRoutes.smartDeviceRoutes.get.getSchedulesForToday, {
+        params: params
+      })
+      .pipe(
+        map(prints => {
+          return prints;
+        })
+      );
   }
 }

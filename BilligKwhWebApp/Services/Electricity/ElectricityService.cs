@@ -71,7 +71,7 @@ namespace BilligKwhWebApp.Services.Electricity
 
             DateTime danish = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Romance Standard Time");
 
-            var elpriser = _electricityRepository.GetElectricityPriceForDate(danish.Date);
+            var elpriser = _electricityRepository.GetElectricityPricesForDate(danish.Date);
 
             var devicesForRecipes = _electricityRepository.GetSmartDeviceForRecipes();
 
@@ -164,9 +164,10 @@ namespace BilligKwhWebApp.Services.Electricity
             return _electricityRepository.GetSchedulesForPeriod(deviceId, fromDateUtc, toDateUtc);
         }
 
-        public IReadOnlyCollection<Schedule> Calculate(DateTime danish, IReadOnlyCollection<ElectricityPrice> elpriser, IReadOnlyCollection<SmartDevice> devices)
+        public void Calculate(DateTime danish, IReadOnlyCollection<ElectricityPrice> elpriser, IReadOnlyCollection<SmartDevice> devices)
         {
-            return _electricityRepository.Calculate(danish, elpriser, devices);
+            var result = _electricityRepository.Calculate(danish, elpriser, devices);
+            _baseRepository.BulkMerge(result);
         }
 
         public IReadOnlyCollection<SmartDevice> GetSmartDeviceForRecipes()
@@ -176,7 +177,12 @@ namespace BilligKwhWebApp.Services.Electricity
 
         public IReadOnlyCollection<ElectricityPrice> GetElectricityPriceForDate(DateTime date)
         {
-            return _electricityRepository.GetElectricityPriceForDate(date);
+            return _electricityRepository.GetElectricityPricesForDate(date);
+        }
+
+        public IReadOnlyCollection<ElectricityPrice> GetElectricityPricesForPeriod(DateTime fromDateUtc, DateTime toDateUtc)
+        {
+            return _electricityRepository.GetElectricityPricesForPeriod(fromDateUtc, toDateUtc);
         }
     }
 }

@@ -13,10 +13,10 @@ namespace BilligKwhWebApp.Services.Electricity
         IReadOnlyCollection<SmartDevice> GetSmartDeviceForRecipes();
 
         IReadOnlyCollection<ElectricityPrice> GetElectricityPriceForDate(DateTime date);
-
+        IReadOnlyCollection<ElectricityPrice> GetElectricityPricesForPeriod(DateTime fromDateUtc, DateTime toDateUtc);
 
         //IReadOnlyCollection<Recipe> GetRecipes();
-        IReadOnlyCollection<Schedule> Calculate(DateTime danish, IReadOnlyCollection<ElectricityPrice> elpriser, IReadOnlyCollection<SmartDevice> devices);
+        void Calculate(DateTime danish, IReadOnlyCollection<ElectricityPrice> elpriser, IReadOnlyCollection<SmartDevice> devices);
 
         //SmartDevice GetSmartDeviceById(string id);
         //void Update(SmartDevice SmartDevice);
