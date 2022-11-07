@@ -119,6 +119,7 @@ namespace BilligKwhWebApp.Services.Electricity
                 c.H21 = Math.Max(c.H21, array[22]);
                 c.H22 = Math.Max(c.H22, array[23]);
                 c.H23 = Math.Max(c.H23, array[24]);
+                c.LastUpdatedUtc = DateTime.UtcNow;
                 _electricityRepository.UpdateConsumption(c);
             }
             else
@@ -154,9 +155,7 @@ namespace BilligKwhWebApp.Services.Electricity
                     H23 = array[24],
                 };
                 _electricityRepository.InsertConsumption(c);
-
             }
-
         }
 
         public IReadOnlyCollection<ScheduleDto> GetSchedulesForPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)
@@ -183,6 +182,11 @@ namespace BilligKwhWebApp.Services.Electricity
         public IReadOnlyCollection<ElectricityPrice> GetElectricityPricesForPeriod(DateTime fromDateUtc, DateTime toDateUtc)
         {
             return _electricityRepository.GetElectricityPricesForPeriod(fromDateUtc, toDateUtc);
+        }
+
+        public IReadOnlyCollection<ConsumptionDto> GetConsumptionsPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)
+        {
+            return _electricityRepository.GetConsumptionsPeriod(deviceId, fromDateUtc, toDateUtc);
         }
     }
 }

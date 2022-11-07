@@ -14,8 +14,9 @@ import { NgxPrintModule } from "ngx-print";
 import { NgxExtendedPdfViewerModule } from "ngx-extended-pdf-viewer";
 import { DeviceListComponent } from "./devicelist.component";
 import { MultiSelectModule } from "primeng/multiselect";
-import { DeviceDetaljeComponent } from "./device-detalje.component";
-import { DeviceDetaljeEditComponent } from "./device-detalje-edit.component";
+import { DevicedetailComponent } from "./device-detail.component";
+import { DevicedetailEditComponent } from "./device-detail-edit.component";
+import { DeviceDetailConsumptionComponent } from "./device-detail-consumption.component";
 
 const primeNgModules = [ToolbarModule, TableModule, DialogModule, ToastModule, InputTextareaModule, InputTextModule, ButtonModule, TabMenuModule, MultiSelectModule];
 
@@ -30,14 +31,14 @@ const primeNgModules = [ToolbarModule, TableModule, DialogModule, ToastModule, I
       },
       {
         path: ":id",
-        component: DeviceDetaljeComponent,
+        component: DevicedetailComponent,
         children: [
           // { path: "edit/:id", redirectTo: "main", pathMatch: "full" },
-          { path: "edit", component: DeviceDetaljeEditComponent }
-          // { path: "parts", component: GruppetavleDetaljeKomponenterComponent },
-          // // { path: "components", component: GruppetavleDetaljeKomponenterPlaceringComponent },
+          { path: "edit", component: DevicedetailEditComponent },
+          // { path: "parts", component: GruppetavledetailKomponenterComponent },
+          // // { path: "components", component: GruppetavledetailKomponenterPlaceringComponent },
           // { path: "images", component: GruppetavleImagesComponent },
-          // { path: "emails", component: GruppetavleDetaljeEmailsComponent }
+          { path: "consumptions", component: DeviceDetailConsumptionComponent }
         ]
       }
       // {
@@ -49,6 +50,6 @@ const primeNgModules = [ToolbarModule, TableModule, DialogModule, ToastModule, I
     NgxPrintModule,
     NgxExtendedPdfViewerModule
   ],
-  declarations: [DeviceListComponent, DeviceDetaljeComponent, DeviceDetaljeEditComponent]
+  declarations: [DeviceListComponent, DevicedetailComponent, DevicedetailEditComponent, DeviceDetailConsumptionComponent]
 })
 export class DeviceModule {}

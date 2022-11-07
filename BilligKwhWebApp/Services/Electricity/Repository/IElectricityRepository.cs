@@ -19,6 +19,8 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
 
         IReadOnlyCollection<ElectricityPrice> GetElectricityPricesForPeriod(DateTime fromDateUtc, DateTime toDateUtc);
 
+        IReadOnlyCollection<ConsumptionDto> GetConsumptionsPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc);
+
 
         //SmartDevice GetSmartDeviceById(string SmartDeviceId);
         Consumption GetConsumptionByIdAndDate(DateTime date, int deviceId);

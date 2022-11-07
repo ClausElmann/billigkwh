@@ -25,13 +25,13 @@ export interface ScheduleDtoExt extends ScheduleDto {
 @UntilDestroy()
 @Component({
   selector: "app-gruppetavle-edit",
-  templateUrl: "./device-detalje-edit.component.html",
-  styleUrls: ["./device-detalje-edit.component.scss"],
+  templateUrl: "./device-detail-edit.component.html",
+  styleUrls: ["./device-detail-edit.component.scss"],
   providers: [MessageService, ConfirmationService],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [BiCustomAnimations.fadeInDown, BiCustomAnimations.fadeIn]
 })
-export class DeviceDetaljeEditComponent implements OnInit {
+export class DevicedetailEditComponent implements OnInit {
   public smartDevice?: SmartDeviceDto;
   public mainForm: FormGroup;
   public showFormErrorMessage: boolean;

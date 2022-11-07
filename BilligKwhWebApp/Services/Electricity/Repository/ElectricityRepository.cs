@@ -209,5 +209,12 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
                      SELECT * FROM [ElectricityPrices]
             WHERE HourDK >= @FromDateUtc AND HourDK <= @ToDateUtc", new { FromDateUtc = fromDateUtc, ToDateUtc = toDateUtc }).ToList();
         }
+
+        public IReadOnlyCollection<ConsumptionDto> GetConsumptionsPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)
+        {
+            using var connection = ConnectionFactory.GetOpenConnection();
+            return connection.Query<ConsumptionDto>(@"SELECT * FROM [Consumptions] WHERE DeviceId = @DeviceId AND [Date] >= @FromDateUtc AND [Date] <= @ToDateUtc",
+                new { DeviceId = deviceId, FromDateUtc = fromDateUtc, ToDateUtc = toDateUtc }).ToList();
+        }
     }
 }

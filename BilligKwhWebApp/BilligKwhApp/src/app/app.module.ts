@@ -155,14 +155,10 @@ import { NotfoundComponent } from "./components/notfound/notfound.component";
 import { AccessComponent } from "./components/access/access.component";
 import { LoginComponent } from "./components/login/login.component";
 //import { CustomerModule } from "./components/customer/customer.module";
-import { SwitchboardModule } from "./components/gruppetavle-configurator/switchboard.module";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { DragDropComponent } from "./components/drag-drop/drag-drop.component";
 import { UserModule } from "./components/user/user.module";
 import { SuperAdminCustomerModule } from "./components/superadmin/customer/superadmin-customer.module";
-import { EltavleService } from "@core/services/eltavle.service";
-import { DoorModule } from "./components/door-configurator/door.module";
-import { CircuitModule } from "./components/circuit-configurator/circuit.module";
 import { SmartDeviceService } from "@core/services/smartdevice.service";
 
 /**
@@ -334,9 +330,6 @@ export class ElHttpTranslateLoader implements TranslateLoader {
     AppRoutingModule,
     FeaturesModule,
     SuperAdminCustomerModule,
-    SwitchboardModule,
-    DoorModule,
-    CircuitModule,
     UserModule
   ],
 
@@ -355,7 +348,6 @@ export class ElHttpTranslateLoader implements TranslateLoader {
     NodeService,
     MessageService,
     ConfirmationService,
-    EltavleService,
     SmartDeviceService,
     {
       provide: APP_INITIALIZER,

@@ -210,5 +210,21 @@ namespace BilligKwhWebApp.Controllers
                 return Ok(new List<ScheduleDto>());
             }
         }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ConsumptionDto>))]
+        public IActionResult GetConsumptionsPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)
+        {
+            var consumptions = _electricityService.GetConsumptionsPeriod(deviceId, fromDateUtc, toDateUtc);
+
+            if (consumptions != null)
+            {
+                return Ok(consumptions);
+            }
+            else
+            {
+                return Ok(new List<ConsumptionDto>());
+            }
+        }
     }
 }

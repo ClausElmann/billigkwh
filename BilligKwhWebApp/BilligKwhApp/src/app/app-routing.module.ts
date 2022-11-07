@@ -111,39 +111,9 @@ const routes: Routes = [
         loadChildren: () => import("./components/my-user/my-user.module").then(m => m.MyUserModule)
       },
       {
-        path: "switchboards/:id",
-        canActivate: [AppCanActivateGuard],
-        data: { preload: false },
-        loadChildren: () => import("./components/gruppetavle-configurator/switchboard.module").then(m => m.SwitchboardModule)
-      },
-      {
-        path: "eltavler",
-        canActivate: [AppCanActivateGuard],
-        data: { preload: false },
-        loadChildren: () => import("./components/gruppetavle/gruppetavle.module").then(m => m.GruppetavleModule)
-      },
-      {
-        path: "komponenter",
-        canActivate: [AppCanActivateGuard],
-        data: { preload: false },
-        loadChildren: () => import("./components/komponent/komponent.module").then(m => m.KomponentModule)
-      },
-      {
         path: "users",
         canActivate: [AppCanActivateGuard],
         loadChildren: () => import("./components/user/user.module").then(m => m.UserModule)
-      },
-      {
-        path: "doors/:id",
-        canActivate: [AppCanActivateGuard],
-        data: { preload: false },
-        loadChildren: () => import("./components/door-configurator/door.module").then(m => m.DoorModule)
-      },
-      {
-        path: "circuits/:id",
-        canActivate: [AppCanActivateGuard],
-        data: { preload: false },
-        loadChildren: () => import("./components/circuit-configurator/circuit.module").then(m => m.CircuitModule)
       },
       {
         path: "devices",

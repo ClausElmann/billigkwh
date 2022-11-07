@@ -9,11 +9,11 @@ import { switchMap, take } from "rxjs";
 @UntilDestroy()
 @Component({
   selector: "app-customer-edit",
-  templateUrl: "./device-detalje.component.html",
+  templateUrl: "./device-detail.component.html",
   styles: [".red { color: red; }"],
   providers: [MessageService]
 })
-export class DeviceDetaljeComponent implements OnInit {
+export class DevicedetailComponent implements OnInit {
   items: MenuItem[] = [];
 
   activeItem: MenuItem;
@@ -24,10 +24,10 @@ export class DeviceDetaljeComponent implements OnInit {
   ngOnInit(): void {
     this.items = [
       { label: "Rediger", icon: "pi pi-fw pi-pencil", routerLink: "edit" },
-      { label: "Stykliste", icon: "pi pi-fw pi-bars", routerLink: "parts" },
+      { label: "Forbrug", icon: "pi pi-fw pi-bars", routerLink: "consumptions" }
       // { label: "Komponenter", icon: "pi pi-fw pi-qrcode", routerLink: "components" },
       // { label: "Billeder", icon: "pi pi-fw pi-images", routerLink: "images" },
-      { label: "E-mails", icon: "pi pi-fw pi-envelope", routerLink: "emails" }
+      // { label: "E-mails", icon: "pi pi-fw pi-envelope", routerLink: "emails" }
     ];
     this.activeItem = this.items[0];
 
@@ -45,7 +45,7 @@ export class DeviceDetaljeComponent implements OnInit {
 
           this.items = [
             { label: "Rediger", icon: "pi pi-fw pi-pencil", routerLink: "edit" },
-            { label: "E-mails", icon: "pi pi-fw pi-envelope", routerLink: "emails" }
+            { label: "Forbrug", icon: "pi pi-fw pi-bars", routerLink: "consumptions" }
           ];
         }
         this.cd.detectChanges();

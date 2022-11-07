@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { ConsumptionDto } from "@apiModels/consumptionDto";
 import { ScheduleDto } from "@apiModels/scheduleDto";
 import { SmartDeviceDto } from "@apiModels/smartDeviceDto";
 import { ApiRoutes } from "@shared/classes/ApiRoutes";
@@ -51,6 +52,26 @@ export class SmartDeviceService {
       .pipe(
         map(prints => {
           return prints;
+        })
+      );
+  }
+
+  public getConsumptionsForPeriod(deviceId: number, fromDateUtc: Date, toDateUtc: Date): Observable<ConsumptionDto[]> {
+    const params: { [key: string]: string } = {
+      deviceId: deviceId.toString(),
+      fromDateUtc: fromDateUtc.toDateString(),
+      toDateUtc: toDateUtc.toDateString()
+    };
+
+    //if (customerId) params["customerId"] = customerId.toString();
+
+    return this.http
+      .get<ConsumptionDto[]>(ApiRoutes.smartDeviceRoutes.get.getConsumptionsPeriod, {
+        params: params
+      })
+      .pipe(
+        map(consumptions => {
+          return consumptions;
         })
       );
   }
