@@ -3,10 +3,8 @@ using BilligKwhWebApp.Core.Domain;
 using System.Collections.Generic;
 using System.Linq;
 using System;
-using BilligKwhWebApp.Core.Dto;
 using Z.Dapper.Plus;
 using BilligKwhWebApp.Services.Electricity.Dto;
-using FluentFTP;
 
 namespace BilligKwhWebApp.Services.Electricity.Repository
 {

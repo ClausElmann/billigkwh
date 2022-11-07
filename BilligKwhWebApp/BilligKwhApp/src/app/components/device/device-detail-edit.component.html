@@ -207,7 +207,9 @@
 <!-- <div ngIf="schedules$ | async"></div> -->
 Schedules: (kommer kl 13 hver dag)
 <ng-container *ngFor="let item of schedules$ | async">
-  <div>{{ item.date | date: "dd/MM/yyyy" }}</div>
+  <div>
+    <b>Dato {{ item.date | date: "dd/MM/yyyy" }}</b>
+  </div>
   <div [ngClass]="item.h00 ? runningCss : 'notrunning'">Kl. 00 - {{ item.p00 }} kr.</div>
   <div [ngClass]="item.h01 ? runningCss : 'notrunning'">Kl. 01 - {{ item.p01 }} kr.</div>
   <div [ngClass]="item.h02 ? runningCss : 'notrunning'">Kl. 02 - {{ item.p02 }} kr.</div>
