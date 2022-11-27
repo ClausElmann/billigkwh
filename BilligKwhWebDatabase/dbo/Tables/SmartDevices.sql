@@ -9,6 +9,8 @@ CREATE TABLE [dbo].[SmartDevices] (
     [MaxRate]          DECIMAL (4, 2) CONSTRAINT [DF_Print_MaxRate] DEFAULT ((2)) NOT NULL,
     [Deleted]          DATETIME       NULL,
     [Comment]          NVARCHAR (MAX) CONSTRAINT [DF_Print_Kommentar] DEFAULT ('') NOT NULL,
+    [Delay] INT NOT NULL DEFAULT 0, 
+    [DebugMinutes] INT NOT NULL DEFAULT 0, 
     CONSTRAINT [PK_Print] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

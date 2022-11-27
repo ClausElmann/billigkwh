@@ -11,17 +11,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BilligKwhWebApp.Core.Domain;
 using BilligKwhWebApp.Services.SmartDevices;
+using System.Text.Json;
 
 namespace BilligKwhWebApp.Controllers
 {
     [AllowAnonymous]
     [Route("api/[controller]/[action]")]
-    public class ArduinoController : BaseController
+    public class AController : BaseController
     {
         private readonly ISmartDeviceService _smartDeviceService;
         private readonly IElectricityService _electricityService;
 
-        public ArduinoController(ISystemLogger logger, IWorkContext workContext, IPermissionService permissionService, ISmartDeviceService smartDeviceService, IElectricityService electricityService) : base(logger, workContext, permissionService)
+        public AController(ISystemLogger logger, IWorkContext workContext, IPermissionService permissionService, ISmartDeviceService smartDeviceService, IElectricityService electricityService) : base(logger, workContext, permissionService)
         {
             _smartDeviceService = smartDeviceService;
             _electricityService = electricityService;
@@ -29,21 +30,23 @@ namespace BilligKwhWebApp.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BilligKwhModel))]
-        public IActionResult GetBilligKwhModel(string deviceId, string consumption)
+        public IActionResult G(string d, string c)
         {
-            var smartDevice = _smartDeviceService.GetSmartDeviceByUniqueidentifier(deviceId);
+            var smartDevice = _smartDeviceService.GetSmartDeviceByUniqueidentifier(d);
 
             if (smartDevice == null)
             {
                 smartDevice = new SmartDevice()
                 {
-                    Uniqueidentifier = deviceId,
+                    Uniqueidentifier = d,
                     CreatedUtc = DateTime.UtcNow,
                     LatestContactUtc = DateTime.UtcNow,
                     Comment = "",
                     Location = "",
                     ZoneId = 1,
                     MaxRate = 2,
+                    Delay = 0,
+                    DebugMinutes = 0,
                 };
                 _smartDeviceService.Insert(smartDevice);
             }
@@ -52,9 +55,9 @@ namespace BilligKwhWebApp.Controllers
                 smartDevice.LatestContactUtc = DateTime.UtcNow;
                 _smartDeviceService.Update(smartDevice);
 
-                if (!string.IsNullOrEmpty(consumption))
+                if (!string.IsNullOrEmpty(c))
                 {
-                    var numbers = consumption?.Split(',')?.Select(long.Parse)?.ToList();
+                    var numbers = c?.Split(',')?.Select(long.Parse)?.ToList();
                     _electricityService.UpdateConsumption(smartDevice.Id, numbers);
                 }
             }
@@ -71,14 +74,16 @@ namespace BilligKwhWebApp.Controllers
 
                 var emptyModel = new BilligKwhModel()
                 {
-                    Year = int.Parse(now.ToString("yy")),
-                    Month = now.Month,
-                    Day = now.Day,
-                    Hour = now.Hour,
-                    Minute = now.Minute,
-                    Second = now.Second,
-                    Recipe = emptyRecipe.ToArray(),
-                    DeviceID = deviceId
+                    Y = int.Parse(now.ToString("yy")),
+                    Mo = now.Month,
+                    D = now.Day,
+                    H = now.Hour,
+                    M = now.Minute,
+                    S = now.Second,
+                    R = emptyRecipe.ToArray(),
+                    //DeviceID = smartDevice.Uniqueidentifier,
+                    De = smartDevice.Delay,
+                    //DebugMinutes = smartDevice.DebugMinutes,
                 };
 
                 return Ok(emptyModel);
@@ -86,7 +91,6 @@ namespace BilligKwhWebApp.Controllers
             //    return NotFound("Schedules not found"); ;
 
             List<long> list = new();
-
 
             //long[] recipe = new long[schedules.Count * 25];
 
@@ -121,21 +125,31 @@ namespace BilligKwhWebApp.Controllers
             //long[] myNum = { 221020, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 221021, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, };
             //long[] myNum1 = { 221020, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 221021, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
 
-            var datetime = DateTime.Now;
+            //var datetime = DateTime.Now;
+
+            if (smartDevice.DebugMinutes > 0)
+            {
+                danish = danish.AddMinutes(Convert.ToDouble(smartDevice.DebugMinutes));
+            }
 
             var model = new BilligKwhModel()
             {
-                Year = int.Parse(datetime.ToString("yy")),
-                Month = datetime.Month,
-                Day = datetime.Day,
-                Hour = datetime.Hour,
-                Minute = datetime.Minute,
-                Second = datetime.Second,
-                Recipe = list.ToArray(),
+                Y = int.Parse(danish.ToString("yy")),
+                Mo = danish.Month,
+                D = danish.Day,
+                H = danish.Hour,
+                M = danish.Minute,
+                S = danish.Second,
+                R = list.ToArray(),
                 //Recipe = DateTime.Now.Millisecond % 2 == 0 ? myNum : myNum1,
-                DeviceID = deviceId
+                //DeviceID = smartDevice.Uniqueidentifier,
+                De = smartDevice.Delay,
+                //DebugMinutes = smartDevice.DebugMinutes,
             };
-            return Ok(model);
+
+            string json = JsonSerializer.Serialize(model);
+
+            return Ok(json);
         }
 
         [HttpGet]

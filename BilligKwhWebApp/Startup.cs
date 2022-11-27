@@ -253,7 +253,7 @@ namespace BilligKwhWebApp
             app.UseAuthentication();
             app.UseRequestLocalization();
 
-            app.UseWhen(context => !context.Request.Path.StartsWithSegments("/Api/Arduino", StringComparison.OrdinalIgnoreCase),
+            app.UseWhen(context => !context.Request.Path.StartsWithSegments("/api/a", StringComparison.OrdinalIgnoreCase),
                                      builder => builder.UseHttpsRedirection());
 
             app.UseStaticFiles(new StaticFileOptions()

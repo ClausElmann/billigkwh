@@ -13,5 +13,7 @@ namespace BilligKwhWebApp.Core.Domain
         public decimal MaxRate { get; set; }
         public DateTime? Deleted { get; set; }
         public string Comment { get; set; }
+        public int Delay { get; set; }
+        public int DebugMinutes { get; set; }
     }
 }

@@ -12,6 +12,7 @@ using System.Text.Json;
 using System.Linq;
 using System.Globalization;
 using BilligKwhWebApp.Services.Electricity.Dto;
+using System.Security.Cryptography.Xml;
 
 namespace BilligKwhWebApp.Services.Electricity
 {
@@ -89,9 +90,12 @@ namespace BilligKwhWebApp.Services.Electricity
             var cultureInfo = new CultureInfo("da-DK");
 
             var firstDate = DateTime.ParseExact(array[0].ToString(), "yyMMdd", cultureInfo);
-            //    var secondDate = DateTime.ParseExact(array[24].ToString(), "yyMMdd", cultureInfo);
+
+            var yesterday = firstDate.AddDays(-1);
 
             var c = _electricityRepository.GetConsumptionByIdAndDate(firstDate, deviceId);
+
+            var cy = _electricityRepository.GetConsumptionByIdAndDate(yesterday, deviceId);
 
             if (c != null)
             {
@@ -155,6 +159,13 @@ namespace BilligKwhWebApp.Services.Electricity
                     H23 = array[24],
                 };
                 _electricityRepository.InsertConsumption(c);
+            }
+
+            if (cy != null && array.Length > 24)
+            {
+                cy.LastUpdatedUtc = DateTime.UtcNow;
+                cy.H23 = Math.Max(cy.H23, array[25]);
+                _electricityRepository.UpdateConsumption(cy);
             }
         }
 

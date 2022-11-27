@@ -95,4 +95,7 @@
     <Build Include="dbo\Tables\SmartDevices.sql" />
     <Build Include="dbo\Tables\Schedules.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="db_billigkwh_dk_db_prod.refactorlog" />
+  </ItemGroup>
 </Project>

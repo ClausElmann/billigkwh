@@ -130,7 +130,7 @@ namespace BilligKwhWebApp.Middleware
 
             memStream.Position = 0;
 
-            if (ResponseIsRelevant(responseContentType))
+            if (ResponseIsRelevant(responseContentType) || log.Path== "/api/a/g")
             {
                 var response = await new StreamReader(memStream).ReadToEndAsync();
                 log.Response = response;

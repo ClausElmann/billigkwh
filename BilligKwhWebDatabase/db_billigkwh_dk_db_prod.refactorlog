@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="ed37d242-20df-4ffe-b3fd-dc7f5f9f4735" ChangeDateTime="11/07/2022 20:24:51">
+    <Property Name="ElementName" Value="[dbo].[SmartDevices].[DebugMinutesToAddToTime]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SmartDevices]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DebugMinutes" />
+  </Operation>
+</Operations>
