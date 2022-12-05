@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using BilligKwhWebApp.Core.Domain;
 using BilligKwhWebApp.Services.SmartDevices;
 using System.Text.Json;
+using BilligKwhWebApp.Services;
 
 namespace BilligKwhWebApp.Controllers
 {
@@ -21,11 +22,13 @@ namespace BilligKwhWebApp.Controllers
     {
         private readonly ISmartDeviceService _smartDeviceService;
         private readonly IElectricityService _electricityService;
+        private readonly ISystemLogger _Logger;
 
         public AController(ISystemLogger logger, IWorkContext workContext, IPermissionService permissionService, ISmartDeviceService smartDeviceService, IElectricityService electricityService) : base(logger, workContext, permissionService)
         {
             _smartDeviceService = smartDeviceService;
             _electricityService = electricityService;
+            _Logger = logger;
         }
 
         [HttpGet]

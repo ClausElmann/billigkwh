@@ -13,7 +13,11 @@ namespace BilligKwhWebApp.Services
     {
         public bool SendErrorMail(string subject, string body)
         {
-            MailMessage msg = new(new MailAddress("billigkwh@farmgain.com", "Fatal ERROR BilligKwh"), new MailAddress("claus.elmann@gmail.com", "Claus Elmann"))
+
+            string mailAccount = "noreply@billigkwh.dk";
+            string password = "k3dJKUl6Ej$7";
+
+            MailMessage msg = new(new MailAddress("noreply@billigkwh.dk", "Fatal ERROR BilligKwh"), new MailAddress("claus.elmann@gmail.com", "Claus Elmann"))
             {
                 Subject = subject,
                 Body = body,
@@ -21,7 +25,7 @@ namespace BilligKwhWebApp.Services
             };
 
 #if DEBUG
-            msg = new(new MailAddress("claus@blueIdea.dk", "Fatal ERROR BilligKwh"), new MailAddress("claus.elmann@gmail.com", "Claus Elmann"))
+            msg = new(new MailAddress("noreply@billigkwh.dk", "Fatal ERROR BilligKwh"), new MailAddress("claus.elmann@gmail.com", "Claus Elmann"))
             {
                 Subject = subject,
                 Body = body,
@@ -32,26 +36,23 @@ namespace BilligKwhWebApp.Services
             SmtpClient client = new()
             {
                 UseDefaultCredentials = false,
-                Credentials = new System.Net.NetworkCredential("billigkwh@farmgain.com", "Kenzo1234"),
+                Credentials = new NetworkCredential(mailAccount, password),
                 Port = 587,
                 Host = "websmtp.simply.com",
-                DeliveryMethod = SmtpDeliveryMethod.Network
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                EnableSsl = true
             };
 
 #if DEBUG
-            client.Credentials = new System.Net.NetworkCredential("claus@blueIdea.dk", "Flipper12#");
-            client.Port = 587;
-            client.Host = "smtp.office365.com";
-            client.EnableSsl = true;
+            client.Host = "smtp.simply.com";
 #endif
-
 
             try
             {
                 client.Send(msg);
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }

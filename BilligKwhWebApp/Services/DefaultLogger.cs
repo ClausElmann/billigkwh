@@ -85,53 +85,48 @@ namespace BilligKwhWebApp.Services
 
                 if (logLevel == LogLevel.Fatal)
                 {
-                    var liveCheck = _applicationSettingService.Get(AppSettingEnum.BatchAppCommandLine, "").Setting;
-
-                    if (liveCheck.Contains("-live"))
+                    try
                     {
-                        try
+                        var thread = new Thread(() =>
                         {
-                            var thread = new Thread(() =>
+                            string body = $"Module:\n{log.Module ?? ""}\n\nShortMessage:\n{log.ShortMessage ?? ""}\n\nFullMessage:\n{(log.FullMessage ?? "")}\n\n<a href='https://billigkwh.dk/admin/super/log'>Åbn logs siden</a>".Replace("\n", "<br/>", StringComparison.InvariantCulture);
+                            string subject = "A fatal error occurred";
+                            if (log.Module != null)
+                                subject = subject + $" in {log.Module}";
+
+                            var response = _errorEmailSender.SendErrorMail(subject, body);
+
+                            if (response)
                             {
-                                string body = $"Module:\n{log.Module ?? ""}\n\nShortMessage:\n{log.ShortMessage ?? ""}\n\nFullMessage:\n{(log.FullMessage ?? "")}\n\n<a href='https://billigkwh.dk/admin/super/log'>Åbn logs siden</a>".Replace("\n", "<br/>", StringComparison.InvariantCulture);
-                                string subject = "A fatal error occurred";
-                                if (log.Module != null)
-                                    subject = subject + $" in {log.Module}";
+                                // Success
+                            }
+                            // Error Handling
+                            else
+                            {
+                                //var responseBody = response.Body.ReadAsStringAsync().GetAwaiter().GetResult();
 
-                                var response = _errorEmailSender.SendErrorMail(subject, body);
-
-                                if (response)
+                                var log = new Log
                                 {
-                                    // Success
-                                }
-                                // Error Handling
-                                else
-                                {
-                                    //var responseBody = response.Body.ReadAsStringAsync().GetAwaiter().GetResult();
-
-                                    var log = new Log
-                                    {
-                                        LogLevelId = (int)logLevel,
-                                        ShortMessage = shortMessage.Truncate(1500, true),
-                                        FullMessage = fullMessage,
-                                        IpAddress = doLogReferrer ? _webHelper.GetCurrentIpAddress() : null,
-                                        UserId = user?.Id,
-                                        PageUrl = doLogReferrer ? _webHelper.GetThisPageUrl(true) : null,
-                                        ReferrerUrl = doLogReferrer ? _webHelper.GetUrlReferrer() : null,
-                                        DateCreatedUtc = DateTime.UtcNow,
-                                        Module = module,
-                                        DataObject = body,
-                                    };
-                                    _baseRepository.Insert(log);
-                                }
-                            });
-                            thread.Start();
-                            thread.Join();
-                        }
-                        catch
-                        {
-                            // do nothing
-                        }
+                                    LogLevelId = (int)logLevel,
+                                    ShortMessage = shortMessage.Truncate(1500, true),
+                                    FullMessage = fullMessage,
+                                    IpAddress = doLogReferrer ? _webHelper.GetCurrentIpAddress() : null,
+                                    UserId = user?.Id,
+                                    PageUrl = doLogReferrer ? _webHelper.GetThisPageUrl(true) : null,
+                                    ReferrerUrl = doLogReferrer ? _webHelper.GetUrlReferrer() : null,
+                                    DateCreatedUtc = DateTime.UtcNow,
+                                    Module = module,
+                                    DataObject = body,
+                                };
+                                _baseRepository.Insert(log);
+                            }
+                        });
+                        thread.Start();
+                        thread.Join();
+                    }
+                    catch
+                    {
+                        // do nothing
                     }
                 }
                 return log.Id;
