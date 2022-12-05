@@ -225,7 +225,7 @@ export class DevicedetailEditComponent implements OnInit {
 
   saveItem() {
     if (!this.checkAndValidateForm()) return;
-    debugger;
+    //debugger;
     this.smartDevice.location = this.location.value;
     this.smartDevice.zoneId = this.zoneId.value;
     this.smartDevice.maxRate = +this.maxRate.value;

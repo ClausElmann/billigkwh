@@ -283,7 +283,7 @@ export class UserService extends BiStore<UserServiceState> {
   // }
 
   public updateUser(user: UserModel, sendEmail = true) {
-    debugger;
+    //debugger;
     const params: { [key: string]: string } = {
       //customerId: user.customerId.toString()
     };

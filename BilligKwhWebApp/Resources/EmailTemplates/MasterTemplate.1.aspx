@@ -43,7 +43,7 @@
                 <table role="presentation" style="width: 602px; border-collapse: collapse; border: 1px solid #cccccc; border-spacing: 0; text-align: left;">
                     <tr>
                         <td align="center" style="padding: 40px 0 30px 0; background: #343a40;">
-                            <img src="https://portal.farmgain.com/images/BilligKwh.png" alt="" width="300" style="height: auto; display: block;" />
+                            <img src="https://billigkwh.dk/assets/layout/images/logo.png" alt="" width="300" style="height: auto; display: block;" />
                         </td>
                     </tr>
                     <tr>
@@ -57,17 +57,16 @@
                                 <tr>
                                     <td style="padding: 0; width: 50%;" align="left">
                                         <p style="margin: 0; font-size: 14px; line-height: 16px; font-family: Arial,sans-serif; color: #343a40;">
-                                            BilligKwh ApS<br />
-                                            Tietgensvej 15<br />
-                                            8600 Silkeborg<br />
-                                            Tlf. 23 11 75 56
+                                            BilligKwh - ITGain ApS <br />
+                                            <br/>Emil Ernsts Vej 24
+                                            7442 Engesvang
                                         </p>
                                     </td>
                                     <td style="padding: 0; width: 50%;" align="right">
                                         <table role="presentation" style="border-collapse: collapse; border: 0; border-spacing: 0;">
                                             <tr>
                                                 <td style="padding: 0 0 0 10px; width: 38px;">
-                                                    <a href="https://www.linkedin.com/company/billigkwh-danmark/" style="color: #ffffff;">
+                                                    <a href="https://www.linkedin.com/company/elmotech-danmark/" style="color: #ffffff;">
                                                         <img src="https://portal.farmgain.com/images/linkedin.png" alt="LinkedIn" width="48" style="height: auto; display: block; border: 0;" /></a>
                                                 </td>
                                                 <td style="padding: 0 0 0 10px; width: 38px;">

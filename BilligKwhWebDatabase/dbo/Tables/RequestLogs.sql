@@ -11,8 +11,10 @@
     [Ticks]               INT            NOT NULL,
     [IsSuccessStatusCode] BIT            NOT NULL,
     [IpAddress]           NVARCHAR (15)  NULL,
-    CONSTRAINT [PK_RequestLogs] PRIMARY KEY CLUSTERED ([Id] ASC)
+    CONSTRAINT [PK_RequestLogs] PRIMARY KEY CLUSTERED ([Id] DESC)
 );
+
+
 
 
 

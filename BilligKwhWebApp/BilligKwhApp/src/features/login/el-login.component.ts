@@ -20,15 +20,16 @@ import { finalize, map, Observable, of, take } from "rxjs";
   styleUrls: ["./el-login.component.scss"]
 })
 export class ElLoginComponent implements OnInit, AfterViewInit {
-
-  constructor(private userService: UserService,
+  constructor(
+    private userService: UserService,
     @Inject(AUTHENTICATION_SERVICE_TOKEN)
     private authService: TokenAuthenticationService,
     private router: Router,
     //private modalService: BiModalService,
     private eventsManager: GlobalStateAndEventsService,
     private translator: TranslateService,
-    private cd: ChangeDetectorRef) { }
+    private cd: ChangeDetectorRef
+  ) {}
 
   public loginForm: FormGroup;
   public hideLoginForm = false;
@@ -61,9 +62,7 @@ export class ElLoginComponent implements OnInit, AfterViewInit {
   //   return true;
   // }
 
-
   ngOnInit(): void {
-
     const attemptedRoute = this.eventsManager.getCurrentStateValue()?.routeAfterLogin;
 
     if (attemptedRoute) {
@@ -72,7 +71,6 @@ export class ElLoginComponent implements OnInit, AfterViewInit {
       // read route params
       //this.bla = parseInt(parsedRoute.queryParamMap.get("bla"), 10);
     }
-
 
     this.loginForm = new FormGroup({
       loginEmail: new FormControl("", [Validators.required, BiCustomValidators.email()]),
@@ -106,9 +104,10 @@ export class ElLoginComponent implements OnInit, AfterViewInit {
           finalize(() => {
             this._isLoading = false;
             this.cd.detectChanges();
-          }))
+          })
+        )
         .subscribe(
-          (newUser) => {
+          newUser => {
             // Successfull login
             this.loginForm.reset();
             this.eventsManager.loginEvent.next(newUser);
@@ -123,26 +122,23 @@ export class ElLoginComponent implements OnInit, AfterViewInit {
             // Send Email and go to Input
             else if (err.status === 428) {
               this.sendPinCodeByEmail();
-            }
-            else {
+            } else {
               this.handleFailedLogin(err);
             }
-          });
+          }
+        );
     }
   }
 
   public sendPinCodeByEmail() {
-    this.userService
-      .sendCodeByEmail(this.email.value)
-      .subscribe(response => {
-        // this.twoFactorMethodUsed = "email";
-        // this.slideContainerValue = 3;
-        this.cd.detectChanges();
-      });
+    this.userService.sendCodeByEmail(this.email.value).subscribe(response => {
+      // this.twoFactorMethodUsed = "email";
+      // this.slideContainerValue = 3;
+      this.cd.detectChanges();
+    });
   }
 
   public onCloseClicked() {
-
     this.router.navigate([RouteNames.frontPage]);
   }
 
@@ -154,16 +150,18 @@ export class ElLoginComponent implements OnInit, AfterViewInit {
         finalize(() => {
           this._isLoading = false;
           this.cd.detectChanges();
-        }))
+        })
+      )
       .subscribe(
-        (userToken) => {
+        userToken => {
           this.loginForm.reset();
           this.eventsManager.loginEvent.next(userToken);
           this.hideLoginForm = true;
         },
         (error: BiHttpErrorResponse) => {
           this.handleFailedLogin(error);
-        });
+        }
+      );
   }
 
   public onDismissIEWarning() {
@@ -184,11 +182,11 @@ export class ElLoginComponent implements OnInit, AfterViewInit {
   private handleFailedLogin(err: BiHttpErrorResponse) {
     this._isLoading = false;
     // When forbidden it means that user account is locked
-    if (err.status === 403) {
-      //this.generateLoginLockedModalContent().subscribe((content) => this.modalService.open(content));
-    } else {
-      this.failedLoginMessage = err.error.errorMessage;
-    }
+    // if (err.status === 403) {
+    //   //this.generateLoginLockedModalContent().subscribe((content) => this.modalService.open(content));
+    // } else {
+    this.failedLoginMessage = err.error.errorMessage;
+    //}
   }
 
   /**
@@ -202,13 +200,12 @@ export class ElLoginComponent implements OnInit, AfterViewInit {
   private generateLoginLockedModalContent() {
     return this.translator.get(["errorMessages.LoginLocked", "login.ResetPassword", "shared.Close"]).pipe(
       take(1),
-      map((translations) => {
+      map(translations => {
         const modalWrapperDiv = $(`<div style="padding-top: 2em;"></div>`);
         modalWrapperDiv.append(`<h3 style="margin-bottom: 2em">${translations["errorMessages.LoginLocked"]}</h3>`);
 
         const okButton = $(`<button class="p-button-secondary p-button margin-right-1">${translations["shared.Close"]}</button>`).click(() => {
           //   this.modalService.close();
-
         });
         const resetPasswordButton = $(`<button class="p-button-primary p-button type="submit">${translations["login.ResetPassword"]}</button>`).click(() => {
           //   this.modalService.close();

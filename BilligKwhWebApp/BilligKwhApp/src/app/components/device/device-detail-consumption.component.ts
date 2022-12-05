@@ -62,30 +62,30 @@ export class DeviceDetailConsumptionComponent implements OnInit {
     this.globalFilterFields.next(["subject", "body", "toName", "toEmail"]);
     this.columns.next([
       { field: "dateSent", header: "Sendt", sortField: "dateSentForSort" },
-      { field: "h00", header: "00" },
-      { field: "h01", header: "01" },
-      { field: "h02", header: "02" },
-      { field: "h03", header: "03" },
-      { field: "h04", header: "04" },
-      { field: "h05", header: "05" },
-      { field: "h06", header: "06" },
-      { field: "h07", header: "07" },
-      { field: "h08", header: "08" },
-      { field: "h09", header: "09" },
-      { field: "h10", header: "10" },
-      { field: "h11", header: "11" },
-      { field: "h12", header: "12" },
-      { field: "h13", header: "13" },
-      { field: "h14", header: "14" },
-      { field: "h15", header: "15" },
-      { field: "h16", header: "16" },
-      { field: "h17", header: "17" },
-      { field: "h18", header: "18" },
-      { field: "h19", header: "19" },
-      { field: "h20", header: "20" },
-      { field: "h21", header: "21" },
-      { field: "h22", header: "22" },
-      { field: "h23", header: "23" }
+      { field: "c00", header: "00" },
+      { field: "c01", header: "01" },
+      { field: "c02", header: "02" },
+      { field: "c03", header: "03" },
+      { field: "c04", header: "04" },
+      { field: "c05", header: "05" },
+      { field: "c06", header: "06" },
+      { field: "c07", header: "07" },
+      { field: "c08", header: "08" },
+      { field: "c09", header: "09" },
+      { field: "c10", header: "10" },
+      { field: "c11", header: "11" },
+      { field: "c12", header: "12" },
+      { field: "c13", header: "13" },
+      { field: "c14", header: "14" },
+      { field: "c15", header: "15" },
+      { field: "c16", header: "16" },
+      { field: "c17", header: "17" },
+      { field: "c18", header: "18" },
+      { field: "c19", header: "19" },
+      { field: "c20", header: "20" },
+      { field: "c21", header: "21" },
+      { field: "c22", header: "22" },
+      { field: "c23", header: "23" }
     ]);
   }
 
@@ -108,7 +108,7 @@ export class DeviceDetailConsumptionComponent implements OnInit {
     this.consumptions$ = this.smartDeviceService.getConsumptionsForPeriod(this.activeRoute.parent.snapshot.params.id, this.fromDate, this.toDate).pipe(
       tap((data: Array<ConsumptionDtoExt>) => {
         data.forEach(element => {
-          element.dateSent = this.localizor.localizeDateTime(element.date);
+          element.dateSent = this.localizor.formatUtcDateTime(element.date, false, true);
           element.dateSentForSort = moment(element.date);
         });
       }),

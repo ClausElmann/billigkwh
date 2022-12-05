@@ -12,13 +12,13 @@
 
 
 export interface BilligKwhModel { 
-    second?: number;
-    minute?: number;
-    hour?: number;
-    day?: number;
-    month?: number;
-    year?: number;
-    recipe?: Array<number> | null;
-    deviceID?: string | null;
+    s?: number;
+    m?: number;
+    h?: number;
+    d?: number;
+    mo?: number;
+    y?: number;
+    r?: Array<number> | null;
+    de?: number;
 }
 

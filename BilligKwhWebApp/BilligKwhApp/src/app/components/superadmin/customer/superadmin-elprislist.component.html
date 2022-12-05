@@ -73,6 +73,44 @@
   </div>
 </div>
 
+<button *ngIf="isSuperAdmin" pButton pRipple icon="pi pi-check" class="p-button-raised" label="Indsæt data" (click)="indsaetDataDialog = true"></button>
+
+<p-dialog *ngIf="indsaetDataDialog" [(visible)]="indsaetDataDialog" [style]="{ width: '1200px', height: '800px' }" header="Indsæt komponenter" [modal]="true">
+  <div class="grid">
+    <div class="col-12">
+      <div class="card">
+        <div class="p-fluid p-formgrid grid">
+          <div class="field">
+            <label for="date" class="block">Dato</label>
+            <p-calendar [(ngModel)]="nordnetDate" dateFormat="dd/mm/yy" inputId="date"></p-calendar>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="field col-12 md:col-12">
+      <label for="komponenter" class="block">Indsæt en liste af data fra nordnet</label>
+      <textarea
+        class="w-100 h-100"
+        [(ngModel)]="nordnetData"
+        [ngModelOptions]="{ standalone: true }"
+        type="text"
+        aria-describedby="komponenter-help"
+        placeholder="Indsæt komponenter fra Excel (Antal Varenummer) med/uden overskrift"
+        [rows]="25"
+        pInputTextarea
+        autoResize="autoResize"
+      ></textarea>
+      <!-- <div *ngIf="kommentar.errors && (kommentar.dirty || kommentar.touched)" class="p-error block"></div> -->
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple icon="pi pi-check" class="p-button-raised" label="Bekræft" (click)="importData()"></button>
+  </ng-template>
+</p-dialog>
+
 <!-- <p-dialog header="Email indhold" [(visible)]="displayEmailDialog" styleClass="" [style]="{ width: '50vw' }" [baseZIndex]="10000">
   <p id="print-section" class="mb-2 myEmailClass" [innerHtml]="text"></p>
   <ng-template pTemplate="footer">

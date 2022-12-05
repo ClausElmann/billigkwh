@@ -34,7 +34,7 @@ namespace BilligKwhWebApp.Services.Interfaces
         Result<EmailMessage> Get(int id);
         Result Update(EmailMessage emailMessage);
 
-        void SendTestMailFromBatchAppInDev(int messageId);
+        void SendTestMailFromDev(int messageId);
 
         IReadOnlyCollection<EmailModel> GetAll(int? customerId, DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<EmailModel> GetTavleEmails(int tavleId);

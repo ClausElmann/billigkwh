@@ -74,7 +74,7 @@ export class UserEditMainComponent implements OnInit {
       .subscribe(data => {
         if (data) {
           this.user = data;
-          debugger;
+          //debugger;
           if (this.user.deleted == true) this.deleteOrRecreate = "Genskab";
           this.createOrSave = "Gem";
         }
@@ -156,7 +156,7 @@ export class UserEditMainComponent implements OnInit {
   }
 
   public saveUser(toggleDelete: boolean) {
-    debugger;
+    //debugger;
 
     if (!this.checkAndValidateForm()) return;
 
@@ -200,7 +200,7 @@ export class UserEditMainComponent implements OnInit {
     this.mainForm.reset();
     // if (stay) this.router.navigate(["/superadmin/users", this.user.id, "main"]);
     // else this.router.navigate(["/superadmin/users"]);
-    debugger;
+    //debugger;
     this.router.navigate(["/superadmin/customers", this.user.customerId, "users"]);
   }
 

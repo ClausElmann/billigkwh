@@ -16,6 +16,9 @@ using MediatR;
 using BilligKwhWebApp.Services;
 using BilligKwhWebApp.Infrastructure.DataTransferObjects.Common;
 using BilligKwhWebApp.Services.Customers;
+using System.Web;
+using Z.Dapper.Plus;
+using System.Diagnostics;
 
 namespace BilligKwhWebApp.Controllers
 {
@@ -148,7 +151,7 @@ namespace BilligKwhWebApp.Controllers
                 return Ok(customer.Id);
             }
         }
-             
+
 
         /// <summary>
         /// Get all customers. Optionally, you can pass a countryId for filtering by country
@@ -202,6 +205,45 @@ namespace BilligKwhWebApp.Controllers
             {
                 _emailService.SendMail(item);
             }
+        }
+
+
+        [HttpPost, Authorize(UserRolePermissionProvider.SuperAdmin)]
+        public IActionResult ImportData(DateTime dato, string indhold)
+        {
+            indhold = HttpUtility.UrlDecode(indhold);
+
+            string[] lines = indhold.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+
+            if (lines.Length != 24) BadRequest(new { ErrorMessage = "not correct nuber of lines" });
+
+            DateTime utcNow = DateTime.UtcNow;
+
+            var list = new List<ElectricityPrice>();
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                var lineArray = lines[i].Split('\t');
+
+                decimal dk1 = decimal.Parse(lineArray[1].Replace(" ", "")) / 1000;
+                decimal dk2 = decimal.Parse(lineArray[2].Replace(" ", "")) / 1000;
+
+                list.Add(new ElectricityPrice()
+                {
+                    HourDK = dato.AddHours(i),
+                    Dk1 = dk1,
+                    Dk2 = dk2,
+                    HourDKNo = i,
+                    HourUTC = dato.AddHours(i).ToUniversalTime(),
+                    HourUTCNo = dato.AddHours(i).ToUniversalTime().Hour,
+                    UpdatedUtc = utcNow,
+                });
+            }
+
+            using var connection = ConnectionFactory.GetOpenConnection();
+            connection.BulkInsert(list);
+
+            return Ok();
         }
     }
 }

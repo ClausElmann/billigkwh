@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[SmartDevices] (
+﻿CREATE TABLE [dbo].[SmartDevices] (
     [Id]               INT            IDENTITY (1, 1) NOT NULL,
     [Uniqueidentifier] NVARCHAR (250) NOT NULL,
     [CustomerId]       INT            NULL,
@@ -9,13 +9,12 @@ CREATE TABLE [dbo].[SmartDevices] (
     [MaxRate]          DECIMAL (4, 2) CONSTRAINT [DF_Print_MaxRate] DEFAULT ((2)) NOT NULL,
     [Deleted]          DATETIME       NULL,
     [Comment]          NVARCHAR (MAX) CONSTRAINT [DF_Print_Kommentar] DEFAULT ('') NOT NULL,
-    [Delay] INT NOT NULL DEFAULT 0, 
-    [DebugMinutes] INT NOT NULL DEFAULT 0, 
+    [Delay]            INT            CONSTRAINT [DF_SmartDevices_Delay] DEFAULT ((0)) NOT NULL,
+    [DebugMinutes]     INT            CONSTRAINT [DF_SmartDevices_DebugMinutesToAddToTime] DEFAULT ((0)) NOT NULL,
+    [MinTempOveride]   INT            NULL,
+    [MaxTempOveride]   INT            NULL
     CONSTRAINT [PK_Print] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
-
-
-
 
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [CX_Print]

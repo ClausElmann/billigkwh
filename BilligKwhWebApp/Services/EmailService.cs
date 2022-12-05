@@ -88,7 +88,7 @@ namespace BilligKwhWebApp.Services
 #if DEBUG
             //SendMail(mailMessage.Id);
             if (Environment.MachineName == "LAPTOP-2Q5GS5I8")
-                SendTestMailFromBatchAppInDev(mailMessage.Id);
+                SendTestMailFromDev(mailMessage.Id);
             else
                 SendMail(mailMessage.Id);
 #else
@@ -149,10 +149,10 @@ namespace BilligKwhWebApp.Services
         /// <param name="messageId">Id of EmailMessage</param>
         /// <param name="mailAccount">Office 365 mail acount username</param>
         /// <param name="password">Office 365 mail acount password</param>
-        public void SendTestMailFromBatchAppInDev(int messageId)
+        public void SendTestMailFromDev(int messageId)
         {
             string mailAccount = "noreply@billigkwh.dk";
-            string password = "Yamaha900";
+            string password = "k3dJKUl6Ej$7";
 
             var getMessagesSql = @"
                     SELECT *
@@ -165,7 +165,7 @@ namespace BilligKwhWebApp.Services
             if (emailsToSend.Count() != 1) return;
             var mail = emailsToSend.Single();
 
-            MailMessage msg = new(new MailAddress("noreply@billigkwh.dk", "BilligKwh"), new MailAddress("claus@blueidea.dk", "Claus Elmann"))
+            MailMessage msg = new(new MailAddress("noreply@billigkwh.dk", "BilligKwh"), new MailAddress("claus.elmann@gmail.com", "Claus Elmann"))
             {
                 Subject = mail.Subject,
                 Body = mail.Body,
@@ -187,7 +187,7 @@ namespace BilligKwhWebApp.Services
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(mailAccount, password),
                 Port = 587,
-                Host = "send.one.com",
+                Host = "smtp.simply.com",
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 EnableSsl = true
             };
@@ -229,9 +229,9 @@ namespace BilligKwhWebApp.Services
             SmtpClient client = new()
             {
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("noreply@billigkwh.dk", "Yamaha900"),
+                Credentials = new NetworkCredential("noreply@billigkwh.dk", "k3dJKUl6Ej$7"),
                 Port = 587,
-                Host = "send.one.com",
+                Host = "websmtp.simply.com",
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 EnableSsl = true
             };

@@ -98,8 +98,10 @@ export class ApiRoutes {
       updateCustomerMapModuleSettings: ApiRoutes.customerEndpoint + "UpdateCustomerMapModuleSettings",
       updateCustomerDriftsStatusModuleSettings: ApiRoutes.customerEndpoint + "updateCustomerDriftsStatusModuleSettings",
       updateCustomerSubscriptionModuleSettings: ApiRoutes.customerEndpoint + "UpdateCustomerSubscriptionModuleSettings"
-    } //,
-    //createCustomer: ApiRoutes.customerEndpoint + "CreateCustomer" // super admin
+    },
+    update: {
+      importData: ApiRoutes.customerEndpoint + "ImportData"
+    }
   };
 
   public static eltavleRoutes = {

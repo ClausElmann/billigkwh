@@ -15,5 +15,7 @@ namespace BilligKwhWebApp.Core.Domain
         public string Comment { get; set; }
         public int Delay { get; set; }
         public int DebugMinutes { get; set; }
+        public int? MinTempOveride { get; set; }
+        public int? MaxTempOveride { get; set; }
     }
 }

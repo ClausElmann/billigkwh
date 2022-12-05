@@ -8,6 +8,7 @@ import { BiLocalizationHelperService } from "@core/utility-services/bi-localizat
 import moment from "moment";
 import { TableColumnPrimeNg } from "@shared/interfaces-and-enums/TableColumnPrimeNg";
 import { ElectricityPriceModel } from "@apiModels/electricityPriceModel";
+import { UserService } from "@core/services/user.service";
 
 export interface ElectricityPriceModelExt extends ElectricityPriceModel {
   dateForSort?: moment.Moment;
@@ -46,6 +47,11 @@ export class SuperAdminElectricityPriceListComponent implements OnInit {
   public fromDate: Date = new Date();
   public toDate: Date = new Date();
 
+  public nordnetDate: Date = new Date();
+  public nordnetData = "";
+
+  indsaetDataDialog = false;
+
   selectedValue: string;
 
   private countryId = BiCountryId.DK;
@@ -56,11 +62,9 @@ export class SuperAdminElectricityPriceListComponent implements OnInit {
 
   text: string;
 
-  constructor(
-    private customerService: CustomerService,
+  public isSuperAdmin = this.userService.getCurrentStateValue().currentUser.isSuperAdmin;
 
-    private localizor: BiLocalizationHelperService
-  ) {}
+  constructor(private customerService: CustomerService, private userService: UserService, private localizor: BiLocalizationHelperService, private messageService: MessageService) {}
 
   ngOnInit() {
     this.text = "<h2>Vælg en email i listen for at se indholdet</h2>";
@@ -115,6 +119,21 @@ export class SuperAdminElectricityPriceListComponent implements OnInit {
         this.loading = false;
       })
     );
+  }
+
+  importData() {
+    this.customerService.importData(this.nordnetDate, encodeURIComponent(this.nordnetData)).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: "success",
+          summary: "Success",
+          detail: "Data blev importeret"
+        });
+
+        this.indsaetDataDialog = false;
+      },
+      error: err => (this.errorMessage = err)
+    });
   }
 
   customSort(event: SortEvent) {

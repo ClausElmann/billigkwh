@@ -3,7 +3,7 @@
     public enum EmailCategoryEnum
     {
         SupportMails = 1,
-        OrderMails = 2,
+        //OrderMails = 2,
         PasswordMails = 3,
         //StatstidendeMails = 4,
         //BroadcastReceiptMails = 5,
@@ -82,7 +82,7 @@
         TakForDinBestilling,
         ViHarNuSendtDinTavle,
         Faktura,
-        Varmeberegning
+        ElectricityPricesMissing
     }
 
     public enum AppSettingEnum

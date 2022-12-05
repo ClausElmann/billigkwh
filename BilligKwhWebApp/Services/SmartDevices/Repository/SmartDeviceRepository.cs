@@ -40,7 +40,6 @@ namespace BilligKwhWebApp.Services.SmartDevices.Repository
 
         public IReadOnlyCollection<SmartDeviceDto> GetAllSmartDeviceDto(int customerId)
         {
-
             using var connection = ConnectionFactory.GetOpenConnection();
             return connection.Query<SmartDeviceDto>(@"
             SELECT *

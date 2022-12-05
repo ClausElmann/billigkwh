@@ -211,7 +211,7 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
         public IReadOnlyCollection<ConsumptionDto> GetConsumptionsPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)
         {
             using var connection = ConnectionFactory.GetOpenConnection();
-            return connection.Query<ConsumptionDto>(@"SELECT * FROM [Consumptions] WHERE DeviceId = @DeviceId AND [Date] >= @FromDateUtc AND [Date] <= @ToDateUtc",
+            return connection.Query<ConsumptionDto>(@"SELECT * FROM [Consumptions] WHERE DeviceId = @DeviceId AND [Date] >= @FromDateUtc AND [Date] <= @ToDateUtc ORDER BY [Date] DESC ",
                 new { DeviceId = deviceId, FromDateUtc = fromDateUtc, ToDateUtc = toDateUtc }).ToList();
         }
     }

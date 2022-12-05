@@ -299,4 +299,12 @@ export class CustomerService extends BiStore<CustomerState> {
 
     return this.http.get<Array<CustomerUserRole>>(ApiRoutes.customerRoutes.get.getCustomerUserRoleAccess, { params: params });
   }
+
+  public importData(dato: Date, indhold: string) {
+    return this.http.post(ApiRoutes.customerRoutes.update.importData, undefined, { params: { dato: dato.toDateString(), indhold: indhold } }).pipe(
+      catchError(err => {
+        throw err;
+      })
+    );
+  }
 }

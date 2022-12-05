@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[ElectricityPrices] (
+CREATE TABLE [dbo].[ElectricityPrices] (
     [Id]         INT            IDENTITY (1, 1) NOT NULL,
     [HourDK]     DATETIME       CONSTRAINT [DF_Elpris_DateDk] DEFAULT (getdate()) NOT NULL,
     [HourDKNo]   INT            NOT NULL,
@@ -13,7 +13,9 @@
 
 
 
+
+
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [IX_ElectricityPrices_UX]
+CREATE UNIQUE NONCLUSTERED INDEX [IX_ElectricityPrice_UX]
     ON [dbo].[ElectricityPrices]([HourDK] ASC);
 

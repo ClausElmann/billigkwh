@@ -12,7 +12,11 @@ using System.Text.Json;
 using System.Linq;
 using System.Globalization;
 using BilligKwhWebApp.Services.Electricity.Dto;
-using System.Security.Cryptography.Xml;
+using BilligKwhWebApp.Services.Enums;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Policy;
+using BilligKwhWebApp.Core;
+using System.Text;
 
 namespace BilligKwhWebApp.Services.Electricity
 {
@@ -22,13 +26,17 @@ namespace BilligKwhWebApp.Services.Electricity
         private readonly IElectricityRepository _electricityRepository;
         private readonly ICustomerService _customerService;
         private readonly IBaseRepository _baseRepository;
+        private readonly IEmailTemplateService _emailTemplateService;
+        private readonly IEmailService _emailService;
 
-        public ElectricityService(ISystemLogger logger, IElectricityRepository electricityRepository, ICustomerService customerService, IBaseRepository baseRepository)
+        public ElectricityService(ISystemLogger logger, IElectricityRepository electricityRepository, ICustomerService customerService, IBaseRepository baseRepository, IEmailTemplateService emailTemplateService, IEmailService emailService)
         {
             _logger = logger;
             _electricityRepository = electricityRepository;
             _customerService = customerService;
             _baseRepository = baseRepository;
+            _emailTemplateService = emailTemplateService;
+            _emailService = emailService;
         }
 
         public IReadOnlyCollection<Schedule> GetSchedulesForDate(DateTime date, int deviceId)
@@ -47,6 +55,11 @@ namespace BilligKwhWebApp.Services.Electricity
             string responseBody = await response.Content.ReadAsStringAsync();
 
             var welcome = JsonSerializer.Deserialize<Root>(responseBody);
+
+            var hasTodayPrices = welcome.records.Where(w => w.HourDK > DateTime.UtcNow.Date).Any();
+
+            if (!hasTodayPrices)
+                SendElectricityPricesMissingEmail();
 
             List<ElectricityPrice> ElectricityPrices = new();
 
@@ -83,6 +96,48 @@ namespace BilligKwhWebApp.Services.Electricity
             _logger.Debug("Calculate schedules ends");
         }
 
+        public void SendElectricityPricesMissingEmail()
+        {
+            var mailTemplate = _emailTemplateService.GetTemplateByNameEnum(CountryConstants.DanishCountryId, EmailTemplateName.ElectricityPricesMissing);
+
+            var fields = new List<KeyValuePair<string, object>>()
+            {
+                //    new KeyValuePair<string, object>("NEWUSER_URL", url.ToString()),
+                //    new KeyValuePair<string, object>("USERNAME", user.Name),
+            };
+
+            _emailTemplateService.MergeEmailFields(mailTemplate, fields);
+
+            _emailService.Save(
+               customerId: 1,
+               fromEmail: mailTemplate.FromEmail,
+               fromName: mailTemplate.FromName,
+               sendTo: "claus.elmann@gmail.com",
+               sendToName: "Claus Elmann",
+               replyTo: mailTemplate.ReplyTo,
+               subject: mailTemplate.Subject,
+               body: mailTemplate.Html,
+               categoryEnum: EmailCategoryEnum.SupportMails,
+               refTypeID: (int)RefType.Overvaagning,
+               refID: 0,
+               mailTemplate.BccEmails);
+
+
+            //    _emailService.Save(
+            //        customerId: 1,
+            //        fromEmail: mailTemplate.FromEmail,
+            //            fromName: mailTemplate.FromName,
+            //            sendTo: sendTo,
+            //            sendToName: user.Name,
+            //            replyTo: mailTemplate.ReplyTo,
+            //            subject: mailTemplate.Subject,
+            //            body: mailTemplate.Html,
+            //            testMode: false,
+            //            categoryEnum: EmailCategoryEnum.PasswordMails,
+            //            !string.IsNullOrEmpty(sendToEmails) ? mailTemplate.BccEmails : null); // if sendToEmails is empty, the BCCs are the sendTo and then they shouldn't be set as BCC (would cause duplicate emails)
+        }
+
+
         public void UpdateConsumption(int deviceId, IReadOnlyCollection<long> list)
         {
             long[] array = list.ToArray();
@@ -96,6 +151,12 @@ namespace BilligKwhWebApp.Services.Electricity
             var c = _electricityRepository.GetConsumptionByIdAndDate(firstDate, deviceId);
 
             var cy = _electricityRepository.GetConsumptionByIdAndDate(yesterday, deviceId);
+
+            long lastValueYesterday = 0;
+            if (cy != null)
+            {
+                lastValueYesterday = cy.H23;
+            }
 
             if (c != null)
             {
@@ -124,6 +185,7 @@ namespace BilligKwhWebApp.Services.Electricity
                 c.H22 = Math.Max(c.H22, array[23]);
                 c.H23 = Math.Max(c.H23, array[24]);
                 c.LastUpdatedUtc = DateTime.UtcNow;
+                UpdateConsumption(c, lastValueYesterday);
                 _electricityRepository.UpdateConsumption(c);
             }
             else
@@ -158,6 +220,7 @@ namespace BilligKwhWebApp.Services.Electricity
                     H22 = array[23],
                     H23 = array[24],
                 };
+                UpdateConsumption(c, lastValueYesterday);
                 _electricityRepository.InsertConsumption(c);
             }
 
@@ -167,6 +230,34 @@ namespace BilligKwhWebApp.Services.Electricity
                 cy.H23 = Math.Max(cy.H23, array[25]);
                 _electricityRepository.UpdateConsumption(cy);
             }
+        }
+
+        private void UpdateConsumption(Consumption c, long? lastValueYesterday = null)
+        {
+            c.C00 = c.H00 != 0 ? (decimal)((c.H00 - lastValueYesterday) / 10.0) : 0;
+            c.C01 = c.H01 != 0 ? (decimal)((c.H01 - c.H00) / 10.0) : 0;
+            c.C02 = c.H02 != 0 ? (decimal)((c.H02 - c.H01) / 10.0) : 0;
+            c.C02 = c.H03 != 0 ? (decimal)((c.H03 - c.H02) / 10.0) : 0;
+            c.C04 = c.H04 != 0 ? (decimal)((c.H04 - c.H03) / 10.0) : 0;
+            c.C05 = c.H05 != 0 ? (decimal)((c.H05 - c.H04) / 10.0) : 0;
+            c.C06 = c.H06 != 0 ? (decimal)((c.H06 - c.H05) / 10.0) : 0;
+            c.C07 = c.H07 != 0 ? (decimal)((c.H07 - c.H06) / 10.0) : 0;
+            c.C08 = c.H08 != 0 ? (decimal)((c.H08 - c.H07) / 10.0) : 0;
+            c.C09 = c.H09 != 0 ? (decimal)((c.H09 - c.H08) / 10.0) : 0;
+            c.C10 = c.H10 != 0 ? (decimal)((c.H10 - c.H09) / 10.0) : 0;
+            c.C11 = c.H11 != 0 ? (decimal)((c.H11 - c.H10) / 10.0) : 0;
+            c.C12 = c.H12 != 0 ? (decimal)((c.H12 - c.H11) / 10.0) : 0;
+            c.C13 = c.H13 != 0 ? (decimal)((c.H13 - c.H12) / 10.0) : 0;
+            c.C14 = c.H14 != 0 ? (decimal)((c.H14 - c.H13) / 10.0) : 0;
+            c.C15 = c.H15 != 0 ? (decimal)((c.H15 - c.H14) / 10.0) : 0;
+            c.C16 = c.H16 != 0 ? (decimal)((c.H16 - c.H15) / 10.0) : 0;
+            c.C17 = c.H17 != 0 ? (decimal)((c.H17 - c.H16) / 10.0) : 0;
+            c.C18 = c.H18 != 0 ? (decimal)((c.H18 - c.H17) / 10.0) : 0;
+            c.C19 = c.H19 != 0 ? (decimal)((c.H19 - c.H18) / 10.0) : 0;
+            c.C20 = c.H20 != 0 ? (decimal)((c.H20 - c.H19) / 10.0) : 0;
+            c.C21 = c.H21 != 0 ? (decimal)((c.H21 - c.H20) / 10.0) : 0;
+            c.C22 = c.H22 != 0 ? (decimal)((c.H22 - c.H21) / 10.0) : 0;
+            c.C23 = c.H23 != 0 ? (decimal)((c.H23 - c.H22) / 10.0) : 0;
         }
 
         public IReadOnlyCollection<ScheduleDto> GetSchedulesForPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)

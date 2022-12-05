@@ -40,7 +40,7 @@
 <ItemGroup>
     <EmbeddedResource Include="Resources\EmailTemplates\AdminOprettelse.1.aspx" />
     <EmbeddedResource Include="Resources\EmailTemplates\BrugerOprettelse.1.aspx" />
-    <EmbeddedResource Include="Resources\EmailTemplates\Varmeberegning.1.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\ElectricityPricesMissing.1.aspx" />
     <EmbeddedResource Include="Resources\EmailTemplates\Faktura.1.aspx" />
     <EmbeddedResource Include="Resources\EmailTemplates\MasterTemplate.1.aspx" />
     <EmbeddedResource Include="Resources\EmailTemplates\MasterTemplate.2.aspx" />
@@ -169,6 +169,7 @@
 	  <None Remove="BilligKwhApp\src\app\components\customer\customer.module.ts" />
 	  <None Remove="Resources\EmailTemplates\AdminOprettelse.1.aspx" />
 	  <None Remove="Resources\EmailTemplates\BrugerOprettelse.1.aspx" />
+	  <None Remove="Resources\EmailTemplates\ElectricityPricesMissing.1.aspx" />
 	  <None Remove="Resources\EmailTemplates\Faktura.1.aspx" />
 	  <None Remove="Resources\EmailTemplates\FoelgeSeddel1.aspx" />
 	  <None Remove="Resources\EmailTemplates\MasterTemplate.1.aspx" />
@@ -187,7 +188,7 @@
 	  <None Remove="Resources\EmailTemplates\ResetPassword.4.aspx" />
 	  <None Remove="Resources\EmailTemplates\ResetPassword.5.aspx" />
 	  <None Remove="Resources\EmailTemplates\TakForDinBestilling.1.aspx" />
-	  <None Remove="Resources\EmailTemplates\Varmeberegning.1.aspx" />
+	  <None Remove="Resources\EmailTemplates\Varmeberegning - Copy.1.aspx" />
 	  <None Remove="Resources\EmailTemplates\ViHarNuSendtDinTavle.1.aspx" />
 	</ItemGroup>
 
