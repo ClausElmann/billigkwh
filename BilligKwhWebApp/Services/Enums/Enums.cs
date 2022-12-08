@@ -82,7 +82,8 @@
         TakForDinBestilling,
         ViHarNuSendtDinTavle,
         Faktura,
-        ElectricityPricesMissing
+        ElectricityPricesMissing,
+        NoContactToDevice
     }
 
     public enum AppSettingEnum

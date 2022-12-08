@@ -22,13 +22,13 @@ namespace BilligKwhWebApp.Controllers
     {
         private readonly ISmartDeviceService _smartDeviceService;
         private readonly IElectricityService _electricityService;
-        private readonly ISystemLogger _Logger;
+        //private readonly ISystemLogger _Logger;
 
         public AController(ISystemLogger logger, IWorkContext workContext, IPermissionService permissionService, ISmartDeviceService smartDeviceService, IElectricityService electricityService) : base(logger, workContext, permissionService)
         {
             _smartDeviceService = smartDeviceService;
             _electricityService = electricityService;
-            _Logger = logger;
+            //_Logger = logger;
         }
 
         [HttpGet]
@@ -160,6 +160,14 @@ namespace BilligKwhWebApp.Controllers
         public async Task<ActionResult> UpdateElectricityPrices()
         {
             await _electricityService.UpdateElectricityPrices();
+            return Ok();
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult SendNoContactToDeviceAdvices()
+        {
+            _electricityService.SendNoContactToDeviceAdvices();
             return Ok();
         }
     }

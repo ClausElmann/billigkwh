@@ -12,7 +12,8 @@
     [Delay]            INT            CONSTRAINT [DF_SmartDevices_Delay] DEFAULT ((0)) NOT NULL,
     [DebugMinutes]     INT            CONSTRAINT [DF_SmartDevices_DebugMinutesToAddToTime] DEFAULT ((0)) NOT NULL,
     [MinTempOveride]   INT            NULL,
-    [MaxTempOveride]   INT            NULL
+    [MaxTempOveride]   INT            NULL,
+    [ErrorMail]        NVARCHAR (150) NULL,
     CONSTRAINT [PK_Print] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

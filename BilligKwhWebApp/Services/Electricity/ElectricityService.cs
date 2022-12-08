@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Policy;
 using BilligKwhWebApp.Core;
 using System.Text;
+using BilligKwhWebApp.Services.SmartDevices;
 
 namespace BilligKwhWebApp.Services.Electricity
 {
@@ -28,8 +29,9 @@ namespace BilligKwhWebApp.Services.Electricity
         private readonly IBaseRepository _baseRepository;
         private readonly IEmailTemplateService _emailTemplateService;
         private readonly IEmailService _emailService;
+        private readonly ISmartDeviceService _smartDeviceService;
 
-        public ElectricityService(ISystemLogger logger, IElectricityRepository electricityRepository, ICustomerService customerService, IBaseRepository baseRepository, IEmailTemplateService emailTemplateService, IEmailService emailService)
+        public ElectricityService(ISystemLogger logger, IElectricityRepository electricityRepository, ICustomerService customerService, IBaseRepository baseRepository, IEmailTemplateService emailTemplateService, IEmailService emailService, ISmartDeviceService smartDeviceService)
         {
             _logger = logger;
             _electricityRepository = electricityRepository;
@@ -37,6 +39,7 @@ namespace BilligKwhWebApp.Services.Electricity
             _baseRepository = baseRepository;
             _emailTemplateService = emailTemplateService;
             _emailService = emailService;
+            _smartDeviceService = smartDeviceService;
         }
 
         public IReadOnlyCollection<Schedule> GetSchedulesForDate(DateTime date, int deviceId)
@@ -169,6 +172,33 @@ namespace BilligKwhWebApp.Services.Electricity
             //            !string.IsNullOrEmpty(sendToEmails) ? mailTemplate.BccEmails : null); // if sendToEmails is empty, the BCCs are the sendTo and then they shouldn't be set as BCC (would cause duplicate emails)
         }
 
+        public void SendNoContactToDeviceEmail(SmartDevice device)
+        {
+            var mailTemplate = _emailTemplateService.GetTemplateByNameEnum(CountryConstants.DanishCountryId, EmailTemplateName.NoContactToDevice);
+
+            var fields = new List<KeyValuePair<string, object>>()
+            {
+                    new KeyValuePair<string, object>("ERRORMAIL", device.ErrorMail),
+                    new KeyValuePair<string, object>("LOCATION", device.Location),
+                    new KeyValuePair<string, object>("LATESTCONTACT", device.LatestContactUtc.ToLocalTime()),
+            };
+
+            _emailTemplateService.MergeEmailFields(mailTemplate, fields);
+
+            _emailService.Save(
+               customerId: 1,
+               fromEmail: mailTemplate.FromEmail,
+               fromName: mailTemplate.FromName,
+               sendTo: device.ErrorMail,
+               sendToName: device.ErrorMail,
+               replyTo: mailTemplate.ReplyTo,
+               subject: mailTemplate.Subject,
+               body: mailTemplate.Html,
+               categoryEnum: EmailCategoryEnum.SupportMails,
+               refTypeID: (int)RefType.Overvaagning,
+               refID: 0,
+               mailTemplate.BccEmails);
+        }
 
         public void UpdateConsumption(int deviceId, IReadOnlyCollection<long> list)
         {
@@ -321,6 +351,16 @@ namespace BilligKwhWebApp.Services.Electricity
         public IReadOnlyCollection<ConsumptionDto> GetConsumptionsPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)
         {
             return _electricityRepository.GetConsumptionsPeriod(deviceId, fromDateUtc, toDateUtc);
+        }
+
+        public void SendNoContactToDeviceAdvices()
+        {
+            var list = _electricityRepository.GetNoContactToDevices(DateTime.UtcNow.AddHours(-1));
+
+            foreach (var device in list)
+            {
+                SendNoContactToDeviceEmail(device);
+            }
         }
     }
 }

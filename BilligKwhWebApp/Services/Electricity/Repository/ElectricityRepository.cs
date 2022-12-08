@@ -32,6 +32,14 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
                      SELECT * FROM [SmartDevices] WHERE [Deleted] IS NULL AND [CustomerId] IS NOT NULL").ToList();
         }
 
+        public IReadOnlyCollection<SmartDevice> GetNoContactToDevices(DateTime datetimeUtc)
+        {
+            using var connection = ConnectionFactory.GetOpenConnection();
+            return connection.Query<SmartDevice>(@"
+                     SELECT * FROM [SmartDevices] WHERE [Deleted] IS NULL AND [LatestContactUtc] < @Datetime AND ErrorMail IS NOT NULL", new { Datetime = datetimeUtc }).ToList();
+        }
+
+
         public IReadOnlyCollection<Schedule> GetSchedulesForDate(DateTime date, int deviceId)
         {
             using var connection = ConnectionFactory.GetOpenConnection();
