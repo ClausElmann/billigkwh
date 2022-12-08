@@ -12,6 +12,9 @@ import { TableColumnPrimeNgExt } from "./devicelist.component";
 export interface ConsumptionDtoExt extends ConsumptionDto {
   dateSentForSort?: moment.Moment;
   dateSent?: string;
+  counter00: number;
+  counter23: number;
+  consumption: number;
 }
 
 @UntilDestroy()
@@ -61,7 +64,10 @@ export class DeviceDetailConsumptionComponent implements OnInit {
   private initColumns() {
     this.globalFilterFields.next(["subject", "body", "toName", "toEmail"]);
     this.columns.next([
-      { field: "dateSent", header: "Sendt", sortField: "dateSentForSort" },
+      { field: "dateSent", header: "Dato", sortField: "dateSentForSort" },
+      { field: "counter00", header: "Primo" },
+      { field: "counter23", header: "Ultimo" },
+      { field: "consumption", header: "Forbrug" },
       { field: "c00", header: "00" },
       { field: "c01", header: "01" },
       { field: "c02", header: "02" },
@@ -110,6 +116,10 @@ export class DeviceDetailConsumptionComponent implements OnInit {
         data.forEach(element => {
           element.dateSent = this.localizor.formatUtcDateTime(element.date, false, true);
           element.dateSentForSort = moment(element.date);
+          element.counter00 = element.h00 / 10;
+          element.counter23 = element.h23 / 10;
+
+          if (element.h00 > 0 && element.h23 > 0) element.consumption = Math.round(((element.h23 - element.h00) / 10) * 10) / 10;
         });
       }),
       untilDestroyed(this),

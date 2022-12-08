@@ -18,6 +18,13 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
             WHERE HourDK >= @Date", new { Date = date.Date }).ToList();
         }
 
+        public ElectricityPrice GetLatestElectricityPrice()
+        {
+            using var connection = ConnectionFactory.GetOpenConnection();
+            return connection.QueryFirstOrDefault<ElectricityPrice>(@"
+                     SELECT top 1 * FROM [ElectricityPrices] order by HourDK DESC");
+        }
+
         public IReadOnlyCollection<SmartDevice> GetSmartDeviceForRecipes()
         {
             using var connection = ConnectionFactory.GetOpenConnection();

@@ -16,6 +16,8 @@ export interface ConsumptionDto {
     date?: string;
     deviceId?: number;
     lastUpdatedUtc?: string;
+    h00?: number;
+    h23?: number;
     c00?: number;
     c01?: number;
     c02?: number;

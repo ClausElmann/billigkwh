@@ -26,5 +26,6 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
         Consumption GetConsumptionByIdAndDate(DateTime date, int deviceId);
         void UpdateConsumption(Consumption consumption);
         void InsertConsumption(Consumption consumption);
+        ElectricityPrice GetLatestElectricityPrice();
     }
 }

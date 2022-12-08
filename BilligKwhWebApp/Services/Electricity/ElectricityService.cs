@@ -44,56 +44,88 @@ namespace BilligKwhWebApp.Services.Electricity
             return _electricityRepository.GetSchedulesForDate(date, deviceId);
         }
 
+        private static DateTime Round(DateTime dateTime)
+        {
+            return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, 0, 0, dateTime.Kind);
+        }
+
         public async Task UpdateElectricityPrices()
         {
-            _logger.Debug("Hent elpriser starts.");
-
-            HttpClient client = new();
-            //HttpResponseMessage response = await client.GetAsync($"https://api.energidataservice.dk/dataset/Elspotprices?offset=0&start=2022-01-01T00:00&filter=%7B%22PriceArea%22:%22dk1,dk2%22%7D&sort=HourUTC%20ASC&timezone=dk");
-            HttpResponseMessage response = await client.GetAsync($"https://api.energidataservice.dk/dataset/Elspotprices?offset=0&start={DateTime.UtcNow.AddDays(-2):yyyy-MM-dd}T00:00&filter=%7B%22PriceArea%22:%22dk1,dk2%22%7D&sort=HourUTC%20ASC&timezone=dk");
-            response.EnsureSuccessStatusCode();
-            string responseBody = await response.Content.ReadAsStringAsync();
-
-            var welcome = JsonSerializer.Deserialize<Root>(responseBody);
-
-            var hasTodayPrices = welcome.records.Where(w => w.HourDK > DateTime.UtcNow.Date).Any();
-
-            if (!hasTodayPrices)
-                SendElectricityPricesMissingEmail();
-
-            List<ElectricityPrice> ElectricityPrices = new();
-
-            DateTime updatedUtc = DateTime.UtcNow;
-
-            foreach (var record in welcome.records.Where(w => w.PriceArea == "DK1"))
-            {
-                var Dk2 = welcome.records.Where(w => w.HourDK == record.HourDK && w.PriceArea == "DK2").FirstOrDefault();
-                ElectricityPrices.Add(new ElectricityPrice()
-                {
-                    HourUTC = record.HourUTC,
-                    HourDK = record.HourDK,
-                    HourDKNo = record.HourDK.Hour,
-                    HourUTCNo = record.HourUTC.Hour,
-                    Dk1 = (decimal)record.SpotPriceDKK / 1000,
-                    Dk2 = (decimal)Dk2.SpotPriceDKK / 1000,
-                    UpdatedUtc = updatedUtc,
-                });
-            }
-            _baseRepository.BulkMerge(ElectricityPrices.DistinctBy(d => d.HourDK));
-
-            _logger.Debug("Hent elpriser ends, Starting to calculate schedules.");
+            _logger.Debug("UpdateElectricityPrices starts.");
 
             DateTime danish = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Romance Standard Time");
 
-            var elpriser = _electricityRepository.GetElectricityPricesForDate(danish.Date);
+            var latest = _electricityRepository.GetLatestElectricityPrice();
 
-            var devicesForRecipes = _electricityRepository.GetSmartDeviceForRecipes();
+            DateTime shouldBeLatest = Round(danish.AddHours(-danish.Hour).AddHours(23));
 
-            var result = _electricityRepository.Calculate(danish, elpriser, devicesForRecipes);
+            if (danish.Hour >= 13)
+            {
+                shouldBeLatest = Round(danish.AddHours(-danish.Hour).AddHours(23 + 24));
+            }
 
-            _baseRepository.BulkMerge(result);
+            if (latest.HourDK < shouldBeLatest)
+            {
+                _logger.Debug("Henter elpriser...");
 
-            _logger.Debug("Calculate schedules ends");
+                HttpClient client = new();
+                //HttpResponseMessage response = await client.GetAsync($"https://api.energidataservice.dk/dataset/Elspotprices?offset=0&start=2022-01-01T00:00&filter=%7B%22PriceArea%22:%22dk1,dk2%22%7D&sort=HourUTC%20ASC&timezone=dk");
+                HttpResponseMessage response = await client.GetAsync($"https://api.energidataservice.dk/dataset/Elspotprices?offset=0&start={DateTime.UtcNow.AddDays(-2):yyyy-MM-dd}T00:00&filter=%7B%22PriceArea%22:%22dk1,dk2%22%7D&sort=HourUTC%20ASC&timezone=dk");
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                var welcome = JsonSerializer.Deserialize<Root>(responseBody);
+
+                //var hasTodayPrices = welcome.records.Where(w => w.HourDK > DateTime.UtcNow.Date).Any();
+
+                //if (!hasTodayPrices)
+                //    SendElectricityPricesMissingEmail();
+
+                List<ElectricityPrice> ElectricityPrices = new();
+
+                DateTime updatedUtc = DateTime.UtcNow;
+
+                foreach (var record in welcome.records.Where(w => w.PriceArea == "DK1"))
+                {
+                    var Dk2 = welcome.records.Where(w => w.HourDK == record.HourDK && w.PriceArea == "DK2").FirstOrDefault();
+                    ElectricityPrices.Add(new ElectricityPrice()
+                    {
+                        HourUTC = record.HourUTC,
+                        HourDK = record.HourDK,
+                        HourDKNo = record.HourDK.Hour,
+                        HourUTCNo = record.HourUTC.Hour,
+                        Dk1 = (decimal)record.SpotPriceDKK / 1000,
+                        Dk2 = (decimal)Dk2.SpotPriceDKK / 1000,
+                        UpdatedUtc = updatedUtc,
+                    });
+                }
+                _baseRepository.BulkMerge(ElectricityPrices.DistinctBy(d => d.HourDK));
+
+                _logger.Debug("Henter elpriser slut - Starting to calculate schedules.");
+
+                var elpriser = _electricityRepository.GetElectricityPricesForDate(danish.Date);
+
+                var last = elpriser.OrderByDescending(o => o.HourDK).FirstOrDefault();
+
+                if (last == null || last.HourDK < shouldBeLatest)
+                {
+                    // Send error mail
+                    SendElectricityPricesMissingEmail();
+                    return;
+                }
+
+                var devicesForRecipes = _electricityRepository.GetSmartDeviceForRecipes();
+
+                var result = _electricityRepository.Calculate(danish, elpriser, devicesForRecipes);
+
+                _baseRepository.BulkMerge(result);
+
+                _logger.Debug("Calculate schedules ends");
+            }
+            else
+            {
+                _logger.Debug("UpdateElectricityPrices ends. Alredy up to date!");
+            }
         }
 
         public void SendElectricityPricesMissingEmail()

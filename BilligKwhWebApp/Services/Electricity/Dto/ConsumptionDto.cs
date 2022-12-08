@@ -8,6 +8,8 @@ namespace BilligKwhWebApp.Services.Electricity.Dto
         public DateTime Date { get; set; }
         public int DeviceId { get; set; }
         public DateTime LastUpdatedUtc { get; set; }
+        public decimal H00 { get; set; }
+        public decimal H23 { get; set; }
         public decimal C00 { get; set; }
         public decimal C01 { get; set; }
         public decimal C02 { get; set; }
