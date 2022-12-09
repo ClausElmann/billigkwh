@@ -41,6 +41,7 @@
     <EmbeddedResource Include="Resources\EmailTemplates\AdminOprettelse.1.aspx" />
     <EmbeddedResource Include="Resources\EmailTemplates\BrugerOprettelse.1.aspx" />
     <EmbeddedResource Include="Resources\EmailTemplates\NoContactToDevice.1.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\NoContactToDevice.2.aspx" />
     <EmbeddedResource Include="Resources\EmailTemplates\ElectricityPricesMissing.1.aspx" />
     <EmbeddedResource Include="Resources\EmailTemplates\Faktura.1.aspx" />
     <EmbeddedResource Include="Resources\EmailTemplates\MasterTemplate.1.aspx" />
@@ -184,6 +185,7 @@
 	  <None Remove="Resources\EmailTemplates\NewUser.4.aspx" />
 	  <None Remove="Resources\EmailTemplates\NewUser.5.aspx" />
 	  <None Remove="Resources\EmailTemplates\NoContactToDevice.1.aspx" />
+	  <None Remove="Resources\EmailTemplates\NoContactToDevice.2.aspx" />
 	  <None Remove="Resources\EmailTemplates\ResetPassword.1.aspx" />
 	  <None Remove="Resources\EmailTemplates\ResetPassword.2.aspx" />
 	  <None Remove="Resources\EmailTemplates\ResetPassword.3.aspx" />

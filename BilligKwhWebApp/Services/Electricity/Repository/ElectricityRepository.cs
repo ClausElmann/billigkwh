@@ -211,7 +211,7 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
         public IReadOnlyCollection<ScheduleDto> GetSchedulesForPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)
         {
             using var connection = ConnectionFactory.GetOpenConnection();
-            return connection.Query<ScheduleDto>(@"SELECT * FROM [Schedules] WHERE DeviceId = @DeviceId AND [Date] >= @FromDateUtc AND [Date] <= @ToDateUtc",
+            return connection.Query<ScheduleDto>(@"SELECT * FROM [Schedules] WHERE DeviceId = @DeviceId AND [Date] >= @FromDateUtc AND [Date] <= @ToDateUtc order by [Date]",
                 new { DeviceId = deviceId, FromDateUtc = fromDateUtc, ToDateUtc = toDateUtc }).ToList();
         }
 

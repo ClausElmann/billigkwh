@@ -3,7 +3,7 @@
 <p>Att $$ERRORMAIL$$</p>
 <p></p>
 <p>Dette er en advisering om manglende kommunikation med din billigkwh styring <b>$$LOCATION$$</b></p>
-<p>Ã¦ Ã¸ Ã¥ Ã† Ã˜ Ã…
+<p>æ ø å Æ Ø Å
 
  Sidste komunikation var kl. $$LATESTCONTACT$$
 </p>
