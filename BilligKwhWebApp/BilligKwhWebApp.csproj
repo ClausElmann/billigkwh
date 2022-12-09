@@ -40,6 +40,7 @@
 <ItemGroup>
     <EmbeddedResource Include="Resources\EmailTemplates\AdminOprettelse.1.aspx" />
     <EmbeddedResource Include="Resources\EmailTemplates\BrugerOprettelse.1.aspx" />
+    <EmbeddedResource Include="Resources\EmailTemplates\ElectricityPricesMissing.2.aspx" />
     <EmbeddedResource Include="Resources\EmailTemplates\NoContactToDevice.1.aspx" />
     <EmbeddedResource Include="Resources\EmailTemplates\NoContactToDevice.2.aspx" />
     <EmbeddedResource Include="Resources\EmailTemplates\ElectricityPricesMissing.1.aspx" />
@@ -172,6 +173,7 @@
 	  <None Remove="Resources\EmailTemplates\AdminOprettelse.1.aspx" />
 	  <None Remove="Resources\EmailTemplates\BrugerOprettelse.1.aspx" />
 	  <None Remove="Resources\EmailTemplates\ElectricityPricesMissing.1.aspx" />
+	  <None Remove="Resources\EmailTemplates\ElectricityPricesMissing.2.aspx" />
 	  <None Remove="Resources\EmailTemplates\Faktura.1.aspx" />
 	  <None Remove="Resources\EmailTemplates\FoelgeSeddel1.aspx" />
 	  <None Remove="Resources\EmailTemplates\MasterTemplate.1.aspx" />
