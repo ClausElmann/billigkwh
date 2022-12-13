@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[ElectricityPrices] (
+﻿CREATE TABLE [dbo].[ElectricityPrices] (
     [Id]         INT            IDENTITY (1, 1) NOT NULL,
     [HourDK]     DATETIME       CONSTRAINT [DF_Elpris_DateDk] DEFAULT (getdate()) NOT NULL,
     [HourDKNo]   INT            NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE [dbo].[ElectricityPrices] (
     [Dk1]        DECIMAL (4, 2) NOT NULL,
     [Dk2]        DECIMAL (4, 2) NOT NULL,
     [UpdatedUtc] DATETIME       NOT NULL,
-    CONSTRAINT [PK_Elpris] PRIMARY KEY CLUSTERED ([Id] ASC)
+    CONSTRAINT [PK_ElectricityPrices] PRIMARY KEY CLUSTERED ([HourDK] DESC)
 );
 
 
@@ -15,7 +15,8 @@ CREATE TABLE [dbo].[ElectricityPrices] (
 
 
 
+
+
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [IX_ElectricityPrice_UX]
-    ON [dbo].[ElectricityPrices]([HourDK] ASC);
+
 

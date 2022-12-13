@@ -229,5 +229,18 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
             return connection.Query<ConsumptionDto>(@"SELECT * FROM [Consumptions] WHERE DeviceId = @DeviceId AND [Date] >= @FromDateUtc AND [Date] <= @ToDateUtc ORDER BY [Date] DESC ",
                 new { DeviceId = deviceId, FromDateUtc = fromDateUtc, ToDateUtc = toDateUtc }).ToList();
         }
+
+        public void InsertTemperatureReading(TemperatureReading temperatureReading)
+        {
+            using var connection = ConnectionFactory.GetOpenConnection();
+            connection.BulkInsert(temperatureReading);
+        }
+
+        public IReadOnlyCollection<TemperatureReadingDto> GetTemperatureReadingsPeriod(int deviceId, DateTime fromDateTimeUtc, DateTime toDateTimeUtc)
+        {
+            using var connection = ConnectionFactory.GetOpenConnection();
+            return connection.Query<TemperatureReadingDto>(@"SELECT * FROM [TemperatureReadings] WHERE DeviceId = @DeviceId AND [DatetimeUtc] >= @FromDateTimeUtc AND [DatetimeUtc] <= @ToDateTimeUtc ORDER BY [DatetimeUtc] DESC ",
+                new { DeviceId = deviceId, FromDateTimeUtc = fromDateTimeUtc, ToDateTimeUtc = toDateTimeUtc }).ToList();
+        }
     }
 }

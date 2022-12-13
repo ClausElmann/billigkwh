@@ -8,6 +8,7 @@ import { SmartDeviceService } from "@core/services/smartdevice.service";
 import moment from "moment";
 import { BiLocalizationHelperService } from "@core/utility-services/bi-localization-helper.service";
 import { TableColumnPrimeNgExt } from "./devicelist.component";
+import { TemperatureReadingDto } from "@apiModels/temperatureReadingDto";
 
 export interface ConsumptionDtoExt extends ConsumptionDto {
   dateSentForSort?: moment.Moment;
@@ -15,6 +16,11 @@ export interface ConsumptionDtoExt extends ConsumptionDto {
   counter00: number;
   counter23: number;
   consumption: number;
+}
+
+export interface TemperatureReadingDtoExt extends TemperatureReadingDto {
+  datetimeForSort?: moment.Moment;
+  datetime?: string;
 }
 
 @UntilDestroy()
@@ -33,16 +39,25 @@ export class DeviceDetailConsumptionComponent implements OnInit {
   public consumptions: Array<ConsumptionDto> = [];
   public consumptions$: Observable<Array<ConsumptionDto>>;
 
+  public temperatureReadings: Array<TemperatureReadingDto> = [];
+  public temperatureReadings$: Observable<Array<TemperatureReadingDto>>;
+
   public fromDate: Date = new Date();
   public toDate: Date = new Date();
 
   selectedConsumption: ConsumptionDto;
 
-  private columns = new ReplaySubject<Array<TableColumnPrimeNgExt>>(1);
-  public columns$ = this.columns.asObservable();
+  private consumptionsColumns = new ReplaySubject<Array<TableColumnPrimeNgExt>>(1);
+  public consumptionsColumns$ = this.consumptionsColumns.asObservable();
 
-  private globalFilterFields = new ReplaySubject<Array<string>>(1);
-  public globalFilterFields$ = this.globalFilterFields.asObservable();
+  private consumptionsGlobalFilterFields = new ReplaySubject<Array<string>>(1);
+  public consumptionsGlobalFilterFields$ = this.consumptionsGlobalFilterFields.asObservable();
+
+  private temperatureReadingsColumns = new ReplaySubject<Array<TableColumnPrimeNgExt>>(1);
+  public temperatureReadingsColumns$ = this.temperatureReadingsColumns.asObservable();
+
+  private temperatureReadingsGlobalFilterFields = new ReplaySubject<Array<string>>(1);
+  public temperatureReadingsGlobalFilterFields$ = this.temperatureReadingsGlobalFilterFields.asObservable();
 
   showDeleted: boolean;
 
@@ -57,13 +72,14 @@ export class DeviceDetailConsumptionComponent implements OnInit {
     this.showDeleted = false;
 
     this.initializeConsumptions();
+    this.initializeTemperatureReadings();
 
     this.initColumns();
   }
 
   private initColumns() {
-    this.globalFilterFields.next(["subject", "body", "toName", "toEmail"]);
-    this.columns.next([
+    this.consumptionsGlobalFilterFields.next(["subject", "body", "toName", "toEmail"]);
+    this.consumptionsColumns.next([
       { field: "dateSent", header: "Dato", sortField: "dateSentForSort" },
       { field: "counter00", header: "Primo" },
       { field: "counter23", header: "Ultimo" },
@@ -93,6 +109,12 @@ export class DeviceDetailConsumptionComponent implements OnInit {
       { field: "c22", header: "22" },
       { field: "c23", header: "23" }
     ]);
+
+    this.temperatureReadingsGlobalFilterFields.next(["datetime", "temperature"]);
+    this.temperatureReadingsColumns.next([
+      { field: "datetime", header: "Dato", sortField: "datetimeForSort" },
+      { field: "temperature", header: "Temperatur" }
+    ]);
   }
 
   onRowSelect(event) {
@@ -104,10 +126,27 @@ export class DeviceDetailConsumptionComponent implements OnInit {
     if (checked) {
       this.showDeleted = true;
       this.initializeConsumptions();
+      this.initializeTemperatureReadings();
     } else {
       this.showDeleted = false;
       this.initializeConsumptions();
+      this.initializeTemperatureReadings();
     }
+  }
+
+  private initializeTemperatureReadings() {
+    this.temperatureReadings$ = this.smartDeviceService.getTemperatureReadingsPeriod(this.activeRoute.parent.snapshot.params.id, this.fromDate, this.toDate).pipe(
+      tap((data: Array<TemperatureReadingDtoExt>) => {
+        data.forEach(element => {
+          element.datetime = this.localizor.localizeDateTime(element.datetimeUtc);
+          element.datetimeForSort = moment(element.datetimeUtc);
+        });
+      }),
+      untilDestroyed(this),
+      finalize(() => {
+        this.loading = false;
+      })
+    );
   }
 
   private initializeConsumptions() {
@@ -146,10 +185,11 @@ export class DeviceDetailConsumptionComponent implements OnInit {
 
   public onDateFilterChanged() {
     this.initializeConsumptions();
+    this.initializeTemperatureReadings();
   }
 
   customSort(event: SortEvent) {
-    this.columns$.pipe(map(columns => columns.find(f => f.field === event.field))).subscribe(col => {
+    this.consumptionsColumns$.pipe(map(columns => columns.find(f => f.field === event.field))).subscribe(col => {
       let value1: any, value2: any;
       event.data.sort((data1, data2) => {
         if (col && col.sortField) {

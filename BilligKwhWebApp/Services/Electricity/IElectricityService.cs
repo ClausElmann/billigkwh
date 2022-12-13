@@ -30,5 +30,7 @@ namespace BilligKwhWebApp.Services.Electricity
         void UpdateConsumption(int deviceId, IReadOnlyCollection<long> list);
 
         void SendNoContactToDeviceAdvices();
+
+        IReadOnlyCollection<TemperatureReadingDto> GetTemperatureReadingsPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc);
     }
 }

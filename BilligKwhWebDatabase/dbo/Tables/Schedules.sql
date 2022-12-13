@@ -28,6 +28,13 @@
     [H21]            BIT      NOT NULL,
     [H22]            BIT      NOT NULL,
     [H23]            BIT      NOT NULL,
-    CONSTRAINT [PK_Schedule] PRIMARY KEY CLUSTERED ([Id] ASC)
+    CONSTRAINT [PK_Schedule] PRIMARY KEY CLUSTERED ([Id] DESC)
 );
+
+
+
+
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Schedules]
+    ON [dbo].[Schedules]([Date] DESC, [DeviceId] DESC);
 

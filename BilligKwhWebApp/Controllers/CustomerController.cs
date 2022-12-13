@@ -241,7 +241,7 @@ namespace BilligKwhWebApp.Controllers
             }
 
             using var connection = ConnectionFactory.GetOpenConnection();
-            connection.BulkInsert(list);
+            connection.BulkUpdate(list);
 
             return Ok();
         }

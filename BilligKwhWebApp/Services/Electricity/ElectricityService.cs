@@ -18,6 +18,7 @@ using System.Security.Policy;
 using BilligKwhWebApp.Core;
 using System.Text;
 using BilligKwhWebApp.Services.SmartDevices;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BilligKwhWebApp.Services.Electricity
 {
@@ -292,6 +293,18 @@ namespace BilligKwhWebApp.Services.Electricity
                 cy.H23 = Math.Max(cy.H23, array[25]);
                 _electricityRepository.UpdateConsumption(cy);
             }
+
+            if (array.Length > 25)
+            {
+                long temp = array[26];
+
+                _electricityRepository.InsertTemperatureReading(new TemperatureReading()
+                {
+                    DatetimeUtc = DateTime.UtcNow,
+                    Temperature = (decimal)(temp / 10.0),
+                    DeviceId = deviceId,
+                });
+            }
         }
 
         private void UpdateConsumption(Consumption c, long? lastValueYesterday = null)
@@ -361,6 +374,11 @@ namespace BilligKwhWebApp.Services.Electricity
             {
                 SendNoContactToDeviceEmail(device);
             }
+        }
+
+        public IReadOnlyCollection<TemperatureReadingDto> GetTemperatureReadingsPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)
+        {
+            return _electricityRepository.GetTemperatureReadingsPeriod(deviceId, fromDateUtc, toDateUtc);
         }
     }
 }

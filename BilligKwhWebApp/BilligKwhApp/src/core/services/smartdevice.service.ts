@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { ConsumptionDto } from "@apiModels/consumptionDto";
 import { ScheduleDto } from "@apiModels/scheduleDto";
 import { SmartDeviceDto } from "@apiModels/smartDeviceDto";
+import { TemperatureReadingDto } from "@apiModels/temperatureReadingDto";
 import { ApiRoutes } from "@shared/classes/ApiRoutes";
 import { catchError, map, Observable } from "rxjs";
 
@@ -67,6 +68,26 @@ export class SmartDeviceService {
 
     return this.http
       .get<ConsumptionDto[]>(ApiRoutes.smartDeviceRoutes.get.getConsumptionsPeriod, {
+        params: params
+      })
+      .pipe(
+        map(consumptions => {
+          return consumptions;
+        })
+      );
+  }
+
+  public getTemperatureReadingsPeriod(deviceId: number, fromDateUtc: Date, toDateUtc: Date): Observable<TemperatureReadingDto[]> {
+    const params: { [key: string]: string } = {
+      deviceId: deviceId.toString(),
+      fromDateUtc: fromDateUtc.toDateString(),
+      toDateUtc: toDateUtc.toDateString()
+    };
+
+    //if (customerId) params["customerId"] = customerId.toString();
+
+    return this.http
+      .get<TemperatureReadingDto[]>(ApiRoutes.smartDeviceRoutes.get.getTemperatureReadingsPeriod, {
         params: params
       })
       .pipe(

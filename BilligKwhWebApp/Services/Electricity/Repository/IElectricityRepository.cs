@@ -28,5 +28,7 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
         void InsertConsumption(Consumption consumption);
         ElectricityPrice GetLatestElectricityPrice();
         IReadOnlyCollection<SmartDevice> GetNoContactToDevices(DateTime datetimeUtc);
+        void InsertTemperatureReading(TemperatureReading temperatureReading);
+        IReadOnlyCollection<TemperatureReadingDto> GetTemperatureReadingsPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc);
     }
 }

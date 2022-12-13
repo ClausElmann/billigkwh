@@ -70,7 +70,7 @@ namespace BilligKwhWebApp.Services
         {
             DapperPlusManager.Entity<ElectricityPrice>().Table("dbo.ElectricityPrices").Identity(x => x.Id).Key(k => k.HourDK).BatchTimeout(120 * 60);
             DapperPlusManager.Entity<SmartDevice>().Table("dbo.SmartDevices").Identity(x => x.Id);
-            //DapperPlusManager.Entity<Recipe>().Table("dbo.Recipes").Identity(x => x.Id);
+            DapperPlusManager.Entity<TemperatureReading>().Table("dbo.TemperatureReadings").Identity(x => x.Id).Key(k => new { k.DatetimeUtc, k.DeviceId });
             DapperPlusManager.Entity<Schedule>().Table("dbo.Schedules").Identity(x => x.Id).Key(k => new
             {
                 k.DeviceId,

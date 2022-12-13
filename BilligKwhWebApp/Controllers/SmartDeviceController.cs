@@ -226,5 +226,23 @@ namespace BilligKwhWebApp.Controllers
                 return Ok(new List<ConsumptionDto>());
             }
         }
+
+
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<TemperatureReadingDto>))]
+        public IActionResult GetTemperatureReadingsPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)
+        {
+            var temperatureReadings = _electricityService.GetTemperatureReadingsPeriod(deviceId, fromDateUtc, toDateUtc.AddDays(1).AddMinutes(-1));
+
+            if (temperatureReadings != null)
+            {
+                return Ok(temperatureReadings);
+            }
+            else
+            {
+                return Ok(new List<TemperatureReadingDto>());
+            }
+        }
     }
 }
