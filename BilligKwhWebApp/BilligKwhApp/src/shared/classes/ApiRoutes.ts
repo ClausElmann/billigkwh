@@ -158,11 +158,13 @@ export class ApiRoutes {
       getSmartDevice: ApiRoutes.deviceEndpoint + "GetSmartDevice",
       getSchedulesForToday: ApiRoutes.deviceEndpoint + "GetSchedulesForToday",
       getConsumptionsPeriod: ApiRoutes.deviceEndpoint + "GetConsumptionsPeriod",
-      getTemperatureReadingsPeriod: ApiRoutes.deviceEndpoint + "GetTemperatureReadingsPeriod"
+      getTemperatureReadingsPeriod: ApiRoutes.deviceEndpoint + "GetTemperatureReadingsPeriod",
+      getRecipes: ApiRoutes.deviceEndpoint + "GetRecipes"
     },
     post: {},
     update: {
-      updateSmartDevice: ApiRoutes.deviceEndpoint + "UpdateSmartDevice"
+      updateSmartDevice: ApiRoutes.deviceEndpoint + "UpdateSmartDevice",
+      updateRecipe: ApiRoutes.deviceEndpoint + "UpdateRecipe"
     },
     delete: {}
   };

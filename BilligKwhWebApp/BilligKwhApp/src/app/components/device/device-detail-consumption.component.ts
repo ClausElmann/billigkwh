@@ -21,6 +21,7 @@ export interface ConsumptionDtoExt extends ConsumptionDto {
 export interface TemperatureReadingDtoExt extends TemperatureReadingDto {
   datetimeForSort?: moment.Moment;
   datetime?: string;
+  running?: string;
 }
 
 @UntilDestroy()
@@ -113,7 +114,8 @@ export class DeviceDetailConsumptionComponent implements OnInit {
     this.temperatureReadingsGlobalFilterFields.next(["datetime", "temperature"]);
     this.temperatureReadingsColumns.next([
       { field: "datetime", header: "Dato", sortField: "datetimeForSort" },
-      { field: "temperature", header: "Temperatur" }
+      { field: "temperature", header: "Temperatur" },
+      { field: "running", header: "Kører nu" }
     ]);
   }
 
@@ -140,6 +142,7 @@ export class DeviceDetailConsumptionComponent implements OnInit {
         data.forEach(element => {
           element.datetime = this.localizor.localizeDateTime(element.datetimeUtc);
           element.datetimeForSort = moment(element.datetimeUtc);
+          element.running = element.isRunning ? "Ja" : "Nej";
         });
       }),
       untilDestroyed(this),

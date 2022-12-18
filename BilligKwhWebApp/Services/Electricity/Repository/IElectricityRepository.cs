@@ -12,7 +12,6 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
 
         IReadOnlyCollection<SmartDevice> GetSmartDeviceForRecipes();
 
-        //IReadOnlyCollection<Recipe> GetRecipes();
         IReadOnlyCollection<Schedule> GetSchedulesForDate(DateTime date, int deviceId);
 
         IReadOnlyCollection<ScheduleDto> GetSchedulesForPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc);
@@ -28,7 +27,13 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
         void InsertConsumption(Consumption consumption);
         ElectricityPrice GetLatestElectricityPrice();
         IReadOnlyCollection<SmartDevice> GetNoContactToDevices(DateTime datetimeUtc);
-        void InsertTemperatureReading(TemperatureReading temperatureReading);
+        void InsertTemperatureReading(TemperatureReading entity);
         IReadOnlyCollection<TemperatureReadingDto> GetTemperatureReadingsPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc);
+        //IReadOnlyCollection<RecipeDto> GetRecipes(int deviceId);
+        //Recipe RecipeById(int id);
+
+        //void InsertRecipe(Recipe entity);
+        //void UpdateRecipe(Recipe entity);
+
     }
 }

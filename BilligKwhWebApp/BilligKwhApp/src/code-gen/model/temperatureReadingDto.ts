@@ -16,5 +16,6 @@ export interface TemperatureReadingDto {
     datetimeUtc?: string;
     deviceId?: number;
     temperature?: number;
+    isRunning?: boolean;
 }
 

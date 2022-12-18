@@ -96,4 +96,27 @@ export class SmartDeviceService {
         })
       );
   }
+
+  // public getRecipes(deviceId: number): Observable<RecipeDto[]> {
+  //   const params: { [key: string]: string } = {};
+  //   params.deviceId = deviceId.toString();
+
+  //   return this.http
+  //     .get<RecipeDto[]>(ApiRoutes.smartDeviceRoutes.get.getRecipes, {
+  //       params: params
+  //     })
+  //     .pipe(
+  //       map(recipes => {
+  //         return recipes;
+  //       })
+  //     );
+  // }
+
+  // public updateRecipe(recipe: RecipeDto) {
+  //   return this.http.post<number>(ApiRoutes.smartDeviceRoutes.update.updateRecipe, recipe).pipe(
+  //     catchError(err => {
+  //       throw err;
+  //     })
+  //   );
+  // }
 }

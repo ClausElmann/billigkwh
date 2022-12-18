@@ -12,10 +12,13 @@ namespace BilligKwhWebApp.Core.Domain
         public int ZoneId { get; set; }
         public decimal MaxRate { get; set; }
         public DateTime? Deleted { get; set; }
+        public bool DisableWeekends { get; set; }
+        public int StatusId { get; set; }
         public string Comment { get; set; }
         public int Delay { get; set; }
         public int DebugMinutes { get; set; }
-        public int? MinTempOveride { get; set; }
+        public int? MinTemp { get; set; }
+        public decimal? MaxRateAtMinTemp { get; set; }
         public string ErrorMail { get; set; }
     }
 }

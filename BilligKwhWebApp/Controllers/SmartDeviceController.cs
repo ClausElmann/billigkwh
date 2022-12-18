@@ -11,6 +11,8 @@ using BilligKwhWebApp.Infrastructure.DataTransferObjects.Common;
 using BilligKwhWebApp.Services.Electricity.Dto;
 using BilligKwhWebApp.Services.SmartDevices;
 using System.Linq;
+using System.Text.RegularExpressions;
+using BilligKwhWebApp.Core.Domain;
 
 namespace BilligKwhWebApp.Controllers
 {
@@ -80,24 +82,27 @@ namespace BilligKwhWebApp.Controllers
 
             if (entity != null)
             {
-                if (entity.MaxRate != model.MaxRate) recalculate = true;
+                //if (entity.MaxRate != model.MaxRate) recalculate = true;
                 entity.Location = model.Location;
                 entity.ZoneId = model.ZoneId;
                 entity.MaxRate = model.MaxRate;
+                entity.Comment = model.Comment;
+                entity.DisableWeekends = model.DisableWeekends;
+                entity.StatusId = model.StatusId;
+                entity.MinTemp = model.MinTemp;
+                entity.MaxRateAtMinTemp = model.MaxRateAtMinTemp;
+                entity.ErrorMail = model.ErrorMail;
+
                 _arduinoService.Update(entity);
 
-                if (recalculate)
-                {
+                //if (recalculate)
+                //{
                     DateTime danish = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Romance Standard Time");
 
-                    var elpriserIdag = _electricityService.GetElectricityPriceForDate(danish.Date);
-                    var elpriserImorgen = _electricityService.GetElectricityPriceForDate(danish.Date.AddDays(1));
+                    var elpriserFraIdag = _electricityService.GetElectricityPriceForDate(danish.Date);
 
-                    //TODO GENBEGEN IKKE ALLE!!!!!!!!!!!!!!!!!!
-                    var devicesForRecipes = _electricityService.GetSmartDeviceForRecipes();
-
-                    _electricityService.Calculate(danish, elpriserIdag.Concat(elpriserImorgen).ToList(), devicesForRecipes);
-                }
+                    _electricityService.Calculate(danish.Date, elpriserFraIdag, new List<SmartDevice> { entity });
+                //}
 
                 return Ok(entity.Id);
             }
@@ -244,5 +249,69 @@ namespace BilligKwhWebApp.Controllers
                 return Ok(new List<TemperatureReadingDto>());
             }
         }
+
+        //[HttpGet]
+        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<RecipeDto>))]
+        //public IActionResult GetRecipes(int deviceId)
+        //{
+        //    var recipes = _electricityService.GetRecipes(deviceId);
+
+        //    if (recipes != null)
+        //    {
+        //        return Ok(recipes);
+        //    }
+        //    else
+        //    {
+        //        return Ok(new List<RecipeDto>());
+        //    }
+        //}
+
+        //[HttpPost]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDto))]
+        //[ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorDto))]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //public IActionResult UpdateRecipe([FromBody] RecipeDto model)
+        //{
+        //    if (model == null) return BadRequest("Model is null");
+
+        //    var entity = _electricityService.RecipeById(model.Id);
+
+        //    if (entity == null)
+        //    {
+        //        entity = new Recipe()
+        //        {
+        //            DeviceId = model.DeviceId,
+        //            CustomerId = model.CustomerId,
+        //        };
+        //    }
+
+        //    entity.Priority = model.Priority;
+        //    entity.DayTypeId = model.DayTypeId;
+        //    entity.MaxRate = model.MaxRate;
+        //    entity.FromHour = model.FromHour;
+        //    entity.ToHour = model.ToHour;
+        //    entity.MinHours = model.MinHours;
+        //    entity.MinTemperature = model.MinTemperature;
+        //    entity.MaxRateAtMinTemperature = model.MaxRateAtMinTemperature;
+
+        //    if (entity.Id == 0)
+        //    {
+        //        _electricityService.InsertRecipe(entity);
+        //    }
+        //    else
+        //    {
+        //        _electricityService.UpdateRecipe(entity);
+        //    }
+
+        //    var smartdevice = _arduinoService.GetSmartDeviceById(entity.DeviceId);
+
+        //    DateTime danish = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Romance Standard Time");
+
+        //    var elpriserFraIdag = _electricityService.GetElectricityPriceForDate(danish.Date);
+
+        //    _electricityService.Calculate(danish, elpriserFraIdag, new List<SmartDevice> { smartdevice });
+
+        //    return Ok(entity.Id);
+        //}
     }
 }

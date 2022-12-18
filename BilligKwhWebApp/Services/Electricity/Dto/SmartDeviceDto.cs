@@ -14,5 +14,10 @@ namespace BilligKwhWebApp.Services.Electricity.Dto
         public decimal MaxRate { get; set; }
         public DateTime? Deleted { get; set; }
         public string Comment { get; set; }
+        public bool DisableWeekends { get; set; }
+        public int StatusId { get; set; }
+        public int? MinTemp { get; set; }
+        public decimal? MaxRateAtMinTemp { get; set; }
+        public string ErrorMail { get; set; }
     }
 }

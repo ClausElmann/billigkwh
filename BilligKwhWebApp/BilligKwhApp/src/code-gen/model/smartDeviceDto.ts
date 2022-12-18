@@ -22,5 +22,10 @@ export interface SmartDeviceDto {
     maxRate?: number;
     deleted?: string | null;
     comment?: string | null;
+    disableWeekends?: boolean;
+    statusId?: number;
+    minTemp?: number | null;
+    maxRateAtMinTemp?: number | null;
+    errorMail?: string | null;
 }
 

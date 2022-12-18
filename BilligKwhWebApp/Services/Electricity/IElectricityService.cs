@@ -18,8 +18,10 @@ namespace BilligKwhWebApp.Services.Electricity
 
         IReadOnlyCollection<ConsumptionDto> GetConsumptionsPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc);
 
+        //IReadOnlyCollection<RecipeDto> GetRecipes(int deviceId);
 
-        //IReadOnlyCollection<Recipe> GetRecipes();
+        //Recipe RecipeById(int id);
+
         void Calculate(DateTime danish, IReadOnlyCollection<ElectricityPrice> elpriser, IReadOnlyCollection<SmartDevice> devices);
 
         //SmartDevice GetSmartDeviceById(string id);
@@ -32,5 +34,7 @@ namespace BilligKwhWebApp.Services.Electricity
         void SendNoContactToDeviceAdvices();
 
         IReadOnlyCollection<TemperatureReadingDto> GetTemperatureReadingsPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc);
+        //void InsertRecipe(Recipe entity);
+        //void UpdateRecipe(Recipe entity);
     }
 }

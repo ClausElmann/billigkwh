@@ -120,9 +120,10 @@ namespace BilligKwhWebApp.Services.Electricity
 
                 var devicesForRecipes = _electricityRepository.GetSmartDeviceForRecipes();
 
-                var result = _electricityRepository.Calculate(danish, elpriser, devicesForRecipes);
+                var resultToday = _electricityRepository.Calculate(danish.Date, elpriser, devicesForRecipes);
+                var resultTomorrow = _electricityRepository.Calculate(danish.Date.AddDays(1), elpriser, devicesForRecipes);
 
-                _baseRepository.BulkMerge(result);
+                _baseRepository.BulkMerge(resultToday.Concat(resultTomorrow));
 
                 _logger.Debug("Calculate schedules ends");
             }
@@ -294,15 +295,17 @@ namespace BilligKwhWebApp.Services.Electricity
                 _electricityRepository.UpdateConsumption(cy);
             }
 
-            if (array.Length > 25)
+            if (array.Length > 26)
             {
-                long temp = array[26];
+                long isRunning = array[26];
+                long temp = array[27];
 
                 _electricityRepository.InsertTemperatureReading(new TemperatureReading()
                 {
                     DatetimeUtc = DateTime.UtcNow,
                     Temperature = (decimal)(temp / 10.0),
                     DeviceId = deviceId,
+                    IsRunning = isRunning > 0,
                 });
             }
         }
@@ -342,8 +345,10 @@ namespace BilligKwhWebApp.Services.Electricity
 
         public void Calculate(DateTime danish, IReadOnlyCollection<ElectricityPrice> elpriser, IReadOnlyCollection<SmartDevice> devices)
         {
-            var result = _electricityRepository.Calculate(danish, elpriser, devices);
-            _baseRepository.BulkMerge(result);
+            var resultToday = _electricityRepository.Calculate(danish, elpriser, devices);
+            var resultTomorrow = _electricityRepository.Calculate(danish.AddDays(1), elpriser, devices);
+
+            _baseRepository.BulkMerge(resultToday.Concat(resultTomorrow));
         }
 
         public IReadOnlyCollection<SmartDevice> GetSmartDeviceForRecipes()
@@ -380,5 +385,25 @@ namespace BilligKwhWebApp.Services.Electricity
         {
             return _electricityRepository.GetTemperatureReadingsPeriod(deviceId, fromDateUtc, toDateUtc);
         }
+
+        //public IReadOnlyCollection<RecipeDto> GetRecipes(int deviceId)
+        //{
+        //    return _electricityRepository.GetRecipes(deviceId);
+        //}
+
+        //public void InsertRecipe(Recipe entity)
+        //{
+        //    _electricityRepository.InsertRecipe(entity);
+        //}
+
+        //public void UpdateRecipe(Recipe entity)
+        //{
+        //    _electricityRepository.UpdateRecipe(entity);
+        //}
+
+        //public Recipe RecipeById(int id)
+        //{
+        //    return _electricityRepository.RecipeById(id);
+        //}
     }
 }

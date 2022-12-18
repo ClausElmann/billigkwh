@@ -3,14 +3,22 @@
     <div class="col-12">
       <div class="card">
         <div class="p-fluid p-formgrid grid">
-          <div class="field col-12 md:col-3">
-            <label for="location" class="block">location</label>
+          <div class="field col-12 md:col-6">
+            <label for="location" class="block">Lokation</label>
             <input formControlName="location" type="text" pInputText id="location" aria-describedby="location-help" />
             <div *ngIf="location.errors && (location.dirty || location.touched)" class="p-error block"></div>
           </div>
 
-          <div class="field col-12 md:col-3">
-            <label for="zoneId" class="block">Land</label>
+          <div class="field col-12 md:col-6">
+            <label for="statusId" class="block">Drift</label>
+            <p-dropdown id="statusId" formControlName="statusId" [options]="statuses" [autoDisplayFirst]="false" aria-describedby="statusId-help"></p-dropdown>
+            <div *ngIf="statusId.errors && (statusId.dirty || statusId.touched)" class="p-error block">
+              <div *ngIf="statusId.errors?.required">Påkrævet</div>
+            </div>
+          </div>
+
+          <div class="field col-12 md:col-6">
+            <label for="zoneId" class="block">Zone</label>
             <p-dropdown id="zoneId" formControlName="zoneId" [options]="zones" [autoDisplayFirst]="false" aria-describedby="zoneId-help"></p-dropdown>
             <div *ngIf="zoneId.errors && (zoneId.dirty || zoneId.touched)" class="p-error block">
               <div *ngIf="zoneId.errors?.required">Påkrævet</div>
@@ -18,11 +26,46 @@
           </div>
 
           <div class="field col-12 md:col-6">
-            <label for="maxRate" class="block">Max pris (0.0 - 10.0)</label>
+            <label for="errorMail" class="block">Varslings E-mail (Modtag en e-mail ved manglende kontakt til styringen)</label>
+            <input formControlName="errorMail" type="text" maxlength="200" pInputText id="errorMail" aria-describedby="errorMail-help" />
+            <div *ngIf="errorMail.errors && (errorMail.dirty || errorMail.touched)" class="p-error block">
+              <div *ngIf="errorMail.errors?.required">Påkrævet</div>
+            </div>
+          </div>
+
+          <div class="field col-12 md:col-6">
+            <label for="maxRate" class="block">Max pris (0 - 10.0 kr.)</label>
             <input formControlName="maxRate" type="text" maxlength="200" pInputText id="maxRate" aria-describedby="maxRate-help" />
             <div *ngIf="maxRate.errors && (maxRate.dirty || maxRate.touched)" class="p-error block">
               <div *ngIf="maxRate.errors?.required">Påkrævet</div>
               <div *ngIf="maxRate.errors?.range">Max pris skal værre imellem 0,0 kr og 10,0</div>
+            </div>
+          </div>
+
+          <div class="field col-12 md:col-6">
+            <label for="disableWeekends" class="block">Kør kun efter 'Minimum temperatur' i weekends</label>
+            <p-checkbox formControlName="disableWeekends" [binary]="true" id="disableWeekends" aria-describedby="disableWeekends-help"></p-checkbox>
+            <div *ngIf="disableWeekends.errors && (disableWeekends.dirty || disableWeekends.touched)" class="p-error block">
+              <div *ngIf="disableWeekends.errors?.required">Påkrævet</div>
+              <div *ngIf="disableWeekends.errors?.digitsOnly">Kun hel tal</div>
+            </div>
+          </div>
+
+          <div class="field col-12 md:col-6">
+            <label for="minTemp" class="block">Minimum temperatur (5°C - 60.0°C)</label>
+            <input formControlName="minTemp" type="number" pInputText id="minTemp" aria-describedby="minTemp-help" />
+            <div *ngIf="minTemp.errors && (minTemp.dirty || minTemp.touched)" class="p-error block">
+              <div *ngIf="minTemp.errors?.required">Påkrævet</div>
+              <div *ngIf="minTemp.errors?.range">minTemp skal værre imellem 5 og 60</div>
+            </div>
+          </div>
+
+          <div class="field col-12 md:col-6">
+            <label for="maxRateAtMinTemp" class="block">Max pris ved minimum temperatur (0 - 10.0 kr.)</label>
+            <input formControlName="maxRateAtMinTemp" type="text" maxlength="5" pInputText id="maxRateAtMinTemp" aria-describedby="maxRateAtMinTemp-help" />
+            <div *ngIf="maxRateAtMinTemp.errors && (maxRateAtMinTemp.dirty || maxRateAtMinTemp.touched)" class="p-error block">
+              <div *ngIf="maxRateAtMinTemp.errors?.required">Påkrævet</div>
+              <div *ngIf="maxRateAtMinTemp.errors?.range">MaxRateAtMinTemp skal værre imellem 0,0 kr og 10,0</div>
             </div>
           </div>
 
@@ -204,24 +247,206 @@
   <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
 </form>
 
+<!--
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <p-toast></p-toast>
+      <p-table
+        #table
+        [value]="recipes$ | async"
+        [columns]="cols"
+        [globalFilterFields]="cols"
+        [loading]="loading"
+        selectionMode="single"
+        [(selection)]="selectedItem"
+        dataKey="id"
+        (onRowSelect)="onRowSelect()"
+        csvSeparator=";"
+        [exportFilename]="'export'"
+        [paginator]="true"
+        [rows]="25"
+        [showCurrentPageReport]="true"
+        responsiveLayout="scroll"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[10, 25, 50]"
+      >
+        <ng-template pTemplate="caption">
+          <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+            <h5 class="m-0">Opskrifter</h5>
+
+
+            <button pButton pRipple beck label="Export" icon="pi pi-upload" class="p-button-help" (click)="exportCSV(table, { bom: true, fieldBoundary: false })"></button>
+
+            <span class="block mt-2 md:mt-0 p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="table.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+            </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{ col.header }}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns">
+              {{ rowData[col.field] }}
+            </td>
+
+            <td>
+              <div class="flex">
+                <div *ngIf="!rowData.slettet">
+                  <button pButton [disabled]="invoicingDone" pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editItem(rowData)"></button>
+                  <button pButton [disabled]="invoicingDone" pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteItem(rowData)"></button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div> -->
+
+<!-- <p-dialog *ngIf="editDialog" [(visible)]="editDialog" [style]="{ width: '450px' }" header="Opskrift detaljer" [modal]="true" class="p-fluid">
+  <form [formGroup]="recipeForm">
+    <div class="field col-12 md:col-6">
+      <label for="dayTypeId" class="block">DayType</label>
+      <p-dropdown id="dayTypeId" formControlName="dayTypeId" [options]="dayTypeItems" [autoDisplayFirst]="false" aria-describedby="dayTypeId-help"></p-dropdown>
+      <div *ngIf="dayTypeId.errors && (dayTypeId.dirty || dayTypeId.touched)" class="p-error block">
+        <div *ngIf="dayTypeId.errors?.required">Påkrævet</div>
+      </div>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <label for="priority" class="block">Priotet</label>
+      <input formControlName="priority" type="number" pInputText id="priority" aria-describedby="priority-help" />
+      <div *ngIf="priority.errors && (priority.dirty || priority.touched)" class="p-error block">
+        <div *ngIf="priority.errors?.required">Påkrævet</div>
+        <div *ngIf="priority.errors?.range">Max pris skal værre imellem 0,0 kr og 10,0</div>
+      </div>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <label for="maxRate" class="block">Max pris (0.0 - 10.0)</label>
+      <input formControlName="maxRate" type="text" maxlength="5" pInputText id="maxRate" aria-describedby="maxRate-help" />
+      <div *ngIf="maxRate.errors && (maxRate.dirty || maxRate.touched)" class="p-error block">
+        <div *ngIf="maxRate.errors?.required">Påkrævet</div>
+        <div *ngIf="maxRate.errors?.range">Max pris skal værre imellem 0,0 kr og 10,0</div>
+      </div>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <label for="fromHour" class="block">FromHour</label>
+      <input formControlName="fromHour" type="number" pInputText id="fromHour" aria-describedby="fromHour-help" />
+      <div *ngIf="fromHour.errors && (fromHour.dirty || fromHour.touched)" class="p-error block">
+        <div *ngIf="fromHour.errors?.required">Påkrævet</div>
+        <div *ngIf="fromHour.errors?.range">Fra time skal værre imellem 0 og 24</div>
+      </div>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <label for="toHour" class="block">ToHour</label>
+      <input formControlName="toHour" type="number" pInputText id="toHour" aria-describedby="toHour-help" />
+      <div *ngIf="toHour.errors && (toHour.dirty || toHour.touched)" class="p-error block">
+        <div *ngIf="toHour.errors?.required">Påkrævet</div>
+        <div *ngIf="toHour.errors?.range">Til time skal værre imellem 0 og 24</div>
+      </div>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <label for="minHours" class="block">MinHours</label>
+      <input formControlName="minHours" type="number" pInputText id="minHours" aria-describedby="minHours-help" />
+      <div *ngIf="minHours.errors && (minHours.dirty || minHours.touched)" class="p-error block">
+        <div *ngIf="minHours.errors?.required">Påkrævet</div>
+        <div *ngIf="minHours.errors?.range">Min hours skal værre imellem 0 og 24</div>
+      </div>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <label for="minTemperature" class="block">MinTemperature</label>
+      <input formControlName="minTemperature" type="number" pInputText id="minTemperature" aria-describedby="minTemperature-help" />
+      <div *ngIf="minTemperature.errors && (minTemperature.dirty || minTemperature.touched)" class="p-error block">
+        <div *ngIf="minTemperature.errors?.required">Påkrævet</div>
+        <div *ngIf="minTemperature.errors?.range">minTemperature skal værre imellem 0 og 100</div>
+      </div>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <label for="maxRateAtMinTemperature" class="block">MaxRateAtMinTemperature</label>
+      <input formControlName="maxRateAtMinTemperature" type="text" maxlength="5" pInputText id="maxRateAtMinTemperature" aria-describedby="maxRateAtMinTemperature-help" />
+      <div *ngIf="maxRateAtMinTemperature.errors && (maxRateAtMinTemperature.dirty || maxRateAtMinTemperature.touched)" class="p-error block">
+        <div *ngIf="maxRateAtMinTemperature.errors?.required">Påkrævet</div>
+        <div *ngIf="maxRateAtMinTemperature.errors?.range">MaxRateAtMinTemperature skal værre imellem 0,0 kr og 10,0</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="formgroup-inline">
+        <div class="field">
+          <button
+            pButton
+            pRipple
+            [disabled]="recipeForm.pristine || !recipeForm.valid || antal < 1 || komponentID === null"
+            [label]="selectedItem.id === 0 ? 'Opret' : 'Gem'"
+            icon="pi pi-check"
+            class="p-button-raised"
+            (click)="saveRecipe()"
+          ></button>
+        </div>
+        <div class="field">
+          <button pButton pRipple label="Annuller" icon="pi pi-times" class="p-button-outlined p-button-warning" (click)="editDialog = false"></button>
+        </div>
+        <br />Dirty: {{ recipeForm.dirty }} <br />Touched: {{ recipeForm.touched }} <br />Valid: {{ recipeForm.valid }} <br />Values:
+        {{ recipeForm.value | json }}
+        <p class="field-error" [@fadeIn] *ngIf="showRecipeFormErrorMessage" translate>errorMessages.OneOrMoreFieldsMissing</p>
+      </div>
+    </div>
+  </form>
+</p-dialog> -->
+
 <!-- <div ngIf="schedules$ | async"></div> -->
 Schedules: (kommer kl 13 hver dag)
 <ng-container *ngFor="let item of schedules$ | async">
   <div>
     <b>Dato {{ item.date | date: "dd/MM/yyyy" }}</b>
   </div>
-  <div [ngClass]="item.h00 ? runningCss : 'notrunning'">Kl. 00 - {{ item.p00 }} kr.</div>
-  <div [ngClass]="item.h01 ? runningCss : 'notrunning'">Kl. 01 - {{ item.p01 }} kr.</div>
-  <div [ngClass]="item.h02 ? runningCss : 'notrunning'">Kl. 02 - {{ item.p02 }} kr.</div>
-  <div [ngClass]="item.h03 ? runningCss : 'notrunning'">Kl. 03 - {{ item.p03 }} kr.</div>
-  <div [ngClass]="item.h04 ? runningCss : 'notrunning'">Kl. 04 - {{ item.p04 }} kr.</div>
-  <div [ngClass]="item.h05 ? runningCss : 'notrunning'">Kl. 05 - {{ item.p05 }} kr.</div>
-  <div [ngClass]="item.h06 ? runningCss : 'notrunning'">Kl. 06 - {{ item.p06 }} kr.</div>
-  <div [ngClass]="item.h07 ? runningCss : 'notrunning'">Kl. 07 - {{ item.p07 }} kr.</div>
-  <div [ngClass]="item.h08 ? runningCss : 'notrunning'">Kl. 08 - {{ item.p08 }} kr.</div>
-  <div [ngClass]="item.h09 ? runningCss : 'notrunning'">Kl. 09 - {{ item.p09 }} kr.</div>
-  <div [ngClass]="item.h10 ? runningCss : 'notrunning'">Kl. 10 - {{ item.p10 }} kr.</div>
-  <div [ngClass]="item.h11 ? runningCss : 'notrunning'">Kl. 11 - {{ item.p11 }} kr.</div>
+
+  <div [ngClass]="{ notrunning: item.h00 == 0, running: item.h00 == 1, temperature: item.h00 > 1 }">Kl. 00 - {{ item.p00 }} kr.<span *ngIf="item.h00>1"> {{item.h00 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h01 == 0, running: item.h01 == 1, temperature: item.h01 > 1 }">Kl. 01 - {{ item.p01 }} kr.<span *ngIf="item.h01>1"> {{item.h01 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h02 == 0, running: item.h02 == 1, temperature: item.h02 > 1 }">Kl. 02 - {{ item.p02 }} kr.<span *ngIf="item.h02>1"> {{item.h02 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h03 == 0, running: item.h03 == 1, temperature: item.h03 > 1 }">Kl. 03 - {{ item.p03 }} kr.<span *ngIf="item.h03>1"> {{item.h03 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h04 == 0, running: item.h04 == 1, temperature: item.h04 > 1 }">Kl. 04 - {{ item.p04 }} kr.<span *ngIf="item.h04>1"> {{item.h04 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h05 == 0, running: item.h05 == 1, temperature: item.h05 > 1 }">Kl. 05 - {{ item.p05 }} kr.<span *ngIf="item.h05>1"> {{item.h05 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h06 == 0, running: item.h06 == 1, temperature: item.h06 > 1 }">Kl. 06 - {{ item.p06 }} kr.<span *ngIf="item.h06>1"> {{item.h06 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h07 == 0, running: item.h07 == 1, temperature: item.h07 > 1 }">Kl. 07 - {{ item.p07 }} kr.<span *ngIf="item.h07>1"> {{item.h07 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h08 == 0, running: item.h08 == 1, temperature: item.h08 > 1 }">Kl. 08 - {{ item.p08 }} kr.<span *ngIf="item.h08>1"> {{item.h08 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h09 == 0, running: item.h09 == 1, temperature: item.h09 > 1 }">Kl. 09 - {{ item.p09 }} kr.<span *ngIf="item.h09>1"> {{item.h09 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h10 == 0, running: item.h10 == 1, temperature: item.h10 > 1 }">Kl. 10 - {{ item.p10 }} kr.<span *ngIf="item.h10>1"> {{item.h10 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h11 == 0, running: item.h11 == 1, temperature: item.h11 > 1 }">Kl. 11 - {{ item.p11 }} kr.<span *ngIf="item.h11>1"> {{item.h11 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h12 == 0, running: item.h12 == 1, temperature: item.h12 > 1 }">Kl. 12 - {{ item.p12 }} kr.<span *ngIf="item.h12>1"> {{item.h12 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h13 == 0, running: item.h13 == 1, temperature: item.h13 > 1 }">Kl. 13 - {{ item.p13 }} kr.<span *ngIf="item.h13>1"> {{item.h13 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h14 == 0, running: item.h14 == 1, temperature: item.h14 > 1 }">Kl. 14 - {{ item.p14 }} kr.<span *ngIf="item.h14>1"> {{item.h14 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h15 == 0, running: item.h15 == 1, temperature: item.h15 > 1 }">Kl. 15 - {{ item.p15 }} kr.<span *ngIf="item.h15>1"> {{item.h15 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h16 == 0, running: item.h16 == 1, temperature: item.h16 > 1 }">Kl. 16 - {{ item.p16 }} kr.<span *ngIf="item.h16>1"> {{item.h16 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h17 == 0, running: item.h17 == 1, temperature: item.h17 > 1 }">Kl. 17 - {{ item.p17 }} kr.<span *ngIf="item.h17>1"> {{item.h17 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h18 == 0, running: item.h18 == 1, temperature: item.h18 > 1 }">Kl. 18 - {{ item.p18 }} kr.<span *ngIf="item.h18>1"> {{item.h18 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h19 == 0, running: item.h19 == 1, temperature: item.h19 > 1 }">Kl. 19 - {{ item.p19 }} kr.<span *ngIf="item.h19>1"> {{item.h19 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h20 == 0, running: item.h20 == 1, temperature: item.h20 > 1 }">Kl. 20 - {{ item.p20 }} kr.<span *ngIf="item.h20>1"> {{item.h20 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h21 == 0, running: item.h21 == 1, temperature: item.h21 > 1 }">Kl. 21 - {{ item.p21 }} kr.<span *ngIf="item.h21>1"> {{item.h21 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h22 == 0, running: item.h22 == 1, temperature: item.h22 > 1 }">Kl. 22 - {{ item.p22 }} kr.<span *ngIf="item.h22>1"> {{item.h22 }}°C</span></div>
+  <div [ngClass]="{ notrunning: item.h23 == 0, running: item.h23 == 1, temperature: item.h23 > 1 }">Kl. 23 - {{ item.p23 }} kr.<span *ngIf="item.h23>1"> {{item.h23 }}°C</span></div>
+
+  <!-- <div [ngClass]="item.h00 ? runningCss : 'notrunning'">Kl. 00 - {{ item.p00 }} kr.</div> -->
+  <!-- <div [ngClass]="item.h01 ? runningCss : 'notrunning'">Kl. 01 - {{ item.p01 }} kr.</div> -->
+
+  <!-- <div [ngClass]="item.h11 ? runningCss : 'notrunning'">Kl. 11 - {{ item.p11 }} kr.</div>
   <div [ngClass]="item.h12 ? runningCss : 'notrunning'">Kl. 12 - {{ item.p12 }} kr.</div>
   <div [ngClass]="item.h13 ? runningCss : 'notrunning'">Kl. 13 - {{ item.p13 }} kr.</div>
   <div [ngClass]="item.h14 ? runningCss : 'notrunning'">Kl. 14 - {{ item.p14 }} kr.</div>
@@ -233,5 +458,5 @@ Schedules: (kommer kl 13 hver dag)
   <div [ngClass]="item.h20 ? runningCss : 'notrunning'">Kl. 20 - {{ item.p20 }} kr.</div>
   <div [ngClass]="item.h21 ? runningCss : 'notrunning'">Kl. 21 - {{ item.p21 }} kr.</div>
   <div [ngClass]="item.h22 ? runningCss : 'notrunning'">Kl. 22 - {{ item.p22 }} kr.</div>
-  <div [ngClass]="item.h23 ? runningCss : 'notrunning'">Kl. 23 - {{ item.p23 }} kr.</div>
+  <div [ngClass]="item.h23 ? runningCss : 'notrunning'">Kl. 23 - {{ item.p23 }} kr.</div> -->
 </ng-container>
