@@ -150,9 +150,12 @@ namespace BilligKwhWebApp.Controllers
 
                 foreach (var item in schedules)
                 {
+                    if (!prises.Where(p => p.HourDK.Date == item.Date).Any())
+                        continue;
+
                     if (device.ZoneId == 1)
                     {
-                        item.P00 = prises.FirstOrDefault(p => p.HourDKNo == 0 && p.HourDK.Date == item.Date && p.HourDK.Date == item.Date).Dk1;
+                        item.P00 = prises.FirstOrDefault(p => p.HourDKNo == 0 && p.HourDK.Date == item.Date).Dk1;
                         item.P00 = prises.FirstOrDefault(p => p.HourDKNo == 0 && p.HourDK.Date == item.Date).Dk1;
                         item.P01 = prises.FirstOrDefault(p => p.HourDKNo == 1 && p.HourDK.Date == item.Date).Dk1;
                         item.P02 = prises.FirstOrDefault(p => p.HourDKNo == 2 && p.HourDK.Date == item.Date).Dk1;
