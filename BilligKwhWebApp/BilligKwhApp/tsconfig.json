@@ -11,19 +11,43 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2015",
-    "typeRoots": ["node_modules/@types", "src/types"],
+    "target": "ES2022",
+    "typeRoots": [
+      "node_modules/@types",
+      "src/types"
+    ],
     "paths": {
-      "@shared/*": ["src/shared/*"],
-      "@core/*": ["src/core/*"],
-      "@features/*": ["src/features/*"],
-      "@sharedFeatures/*": ["src/features-shared/*"],
-      "@models/*": ["src/models/*"],
-      "@apiModels/*": ["src/code-gen/model/*"],
-      "@enums/*": ["app-globals/enums/*"],
-      "@globals/*": ["app-globals/*"]
+      "@shared/*": [
+        "src/shared/*"
+      ],
+      "@core/*": [
+        "src/core/*"
+      ],
+      "@features/*": [
+        "src/features/*"
+      ],
+      "@sharedFeatures/*": [
+        "src/features-shared/*"
+      ],
+      "@models/*": [
+        "src/models/*"
+      ],
+      "@apiModels/*": [
+        "src/code-gen/model/*"
+      ],
+      "@enums/*": [
+        "app-globals/enums/*"
+      ],
+      "@globals/*": [
+        "app-globals/*"
+      ]
     },
-    "lib": ["es2017", "ES2019", "dom"]
+    "lib": [
+      "es2017",
+      "ES2019",
+      "dom"
+    ],
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "strictTemplates": false
