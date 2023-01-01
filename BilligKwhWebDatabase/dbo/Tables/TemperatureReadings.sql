@@ -3,9 +3,11 @@
     [DatetimeUtc] DATETIME       NOT NULL,
     [DeviceId]    INT            NOT NULL,
     [Temperature] DECIMAL (4, 1) NOT NULL,
-    [IsRunning] BIT NOT NULL DEFAULT 0, 
+    [IsRunning]   BIT            CONSTRAINT [DF_TemperatureReadings_IsRunning] DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK_TemperatureReadings] PRIMARY KEY NONCLUSTERED ([Id] ASC)
 );
+
+
 
 
 

@@ -16,6 +16,30 @@ export interface ConsumptionDtoExt extends ConsumptionDto {
   counter00: number;
   counter23: number;
   consumption: number;
+  price00: number;
+  price01: number;
+  price02: number;
+  price03: number;
+  price04: number;
+  price05: number;
+  price06: number;
+  price07: number;
+  price08: number;
+  price09: number;
+  price10: number;
+  price11: number;
+  price12: number;
+  price13: number;
+  price14: number;
+  price15: number;
+  price16: number;
+  price17: number;
+  price18: number;
+  price19: number;
+  price20: number;
+  price21: number;
+  price22: number;
+  price23: number;
 }
 
 export interface TemperatureReadingDtoExt extends TemperatureReadingDto {
@@ -108,7 +132,31 @@ export class DeviceDetailConsumptionComponent implements OnInit {
       { field: "c20", header: "20" },
       { field: "c21", header: "21" },
       { field: "c22", header: "22" },
-      { field: "c23", header: "23" }
+      { field: "c23", header: "23" },
+      { field: "p00", header: "P00" },
+      { field: "p01", header: "P01" },
+      { field: "p02", header: "P02" },
+      { field: "p03", header: "P03" },
+      { field: "p04", header: "P04" },
+      { field: "p05", header: "P05" },
+      { field: "p06", header: "P06" },
+      { field: "p07", header: "P07" },
+      { field: "p08", header: "P08" },
+      { field: "p09", header: "P09" },
+      { field: "p10", header: "P10" },
+      { field: "p11", header: "P11" },
+      { field: "p12", header: "P12" },
+      { field: "p13", header: "P13" },
+      { field: "p14", header: "P14" },
+      { field: "p15", header: "P15" },
+      { field: "p16", header: "P16" },
+      { field: "p17", header: "P17" },
+      { field: "p18", header: "P18" },
+      { field: "p19", header: "P19" },
+      { field: "p20", header: "P20" },
+      { field: "p21", header: "P21" },
+      { field: "p22", header: "P22" },
+      { field: "p23", header: "P23" }
     ]);
 
     this.temperatureReadingsGlobalFilterFields.next(["datetime", "temperature"]);
@@ -162,6 +210,32 @@ export class DeviceDetailConsumptionComponent implements OnInit {
           element.counter23 = element.h23 / 10;
 
           if (element.h00 > 0 && element.h23 > 0) element.consumption = Math.round(((element.h23 - element.h00) / 10) * 10) / 10;
+
+        //  element.price00 = Math.round((element.c00 * element.p00 + Number.EPSILON) * 100) / 100;
+        //  element.price01 = Math.round((element.c01 * element.p01 + Number.EPSILON) * 100) / 100;
+        //  element.price02 = Math.round((element.c02 * element.p02 + Number.EPSILON) * 100) / 100;
+        //  element.price03 = Math.round((element.c03 * element.p03 + Number.EPSILON) * 100) / 100;
+        //  element.price04 = Math.round((element.c04 * element.p04 + Number.EPSILON) * 100) / 100;
+        //  element.price05 = Math.round((element.c05 * element.p05 + Number.EPSILON) * 100) / 100;
+        //  element.price06 = Math.round((element.c06 * element.p06 + Number.EPSILON) * 100) / 100;
+        //  element.price07 = Math.round((element.c07 * element.p07 + Number.EPSILON) * 100) / 100;
+        //  element.price08 = Math.round((element.c08 * element.p08 + Number.EPSILON) * 100) / 100;
+        //  element.price09 = Math.round((element.c09 * element.p09 + Number.EPSILON) * 100) / 100;
+        //  element.price10 = Math.round((element.c10 * element.p10 + Number.EPSILON) * 100) / 100;
+        //  element.price11 = Math.round((element.c11 * element.p11 + Number.EPSILON) * 100) / 100;
+        //  element.price12 = Math.round((element.c12 * element.p12 + Number.EPSILON) * 100) / 100;
+        //  element.price13 = Math.round((element.c13 * element.p13 + Number.EPSILON) * 100) / 100;
+        //  element.price14 = Math.round((element.c14 * element.p14 + Number.EPSILON) * 100) / 100;
+        //  element.price15 = Math.round((element.c15 * element.p15 + Number.EPSILON) * 100) / 100;
+        //  element.price16 = Math.round((element.c16 * element.p16 + Number.EPSILON) * 100) / 100;
+        //  element.price17 = Math.round((element.c17 * element.p17 + Number.EPSILON) * 100) / 100;
+        //  element.price18 = Math.round((element.c18 * element.p18 + Number.EPSILON) * 100) / 100;
+        //  element.price19 = Math.round((element.c19 * element.p19 + Number.EPSILON) * 100) / 100;
+        //  element.price20 = Math.round((element.c20 * element.p20 + Number.EPSILON) * 100) / 100;
+        //  element.price21 = Math.round((element.c21 * element.p21 + Number.EPSILON) * 100) / 100;
+        //  element.price22 = Math.round((element.c22 * element.p22 + Number.EPSILON) * 100) / 100;
+        //  element.price23 = Math.round((element.c23 * element.p23 + Number.EPSILON) * 100) / 100;
+
         });
       }),
       untilDestroyed(this),

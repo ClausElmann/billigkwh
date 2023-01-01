@@ -16,8 +16,12 @@
     [MinTemp]          INT            NULL,
     [MaxRateAtMinTemp] INT            NULL,
     [ErrorMail]        NVARCHAR (150) NULL,
+    [MinTempOveride]   INT            NULL,
+    [MaxTempOveride]   INT            NULL,
     CONSTRAINT [PK_Print] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 
 
 

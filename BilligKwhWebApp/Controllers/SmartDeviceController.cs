@@ -146,68 +146,68 @@ namespace BilligKwhWebApp.Controllers
 
             if (schedules != null)
             {
-                var prises = _electricityService.GetElectricityPricesForPeriod(today, tomorrow.AddDays(1).AddMinutes(-1));
+                var prices = _electricityService.GetElectricityPricesForPeriod(today, tomorrow.AddDays(1).AddMinutes(-1));
 
                 foreach (var item in schedules)
                 {
-                    if (!prises.Where(p => p.HourDK.Date == item.Date).Any())
+                    if (!prices.Where(p => p.HourDK.Date == item.Date).Any())
                         continue;
 
                     if (device.ZoneId == 1)
                     {
-                        item.P00 = prises.FirstOrDefault(p => p.HourDKNo == 0 && p.HourDK.Date == item.Date).Dk1;
-                        item.P00 = prises.FirstOrDefault(p => p.HourDKNo == 0 && p.HourDK.Date == item.Date).Dk1;
-                        item.P01 = prises.FirstOrDefault(p => p.HourDKNo == 1 && p.HourDK.Date == item.Date).Dk1;
-                        item.P02 = prises.FirstOrDefault(p => p.HourDKNo == 2 && p.HourDK.Date == item.Date).Dk1;
-                        item.P03 = prises.FirstOrDefault(p => p.HourDKNo == 3 && p.HourDK.Date == item.Date).Dk1;
-                        item.P04 = prises.FirstOrDefault(p => p.HourDKNo == 4 && p.HourDK.Date == item.Date).Dk1;
-                        item.P05 = prises.FirstOrDefault(p => p.HourDKNo == 5 && p.HourDK.Date == item.Date).Dk1;
-                        item.P06 = prises.FirstOrDefault(p => p.HourDKNo == 6 && p.HourDK.Date == item.Date).Dk1;
-                        item.P07 = prises.FirstOrDefault(p => p.HourDKNo == 7 && p.HourDK.Date == item.Date).Dk1;
-                        item.P08 = prises.FirstOrDefault(p => p.HourDKNo == 8 && p.HourDK.Date == item.Date).Dk1;
-                        item.P09 = prises.FirstOrDefault(p => p.HourDKNo == 9 && p.HourDK.Date == item.Date).Dk1;
-                        item.P10 = prises.FirstOrDefault(p => p.HourDKNo == 10 && p.HourDK.Date == item.Date).Dk1;
-                        item.P11 = prises.FirstOrDefault(p => p.HourDKNo == 11 && p.HourDK.Date == item.Date).Dk1;
-                        item.P12 = prises.FirstOrDefault(p => p.HourDKNo == 12 && p.HourDK.Date == item.Date).Dk1;
-                        item.P13 = prises.FirstOrDefault(p => p.HourDKNo == 13 && p.HourDK.Date == item.Date).Dk1;
-                        item.P14 = prises.FirstOrDefault(p => p.HourDKNo == 14 && p.HourDK.Date == item.Date).Dk1;
-                        item.P15 = prises.FirstOrDefault(p => p.HourDKNo == 15 && p.HourDK.Date == item.Date).Dk1;
-                        item.P16 = prises.FirstOrDefault(p => p.HourDKNo == 16 && p.HourDK.Date == item.Date).Dk1;
-                        item.P17 = prises.FirstOrDefault(p => p.HourDKNo == 17 && p.HourDK.Date == item.Date).Dk1;
-                        item.P18 = prises.FirstOrDefault(p => p.HourDKNo == 18 && p.HourDK.Date == item.Date).Dk1;
-                        item.P19 = prises.FirstOrDefault(p => p.HourDKNo == 19 && p.HourDK.Date == item.Date).Dk1;
-                        item.P20 = prises.FirstOrDefault(p => p.HourDKNo == 20 && p.HourDK.Date == item.Date).Dk1;
-                        item.P21 = prises.FirstOrDefault(p => p.HourDKNo == 21 && p.HourDK.Date == item.Date).Dk1;
-                        item.P22 = prises.FirstOrDefault(p => p.HourDKNo == 22 && p.HourDK.Date == item.Date).Dk1;
-                        item.P23 = prises.FirstOrDefault(p => p.HourDKNo == 23 && p.HourDK.Date == item.Date).Dk1;
+                        item.P00 = prices.FirstOrDefault(p => p.HourDKNo == 0 && p.HourDK.Date == item.Date).Dk1;
+                        item.P00 = prices.FirstOrDefault(p => p.HourDKNo == 0 && p.HourDK.Date == item.Date).Dk1;
+                        item.P01 = prices.FirstOrDefault(p => p.HourDKNo == 1 && p.HourDK.Date == item.Date).Dk1;
+                        item.P02 = prices.FirstOrDefault(p => p.HourDKNo == 2 && p.HourDK.Date == item.Date).Dk1;
+                        item.P03 = prices.FirstOrDefault(p => p.HourDKNo == 3 && p.HourDK.Date == item.Date).Dk1;
+                        item.P04 = prices.FirstOrDefault(p => p.HourDKNo == 4 && p.HourDK.Date == item.Date).Dk1;
+                        item.P05 = prices.FirstOrDefault(p => p.HourDKNo == 5 && p.HourDK.Date == item.Date).Dk1;
+                        item.P06 = prices.FirstOrDefault(p => p.HourDKNo == 6 && p.HourDK.Date == item.Date).Dk1;
+                        item.P07 = prices.FirstOrDefault(p => p.HourDKNo == 7 && p.HourDK.Date == item.Date).Dk1;
+                        item.P08 = prices.FirstOrDefault(p => p.HourDKNo == 8 && p.HourDK.Date == item.Date).Dk1;
+                        item.P09 = prices.FirstOrDefault(p => p.HourDKNo == 9 && p.HourDK.Date == item.Date).Dk1;
+                        item.P10 = prices.FirstOrDefault(p => p.HourDKNo == 10 && p.HourDK.Date == item.Date).Dk1;
+                        item.P11 = prices.FirstOrDefault(p => p.HourDKNo == 11 && p.HourDK.Date == item.Date).Dk1;
+                        item.P12 = prices.FirstOrDefault(p => p.HourDKNo == 12 && p.HourDK.Date == item.Date).Dk1;
+                        item.P13 = prices.FirstOrDefault(p => p.HourDKNo == 13 && p.HourDK.Date == item.Date).Dk1;
+                        item.P14 = prices.FirstOrDefault(p => p.HourDKNo == 14 && p.HourDK.Date == item.Date).Dk1;
+                        item.P15 = prices.FirstOrDefault(p => p.HourDKNo == 15 && p.HourDK.Date == item.Date).Dk1;
+                        item.P16 = prices.FirstOrDefault(p => p.HourDKNo == 16 && p.HourDK.Date == item.Date).Dk1;
+                        item.P17 = prices.FirstOrDefault(p => p.HourDKNo == 17 && p.HourDK.Date == item.Date).Dk1;
+                        item.P18 = prices.FirstOrDefault(p => p.HourDKNo == 18 && p.HourDK.Date == item.Date).Dk1;
+                        item.P19 = prices.FirstOrDefault(p => p.HourDKNo == 19 && p.HourDK.Date == item.Date).Dk1;
+                        item.P20 = prices.FirstOrDefault(p => p.HourDKNo == 20 && p.HourDK.Date == item.Date).Dk1;
+                        item.P21 = prices.FirstOrDefault(p => p.HourDKNo == 21 && p.HourDK.Date == item.Date).Dk1;
+                        item.P22 = prices.FirstOrDefault(p => p.HourDKNo == 22 && p.HourDK.Date == item.Date).Dk1;
+                        item.P23 = prices.FirstOrDefault(p => p.HourDKNo == 23 && p.HourDK.Date == item.Date).Dk1;
                     }
                     else if (device.ZoneId == 1)
                     {
-                        item.P00 = prises.FirstOrDefault(p => p.HourDKNo == 0 && p.HourDK.Date == item.Date).Dk2;
-                        item.P00 = prises.FirstOrDefault(p => p.HourDKNo == 0 && p.HourDK.Date == item.Date).Dk2;
-                        item.P01 = prises.FirstOrDefault(p => p.HourDKNo == 1 && p.HourDK.Date == item.Date).Dk2;
-                        item.P02 = prises.FirstOrDefault(p => p.HourDKNo == 2 && p.HourDK.Date == item.Date).Dk2;
-                        item.P03 = prises.FirstOrDefault(p => p.HourDKNo == 3 && p.HourDK.Date == item.Date).Dk2;
-                        item.P04 = prises.FirstOrDefault(p => p.HourDKNo == 4 && p.HourDK.Date == item.Date).Dk2;
-                        item.P05 = prises.FirstOrDefault(p => p.HourDKNo == 5 && p.HourDK.Date == item.Date).Dk2;
-                        item.P06 = prises.FirstOrDefault(p => p.HourDKNo == 6 && p.HourDK.Date == item.Date).Dk2;
-                        item.P07 = prises.FirstOrDefault(p => p.HourDKNo == 7 && p.HourDK.Date == item.Date).Dk2;
-                        item.P08 = prises.FirstOrDefault(p => p.HourDKNo == 8 && p.HourDK.Date == item.Date).Dk2;
-                        item.P09 = prises.FirstOrDefault(p => p.HourDKNo == 9 && p.HourDK.Date == item.Date).Dk2;
-                        item.P10 = prises.FirstOrDefault(p => p.HourDKNo == 10 && p.HourDK.Date == item.Date).Dk2;
-                        item.P11 = prises.FirstOrDefault(p => p.HourDKNo == 11 && p.HourDK.Date == item.Date).Dk2;
-                        item.P12 = prises.FirstOrDefault(p => p.HourDKNo == 12 && p.HourDK.Date == item.Date).Dk2;
-                        item.P13 = prises.FirstOrDefault(p => p.HourDKNo == 13 && p.HourDK.Date == item.Date).Dk2;
-                        item.P14 = prises.FirstOrDefault(p => p.HourDKNo == 14 && p.HourDK.Date == item.Date).Dk2;
-                        item.P15 = prises.FirstOrDefault(p => p.HourDKNo == 15 && p.HourDK.Date == item.Date).Dk2;
-                        item.P16 = prises.FirstOrDefault(p => p.HourDKNo == 16 && p.HourDK.Date == item.Date).Dk2;
-                        item.P17 = prises.FirstOrDefault(p => p.HourDKNo == 17 && p.HourDK.Date == item.Date).Dk2;
-                        item.P18 = prises.FirstOrDefault(p => p.HourDKNo == 18 && p.HourDK.Date == item.Date).Dk2;
-                        item.P19 = prises.FirstOrDefault(p => p.HourDKNo == 19 && p.HourDK.Date == item.Date).Dk2;
-                        item.P20 = prises.FirstOrDefault(p => p.HourDKNo == 20 && p.HourDK.Date == item.Date).Dk2;
-                        item.P21 = prises.FirstOrDefault(p => p.HourDKNo == 21 && p.HourDK.Date == item.Date).Dk2;
-                        item.P22 = prises.FirstOrDefault(p => p.HourDKNo == 22 && p.HourDK.Date == item.Date).Dk2;
-                        item.P23 = prises.FirstOrDefault(p => p.HourDKNo == 23 && p.HourDK.Date == item.Date).Dk2;
+                        item.P00 = prices.FirstOrDefault(p => p.HourDKNo == 0 && p.HourDK.Date == item.Date).Dk2;
+                        item.P00 = prices.FirstOrDefault(p => p.HourDKNo == 0 && p.HourDK.Date == item.Date).Dk2;
+                        item.P01 = prices.FirstOrDefault(p => p.HourDKNo == 1 && p.HourDK.Date == item.Date).Dk2;
+                        item.P02 = prices.FirstOrDefault(p => p.HourDKNo == 2 && p.HourDK.Date == item.Date).Dk2;
+                        item.P03 = prices.FirstOrDefault(p => p.HourDKNo == 3 && p.HourDK.Date == item.Date).Dk2;
+                        item.P04 = prices.FirstOrDefault(p => p.HourDKNo == 4 && p.HourDK.Date == item.Date).Dk2;
+                        item.P05 = prices.FirstOrDefault(p => p.HourDKNo == 5 && p.HourDK.Date == item.Date).Dk2;
+                        item.P06 = prices.FirstOrDefault(p => p.HourDKNo == 6 && p.HourDK.Date == item.Date).Dk2;
+                        item.P07 = prices.FirstOrDefault(p => p.HourDKNo == 7 && p.HourDK.Date == item.Date).Dk2;
+                        item.P08 = prices.FirstOrDefault(p => p.HourDKNo == 8 && p.HourDK.Date == item.Date).Dk2;
+                        item.P09 = prices.FirstOrDefault(p => p.HourDKNo == 9 && p.HourDK.Date == item.Date).Dk2;
+                        item.P10 = prices.FirstOrDefault(p => p.HourDKNo == 10 && p.HourDK.Date == item.Date).Dk2;
+                        item.P11 = prices.FirstOrDefault(p => p.HourDKNo == 11 && p.HourDK.Date == item.Date).Dk2;
+                        item.P12 = prices.FirstOrDefault(p => p.HourDKNo == 12 && p.HourDK.Date == item.Date).Dk2;
+                        item.P13 = prices.FirstOrDefault(p => p.HourDKNo == 13 && p.HourDK.Date == item.Date).Dk2;
+                        item.P14 = prices.FirstOrDefault(p => p.HourDKNo == 14 && p.HourDK.Date == item.Date).Dk2;
+                        item.P15 = prices.FirstOrDefault(p => p.HourDKNo == 15 && p.HourDK.Date == item.Date).Dk2;
+                        item.P16 = prices.FirstOrDefault(p => p.HourDKNo == 16 && p.HourDK.Date == item.Date).Dk2;
+                        item.P17 = prices.FirstOrDefault(p => p.HourDKNo == 17 && p.HourDK.Date == item.Date).Dk2;
+                        item.P18 = prices.FirstOrDefault(p => p.HourDKNo == 18 && p.HourDK.Date == item.Date).Dk2;
+                        item.P19 = prices.FirstOrDefault(p => p.HourDKNo == 19 && p.HourDK.Date == item.Date).Dk2;
+                        item.P20 = prices.FirstOrDefault(p => p.HourDKNo == 20 && p.HourDK.Date == item.Date).Dk2;
+                        item.P21 = prices.FirstOrDefault(p => p.HourDKNo == 21 && p.HourDK.Date == item.Date).Dk2;
+                        item.P22 = prices.FirstOrDefault(p => p.HourDKNo == 22 && p.HourDK.Date == item.Date).Dk2;
+                        item.P23 = prices.FirstOrDefault(p => p.HourDKNo == 23 && p.HourDK.Date == item.Date).Dk2;
                     }
                 }
 
@@ -223,10 +223,73 @@ namespace BilligKwhWebApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ConsumptionDto>))]
         public IActionResult GetConsumptionsPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)
         {
+            var device = _arduinoService.GetSmartDeviceById(deviceId);
+
             var consumptions = _electricityService.GetConsumptionsPeriod(deviceId, fromDateUtc, toDateUtc);
+
+            var prises = _electricityService.GetElectricityPricesForPeriod(fromDateUtc, toDateUtc);
 
             if (consumptions != null)
             {
+                foreach (var item in consumptions)
+                {
+                    if (device.ZoneId == 1)
+                    {
+                        item.P00 = prises.FirstOrDefault(p => p.HourDKNo == 0 && p.DateDK == item.Date).Dk1;
+                        item.P01 = prises.FirstOrDefault(p => p.HourDKNo == 1 && p.DateDK == item.Date).Dk1;
+                        item.P02 = prises.FirstOrDefault(p => p.HourDKNo == 2 && p.DateDK == item.Date).Dk1;
+                        item.P03 = prises.FirstOrDefault(p => p.HourDKNo == 3 && p.DateDK == item.Date).Dk1;
+                        item.P04 = prises.FirstOrDefault(p => p.HourDKNo == 4 && p.DateDK == item.Date).Dk1;
+                        item.P05 = prises.FirstOrDefault(p => p.HourDKNo == 5 && p.DateDK == item.Date).Dk1;
+                        item.P06 = prises.FirstOrDefault(p => p.HourDKNo == 6 && p.DateDK == item.Date).Dk1;
+                        item.P07 = prises.FirstOrDefault(p => p.HourDKNo == 7 && p.DateDK == item.Date).Dk1;
+                        item.P08 = prises.FirstOrDefault(p => p.HourDKNo == 8 && p.DateDK == item.Date).Dk1;
+                        item.P09 = prises.FirstOrDefault(p => p.HourDKNo == 9 && p.DateDK == item.Date).Dk1;
+                        item.P10 = prises.FirstOrDefault(p => p.HourDKNo == 10 && p.DateDK == item.Date).Dk1;
+                        item.P11 = prises.FirstOrDefault(p => p.HourDKNo == 11 && p.DateDK == item.Date).Dk1;
+                        item.P12 = prises.FirstOrDefault(p => p.HourDKNo == 12 && p.DateDK == item.Date).Dk1;
+                        item.P13 = prises.FirstOrDefault(p => p.HourDKNo == 13 && p.DateDK == item.Date).Dk1;
+                        item.P14 = prises.FirstOrDefault(p => p.HourDKNo == 14 && p.DateDK == item.Date).Dk1;
+                        item.P15 = prises.FirstOrDefault(p => p.HourDKNo == 15 && p.DateDK == item.Date).Dk1;
+                        item.P16 = prises.FirstOrDefault(p => p.HourDKNo == 16 && p.DateDK == item.Date).Dk1;
+                        item.P17 = prises.FirstOrDefault(p => p.HourDKNo == 17 && p.DateDK == item.Date).Dk1;
+                        item.P18 = prises.FirstOrDefault(p => p.HourDKNo == 18 && p.DateDK == item.Date).Dk1;
+                        item.P19 = prises.FirstOrDefault(p => p.HourDKNo == 19 && p.DateDK == item.Date).Dk1;
+                        item.P20 = prises.FirstOrDefault(p => p.HourDKNo == 20 && p.DateDK == item.Date).Dk1;
+                        item.P21 = prises.FirstOrDefault(p => p.HourDKNo == 21 && p.DateDK == item.Date).Dk1;
+                        item.P22 = prises.FirstOrDefault(p => p.HourDKNo == 22 && p.DateDK == item.Date).Dk1;
+                        item.P23 = prises.FirstOrDefault(p => p.HourDKNo == 23 && p.DateDK == item.Date).Dk1;
+                    }
+                    else if (device.ZoneId == 1)
+                    {
+                        item.P00 = prises.FirstOrDefault(p => p.HourDKNo == 0 && p.DateDK == item.Date).Dk2;
+                        item.P00 = prises.FirstOrDefault(p => p.HourDKNo == 0 && p.DateDK == item.Date).Dk2;
+                        item.P01 = prises.FirstOrDefault(p => p.HourDKNo == 1 && p.DateDK == item.Date).Dk2;
+                        item.P02 = prises.FirstOrDefault(p => p.HourDKNo == 2 && p.DateDK == item.Date).Dk2;
+                        item.P03 = prises.FirstOrDefault(p => p.HourDKNo == 3 && p.DateDK == item.Date).Dk2;
+                        item.P04 = prises.FirstOrDefault(p => p.HourDKNo == 4 && p.DateDK == item.Date).Dk2;
+                        item.P05 = prises.FirstOrDefault(p => p.HourDKNo == 5 && p.DateDK == item.Date).Dk2;
+                        item.P06 = prises.FirstOrDefault(p => p.HourDKNo == 6 && p.DateDK == item.Date).Dk2;
+                        item.P07 = prises.FirstOrDefault(p => p.HourDKNo == 7 && p.DateDK == item.Date).Dk2;
+                        item.P08 = prises.FirstOrDefault(p => p.HourDKNo == 8 && p.DateDK == item.Date).Dk2;
+                        item.P09 = prises.FirstOrDefault(p => p.HourDKNo == 9 && p.DateDK == item.Date).Dk2;
+                        item.P10 = prises.FirstOrDefault(p => p.HourDKNo == 10 && p.DateDK == item.Date).Dk2;
+                        item.P11 = prises.FirstOrDefault(p => p.HourDKNo == 11 && p.DateDK == item.Date).Dk2;
+                        item.P12 = prises.FirstOrDefault(p => p.HourDKNo == 12 && p.DateDK == item.Date).Dk2;
+                        item.P13 = prises.FirstOrDefault(p => p.HourDKNo == 13 && p.DateDK == item.Date).Dk2;
+                        item.P14 = prises.FirstOrDefault(p => p.HourDKNo == 14 && p.DateDK == item.Date).Dk2;
+                        item.P15 = prises.FirstOrDefault(p => p.HourDKNo == 15 && p.DateDK == item.Date).Dk2;
+                        item.P16 = prises.FirstOrDefault(p => p.HourDKNo == 16 && p.DateDK == item.Date).Dk2;
+                        item.P17 = prises.FirstOrDefault(p => p.HourDKNo == 17 && p.DateDK == item.Date).Dk2;
+                        item.P18 = prises.FirstOrDefault(p => p.HourDKNo == 18 && p.DateDK == item.Date).Dk2;
+                        item.P19 = prises.FirstOrDefault(p => p.HourDKNo == 19 && p.DateDK == item.Date).Dk2;
+                        item.P20 = prises.FirstOrDefault(p => p.HourDKNo == 20 && p.DateDK == item.Date).Dk2;
+                        item.P21 = prises.FirstOrDefault(p => p.HourDKNo == 21 && p.DateDK == item.Date).Dk2;
+                        item.P22 = prises.FirstOrDefault(p => p.HourDKNo == 22 && p.DateDK == item.Date).Dk2;
+                        item.P23 = prises.FirstOrDefault(p => p.HourDKNo == 23 && p.DateDK == item.Date).Dk2;
+                    }
+                }
+
                 return Ok(consumptions);
             }
             else

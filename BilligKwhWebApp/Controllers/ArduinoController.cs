@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using BilligKwhWebApp.Core.Domain;
 using BilligKwhWebApp.Services.SmartDevices;
 using System.Text.Json;
-using BilligKwhWebApp.Services;
 
 namespace BilligKwhWebApp.Controllers
 {
@@ -22,13 +21,11 @@ namespace BilligKwhWebApp.Controllers
     {
         private readonly ISmartDeviceService _smartDeviceService;
         private readonly IElectricityService _electricityService;
-        //private readonly ISystemLogger _Logger;
 
         public AController(ISystemLogger logger, IWorkContext workContext, IPermissionService permissionService, ISmartDeviceService smartDeviceService, IElectricityService electricityService) : base(logger, workContext, permissionService)
         {
             _smartDeviceService = smartDeviceService;
             _electricityService = electricityService;
-            //_Logger = logger;
         }
 
         [HttpGet]
@@ -71,31 +68,23 @@ namespace BilligKwhWebApp.Controllers
 
             if (!schedules.Any())
             {
-                var now = DateTime.Now;
-
                 long[] emptyRecipe = { 220101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
                 var emptyModel = new BilligKwhModel()
                 {
-                    Y = int.Parse(now.ToString("yy")),
-                    Mo = now.Month,
-                    D = now.Day,
-                    H = now.Hour,
-                    M = now.Minute,
-                    S = now.Second,
+                    Y = int.Parse(danish.ToString("yy")),
+                    Mo = danish.Month,
+                    D = danish.Day,
+                    H = danish.Hour,
+                    M = danish.Minute,
+                    S = danish.Second,
                     R = emptyRecipe.ToArray(),
-                    //DeviceID = smartDevice.Uniqueidentifier,
                     De = smartDevice.Delay,
-                    //DebugMinutes = smartDevice.DebugMinutes,
                 };
-
                 return Ok(emptyModel);
             }
-            //    return NotFound("Schedules not found"); ;
 
             List<long> list = new();
-
-            //long[] recipe = new long[schedules.Count * 25];
 
             foreach (var item in schedules)
             {
@@ -125,10 +114,6 @@ namespace BilligKwhWebApp.Controllers
                 list.Add(item.H22);
                 list.Add(item.H23);
             }
-            //long[] myNum = { 221020, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 221021, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, };
-            //long[] myNum1 = { 221020, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 221021, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
-
-            //var datetime = DateTime.Now;
 
             if (smartDevice.DebugMinutes > 0)
             {
@@ -144,10 +129,7 @@ namespace BilligKwhWebApp.Controllers
                 M = danish.Minute,
                 S = danish.Second,
                 R = list.ToArray(),
-                //Recipe = DateTime.Now.Millisecond % 2 == 0 ? myNum : myNum1,
-                //DeviceID = smartDevice.Uniqueidentifier,
                 De = smartDevice.Delay,
-                //DebugMinutes = smartDevice.DebugMinutes,
             };
 
             string json = JsonSerializer.Serialize(model);

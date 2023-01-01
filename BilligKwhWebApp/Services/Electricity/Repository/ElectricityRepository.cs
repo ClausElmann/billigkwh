@@ -97,36 +97,36 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
             DateTime timeUtc = DateTime.UtcNow;
 
             var result = from f in devices
-                                    select new Schedule()
-                                    {
-                                        Date = danish,
-                                        DeviceId = f.Id,
-                                        LastUpdatedUtc = timeUtc,
-                                        H00 = RunValue(elpriser, danish, 0, f),
-                                        H01 = RunValue(elpriser, danish, 1, f),
-                                        H02 = RunValue(elpriser, danish, 2, f),
-                                        H03 = RunValue(elpriser, danish, 3, f),
-                                        H04 = RunValue(elpriser, danish, 4, f),
-                                        H05 = RunValue(elpriser, danish, 5, f),
-                                        H06 = RunValue(elpriser, danish, 6, f),
-                                        H07 = RunValue(elpriser, danish, 7, f),
-                                        H08 = RunValue(elpriser, danish, 8, f),
-                                        H09 = RunValue(elpriser, danish, 9, f),
-                                        H10 = RunValue(elpriser, danish, 10, f),
-                                        H11 = RunValue(elpriser, danish, 11, f),
-                                        H12 = RunValue(elpriser, danish, 12, f),
-                                        H13 = RunValue(elpriser, danish, 13, f),
-                                        H14 = RunValue(elpriser, danish, 14, f),
-                                        H15 = RunValue(elpriser, danish, 15, f),
-                                        H16 = RunValue(elpriser, danish, 16, f),
-                                        H17 = RunValue(elpriser, danish, 17, f),
-                                        H18 = RunValue(elpriser, danish, 18, f),
-                                        H19 = RunValue(elpriser, danish, 19, f),
-                                        H20 = RunValue(elpriser, danish, 20, f),
-                                        H21 = RunValue(elpriser, danish, 21, f),
-                                        H22 = RunValue(elpriser, danish, 22, f),
-                                        H23 = RunValue(elpriser, danish, 23, f),
-                                    };
+                         select new Schedule()
+                         {
+                             Date = danish,
+                             DeviceId = f.Id,
+                             LastUpdatedUtc = timeUtc,
+                             H00 = RunValue(elpriser, danish, 0, f),
+                             H01 = RunValue(elpriser, danish, 1, f),
+                             H02 = RunValue(elpriser, danish, 2, f),
+                             H03 = RunValue(elpriser, danish, 3, f),
+                             H04 = RunValue(elpriser, danish, 4, f),
+                             H05 = RunValue(elpriser, danish, 5, f),
+                             H06 = RunValue(elpriser, danish, 6, f),
+                             H07 = RunValue(elpriser, danish, 7, f),
+                             H08 = RunValue(elpriser, danish, 8, f),
+                             H09 = RunValue(elpriser, danish, 9, f),
+                             H10 = RunValue(elpriser, danish, 10, f),
+                             H11 = RunValue(elpriser, danish, 11, f),
+                             H12 = RunValue(elpriser, danish, 12, f),
+                             H13 = RunValue(elpriser, danish, 13, f),
+                             H14 = RunValue(elpriser, danish, 14, f),
+                             H15 = RunValue(elpriser, danish, 15, f),
+                             H16 = RunValue(elpriser, danish, 16, f),
+                             H17 = RunValue(elpriser, danish, 17, f),
+                             H18 = RunValue(elpriser, danish, 18, f),
+                             H19 = RunValue(elpriser, danish, 19, f),
+                             H20 = RunValue(elpriser, danish, 20, f),
+                             H21 = RunValue(elpriser, danish, 21, f),
+                             H22 = RunValue(elpriser, danish, 22, f),
+                             H23 = RunValue(elpriser, danish, 23, f),
+                         };
             return result.ToList();
         }
 
@@ -162,7 +162,7 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
             using var connection = ConnectionFactory.GetOpenConnection();
             return connection.Query<ElectricityPrice>(@"
                      SELECT * FROM [ElectricityPrices]
-            WHERE HourDK >= @FromDateUtc AND HourDK <= @ToDateUtc", new { FromDateUtc = fromDateUtc, ToDateUtc = toDateUtc }).ToList();
+            WHERE HourDK >= @FromDateUtc AND HourDK <= @ToDateUtc", new { FromDateUtc = fromDateUtc, ToDateUtc = toDateUtc.AddDays(1) }).ToList();
         }
 
         public IReadOnlyCollection<ConsumptionDto> GetConsumptionsPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc)

@@ -106,7 +106,7 @@
 
             <!-- <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" [routerLink]="['/users/0/edit']"></button> -->
 
-            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="table.exportCSV()"></button>
+            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="exportCSV(table, { bom: true, fieldBoundary: false })"></button>
             <span class="block mt-2 md:mt-0 p-input-icon-left">
               <i class="pi pi-search"></i>
               <input pInputText type="text" (input)="table.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />

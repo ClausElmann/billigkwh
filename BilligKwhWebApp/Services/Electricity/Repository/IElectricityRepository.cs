@@ -20,7 +20,6 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
 
         IReadOnlyCollection<ConsumptionDto> GetConsumptionsPeriod(int deviceId, DateTime fromDateUtc, DateTime toDateUtc);
 
-
         //SmartDevice GetSmartDeviceById(string SmartDeviceId);
         Consumption GetConsumptionByIdAndDate(DateTime date, int deviceId);
         void UpdateConsumption(Consumption consumption);
@@ -35,5 +34,8 @@ namespace BilligKwhWebApp.Services.Electricity.Repository
         //void InsertRecipe(Recipe entity);
         //void UpdateRecipe(Recipe entity);
 
+        //IReadOnlyCollection<KwhConsumption> GetKwhConsumptionsByDeviceIdAndDate(int deviceId, DateTime date);
+
+        
     }
 }

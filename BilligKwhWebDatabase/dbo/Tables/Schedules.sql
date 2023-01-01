@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[Schedules] (
+CREATE TABLE [dbo].[Schedules] (
     [Id]             INT      IDENTITY (1, 1) NOT NULL,
     [Date]           DATE     NOT NULL,
     [DeviceId]       INT      NOT NULL,
@@ -28,10 +28,12 @@
     [H21]            INT      NOT NULL,
     [H22]            INT      NOT NULL,
     [H23]            INT      NOT NULL,
-    CONSTRAINT [PK_Schedule] PRIMARY KEY CLUSTERED ([Id] DESC)
+    CONSTRAINT [PK_ScheduleNew] PRIMARY KEY CLUSTERED ([Id] DESC)
 );
 
+
+
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [IX_Schedules]
+CREATE UNIQUE NONCLUSTERED INDEX [IX_SchedulesNew]
     ON [dbo].[Schedules]([Date] DESC, [DeviceId] DESC);
 

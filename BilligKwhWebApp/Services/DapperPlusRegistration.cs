@@ -83,7 +83,12 @@ namespace BilligKwhWebApp.Services
                 k.Date
             }).BatchTimeout(120 * 60);
 
-            //DapperPlusManager.Entity<Recipe>().Table("dbo.Recipes").Identity(x => x.Id);
+            DapperPlusManager.Entity<KwhConsumption>().Table("dbo.KwhConsumptions").Identity(x => x.Id).Key(k => new
+            {
+                k.DateDK,
+                k.HourDK,
+                k.DeviceId,
+            }).BatchTimeout(120 * 60);
         }
     }
 }
